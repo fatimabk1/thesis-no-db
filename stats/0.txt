@@ -1,0 +1,164 @@
+DoneHandler ∆: 
+max =  0:00:00.000819
+min =  0:00:00.000004
+avg =  0:00:00.000011
+sum =  0:00:00.028846
+count =  2700
+
+
+InertHandler ∆: 
+max =  0:00:00.001801
+min =  0:00:00.000001
+avg =  0:00:00.000002
+sum =  0:00:00.193041
+count =  83314
+
+
+ShoppingHandler ∆: 
+max =  0:00:00.019112
+min =  0:00:00.000002
+avg =  0:00:00.000012
+sum =  0:00:02.009687
+count =  168263
+
+
+__create_pending() ∆: 
+max =  0:00:00.013483
+min =  0:00:00.000877
+avg =  0:00:00.004825
+sum =  0:00:00.482454
+count =  100
+
+
+__order_grp() ∆: 
+max =  0:00:00.013559
+min =  0:00:00.000918
+avg =  0:00:00.004894
+sum =  0:00:00.489359
+count =  100
+
+
+__restock() ∆: 
+max =  0:00:00.036157
+min =  0:00:00.000084
+avg =  0:00:00.000634
+sum =  0:00:20.069017
+count =  31659
+
+
+__unload() ∆: 
+max =  0:00:00.080341
+min =  0:00:00.000627
+avg =  0:00:00.008105
+sum =  0:00:00.810534
+count =  100
+
+
+advance_all_shoppers() ∆: 
+max =  0:00:00.147182
+min =  0:00:00.000001
+avg =  0:00:00.016404
+sum =  0:00:11.794652
+count =  719
+
+
+advance_employees() -- calling dispatch ∆: 
+max =  0:00:00.240953
+min =  0:00:00.003115
+avg =  0:00:00.066268
+sum =  0:00:35.519433
+count =  536
+
+
+advance_lanes() ∆: 
+max =  0:00:00.001698
+min =  0:00:00.000017
+avg =  0:00:00.000099
+sum =  0:00:00.142594
+count =  1438
+
+
+collapse() ∆: 
+max =  0:00:00.000033
+min =  0:00:00.000008
+avg =  0:00:00.000013
+sum =  0:00:00.000520
+count =  40
+
+
+dispatch() ∆: 
+max =  0:00:00.827896
+min =  0:00:00.000245
+avg =  0:00:00.020771
+sum =  0:00:11.361953
+count =  547
+
+
+expand() ∆: 
+max =  0:00:00.001151
+min =  0:00:00.000071
+avg =  0:00:00.000315
+sum =  0:00:00.004413
+count =  14
+
+
+get_cashier() ∆: 
+max =  0:00:00.000069
+min =  0:00:00.000003
+avg =  0:00:00.000009
+sum =  0:00:00.000887
+count =  98
+
+
+get_restock_list() ∆: 
+max =  0:00:00.074927
+min =  0:00:00.000056
+avg =  0:00:00.005605
+sum =  0:00:03.368624
+count =  601
+
+
+get_toss_list() ∆: 
+max =  0:00:00.012350
+min =  0:00:00.006639
+avg =  0:00:00.007631
+sum =  0:00:00.915738
+count =  120
+
+
+get_unload_list() ∆: 
+max =  0:00:00.110736
+min =  0:00:00.012432
+avg =  0:00:00.023591
+sum =  0:00:02.854489
+count =  121
+
+
+manage_lanes() ∆: 
+max =  0:00:00.002110
+min =  0:00:00.000009
+avg =  0:00:00.000113
+sum =  0:00:00.162649
+count =  1438
+
+
+shopper_handler() ∆: 
+max =  0:00:00.067786
+min =  0:00:00.000004
+avg =  0:00:00.000029
+sum =  0:00:07.864089
+count =  270059
+
+
+simulate_day() ∆: 
+max =  0:00:00.316669
+min =  0:00:00.000199
+avg =  0:00:00.068796
+sum =  0:00:57.788498
+count =  840
+
+
+CHANGES IMPLEMENTED:
+- moved inv_list sorting from __restock() to __advance_employees()
+    # call once per tstep instead of multiple times per tstep
+    # reduced total time by 10sec (see 1.txt)

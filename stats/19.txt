@@ -1,0 +1,80 @@
+A Day ∆: 
+max =  0:00:05.187682
+min =  0:00:03.056662
+avg =  0:00:03.579497
+sum =  0:00:25.056478
+count =  7
+
+
+add shoppers ∆: 
+max =  0:00:00.002483
+min =  0:00:00.000837
+avg =  0:00:00.001231
+sum =  0:00:00.077564
+count =  63
+
+
+advance lanes() ∆: 
+max =  0:00:00.003815
+min =  0:00:00.000018
+avg =  0:00:00.000089
+sum =  0:00:00.447182
+count =  5033
+
+
+advance shoppers ∆: 
+max =  0:00:00.049165
+min =  0:00:00.000001
+avg =  0:00:00.002339
+sum =  0:00:11.774111
+count =  5033
+
+
+advance_employees() ∆: 
+max =  0:00:00.453278
+min =  0:00:00.000001
+avg =  0:00:00.000169
+sum =  0:00:00.994299
+count =  5880
+
+
+cleanup and reset for the next day ∆: 
+max =  0:00:00.000155
+min =  0:00:00.000097
+avg =  0:00:00.000124
+sum =  0:00:00.000869
+count =  7
+
+
+filter out inert shopper after store close ∆: 
+max =  0:00:00.000089
+min =  0:00:00.000027
+avg =  0:00:00.000045
+sum =  0:00:00.000313
+count =  7
+
+
+manage lanes() ∆: 
+max =  0:00:00.002089
+min =  0:00:00.000002
+avg =  0:00:00.000070
+sum =  0:00:00.351722
+count =  5033
+
+
+open_starter_lanes() ∆: 
+max =  0:00:00.000038
+min =  0:00:00.000028
+avg =  0:00:00.000034
+sum =  0:00:00.000237
+count =  7
+
+
+refresh tasks ∆: 
+max =  0:00:00.235382
+min =  0:00:00.000071
+avg =  0:00:00.051767
+sum =  0:00:09.783900
+count =  189
+
+

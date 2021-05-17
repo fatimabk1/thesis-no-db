@@ -1,0 +1,203 @@
+DoneHandler ∆: 
+max =  0:00:00.001503
+min =  0:00:00.000003
+avg =  0:00:00.000012
+sum =  0:00:00.032107
+count =  2700
+
+
+EmployeeManager.advance_employees() ∆: 
+max =  0:00:00.061562
+min =  0:00:00.000082
+avg =  0:00:00.010054
+sum =  0:00:08.445310
+count =  840
+
+
+InertHandler ∆: 
+max =  0:00:00.002202
+min =  0:00:00.000001
+avg =  0:00:00.000002
+sum =  0:00:00.221453
+count =  93466
+
+
+ShoppingHandler ∆: 
+max =  0:00:00.075159
+min =  0:00:00.000002
+avg =  0:00:00.000019
+sum =  0:00:03.140407
+count =  167061
+
+
+__create_pending() ∆: 
+max =  0:00:00.009795
+min =  0:00:00.000381
+avg =  0:00:00.003642
+sum =  0:00:00.364167
+count =  100
+
+
+__order_grp() ∆: 
+max =  0:00:00.009915
+min =  0:00:00.000412
+avg =  0:00:00.003693
+sum =  0:00:00.369264
+count =  100
+
+
+__restock() ∆: 
+max =  0:00:00.051806
+min =  0:00:00.000004
+avg =  0:00:00.000012
+sum =  0:00:00.360523
+count =  31273
+
+
+advance_all_shoppers() ∆: 
+max =  0:00:00.114365
+min =  0:00:00.000017
+avg =  0:00:00.017669
+sum =  0:00:12.703975
+count =  719
+
+
+advance_all_shoppers(): filter valid ∆: 
+max =  0:00:00.003292
+min =  0:00:00.000002
+avg =  0:00:00.000410
+sum =  0:00:00.294612
+count =  719
+
+
+advance_employees(): dispatch() ∆: 
+max =  0:00:00.056108
+min =  0:00:00.000132
+avg =  0:00:00.004342
+sum =  0:00:02.331501
+count =  537
+
+
+advance_employees(): filter working_employees ∆: 
+max =  0:00:00.000122
+min =  0:00:00.000122
+avg =  0:00:00.000122
+sum =  0:00:00.000122
+count =  1
+
+
+advance_lanes() ∆: 
+max =  0:00:00.000651
+min =  0:00:00.000018
+avg =  0:00:00.000098
+sum =  0:00:00.141578
+count =  1438
+
+
+collapse() ∆: 
+max =  0:00:00.000043
+min =  0:00:00.000008
+avg =  0:00:00.000014
+sum =  0:00:00.000527
+count =  38
+
+
+dispatch.restock: __restock() ∆: 
+max =  0:00:00.051873
+min =  0:00:00.000013
+avg =  0:00:00.000032
+sum =  0:00:01.016284
+count =  31273
+
+
+dispatch.restock: all_restocks ∆: 
+max =  0:00:00.056038
+min =  0:00:00.000058
+avg =  0:00:00.004248
+sum =  0:00:02.281088
+count =  537
+
+
+dispatch.restock: while_loop ∆: 
+max =  0:00:00.051893
+min =  0:00:00.000021
+avg =  0:00:00.000052
+sum =  0:00:01.611796
+count =  31273
+
+
+expand() ∆: 
+max =  0:00:00.000793
+min =  0:00:00.000087
+avg =  0:00:00.000269
+sum =  0:00:00.003760
+count =  14
+
+
+get_cashier() ∆: 
+max =  0:00:00.000018
+min =  0:00:00.000003
+avg =  0:00:00.000008
+sum =  0:00:00.000905
+count =  114
+
+
+get_restock_list() ∆: 
+max =  0:00:00.021338
+min =  0:00:00.000061
+avg =  0:00:00.004888
+sum =  0:00:02.932928
+count =  600
+
+
+get_toss_list() ∆: 
+max =  0:00:00.011276
+min =  0:00:00.006715
+avg =  0:00:00.008035
+sum =  0:00:00.964211
+count =  120
+
+
+get_unload_list() ∆: 
+max =  0:00:00.056545
+min =  0:00:00.012270
+avg =  0:00:00.017831
+sum =  0:00:02.139691
+count =  120
+
+
+manage_lanes() ∆: 
+max =  0:00:00.001586
+min =  0:00:00.000013
+avg =  0:00:00.000116
+sum =  0:00:00.167439
+count =  1438
+
+
+shopper_handler() ∆: 
+max =  0:00:00.075206
+min =  0:00:00.000003
+avg =  0:00:00.000032
+sum =  0:00:08.563748
+count =  268197
+
+
+shopper_handler(): ShoppingHandler - search ∆: 
+max =  0:00:00.074983
+min =  0:00:00.000002
+avg =  0:00:00.000008
+sum =  0:00:00.384820
+count =  49141
+
+
+simulate_day() ∆: 
+max =  0:00:00.146685
+min =  0:00:00.000293
+avg =  0:00:00.028905
+sum =  0:00:24.280378
+count =  840
+
+
+CHANGES IMPLEMENTED:
+- ShopperHanlder:
+    # corrected log/delta function (prev grouped inert & qeueuing)
