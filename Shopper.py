@@ -21,7 +21,7 @@ class Shopper:
         self.qtime = 0
         self.status = Status.INERT
         self.total = 0.00
-        # self.deleted = False
+        self.deleted = False
 
     def print(self):
         stat_string = ""
@@ -93,11 +93,11 @@ class Shopper:
     def get_total(self):
         return self.total
     
-    # def set_deleted(self):
-    #     self.deleted = True
+    def set_deleted(self):
+        self.deleted = True
     
-    # def is_deleted(self):
-    #     return self.deleted
+    def is_deleted(self):
+        return self.deleted
     
     def is_selecting(self):
         if self.status == Status.SHOPPING and self.browse_mins == 1:

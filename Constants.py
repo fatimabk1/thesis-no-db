@@ -185,11 +185,11 @@ def delta(message, prev, step=None):
         p = Performance(message, diff, step)
         tracking.append(p)
         assert(len(tracking) > 0)
-        if diff > timedelta(seconds=5):
-            print("day_simulator() runtime is longer than 5 seconds")
-            print("calculating stats:\n\n")
-            print_tracking()
-            exit(1)
+        # if diff > timedelta(seconds=5):
+            # print("day_simulator() runtime is longer than 5 seconds")
+            # print("calculating stats:\n\n")
+            # print_tracking()
+            # exit(1)
 
 
 # def avg_datetime(lst):

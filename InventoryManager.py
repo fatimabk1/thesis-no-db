@@ -60,10 +60,9 @@ class InventoryManager:
         pending_q = product.get_sublot_quantity()
         available = today + timedelta(days=Constants.TRUCK_DAYS)
         for i in range(num_sublots):
-            sell = product.get_sell_by()
+            sell = today + product.get_sell_by()
             inv = Inventory(product.grp_id, 0, 0, pending_q, available, sell)
             self.inventory_lookup[inv.grp_id].append(inv)
-        self.inventory_lookup[inv.grp_id]
 
     def dispatch(self, task, lookup, employees, today):
         speeds = [emp.get_speed(task) for emp in employees]
@@ -78,6 +77,7 @@ class InventoryManager:
                 # do work while there is work to do and employees to do it
                 prod = self.products[grp]
                 quantity = lookup[grp]["quantity"]
+                print(f"\t> UNLOAD_GRP_{grp}: quantity = {quantity}")
                 while(quantity > 0 and speeds):
                     emp_q = speeds.pop() * prod.get_lot_quantity()
                     diff = self.__unload(quantity, inv_lst, emp_q)
@@ -91,6 +91,8 @@ class InventoryManager:
                 if emp_q > 0:
                     speeds.insert(0, emp_q)
                 lookup[grp]["quantity"] = quantity
+                print(f"\t\t{quantity} remaining")
+            print(" ============ ============ ============ ============ ============")
 
         elif task == Constants.TASK_RESTOCK:
             # back_stock > 0, sort: sell_by ASC, shelf DESC
@@ -102,6 +104,7 @@ class InventoryManager:
                 # do work while there is work to do and employees to do it
                 prod = self.products[grp]
                 quantity = lookup[grp]["quantity"]
+                # print(f"\t> RESTOCK_GRP_{grp}: quantity = {quantity}")
                 while(quantity > 0 and speeds):
                     emp_q = speeds.pop()
                     diff = self.__restock(quantity, inv_lst, emp_q)
@@ -112,17 +115,20 @@ class InventoryManager:
                     if emp_q > 0:
                         speeds.insert(0, emp_q)
                 lookup[grp]["quantity"] = quantity
+                # print(f"\t\t{quantity} remaining")
+            # print(" ============ ============ ============ ============ ============")
 
         else:  # Task.TOSS
             # sell_by < today
             for grp in lookup:
                 inv_lst = lookup[grp]["inventory"]
+                inv_lst = [inv for inv in inv_lst if inv.is_deleted() is False]
                 if len(inv_lst) == 0:
                     continue
 
                 prod = self.products[grp]
                 quantity = lookup[grp]["quantity"]
-                print(f"\t> GRP_{grp}: quantity = {quantity}")
+                print(f"\t> TOSS_GRP_{grp}: quantity = {quantity}")
                 while(quantity > 0 and speeds):
                     emp_q = speeds.pop()
                     diff = self.__toss(quantity, inv_lst, emp_q)
@@ -132,6 +138,8 @@ class InventoryManager:
                     if emp_q > 0:
                         speeds.insert(0, emp_q)
                 lookup[grp]["quantity"] = quantity
+                print(f"\t\t{quantity} remaining")
+            print(" ============ ============ ============ ============ ============")
         
         # remove completed tasks
         for prod in self.products:
@@ -165,7 +173,7 @@ class InventoryManager:
         index = 0
         while(inv_lst[index].get_back() == 0):
             index += 1
-            assert(index != len(inv_lst)), "__unload(): all inventory already handled"
+            assert(index != len(inv_lst)), f"__unload(): all inventory already handled for grp {inv_lst[0].grp_id}"
 
         restock_count = 0
         # restock remaining inventory within employee capacity
@@ -232,9 +240,9 @@ class InventoryManager:
         lookup = {}
         for grp_id in self.inventory_lookup:
             inv_lst = [inv for inv in self.inventory_lookup[grp_id]
-                       if inv.has_arrived(today)
-                       and inv.get_pending() > 0]
+                       if inv.has_arrived(today)]
             total_pending = sum(inv.get_pending() for inv in inv_lst)
+
             if total_pending > 0:
                 lookup[grp_id] = {"quantity": total_pending, "inventory": inv_lst}
                 if grp_id == 0:
@@ -249,8 +257,7 @@ class InventoryManager:
             curr_back = self.product_stats[grp]["back"]
 
             if curr_shelf < prod.get_max_shelf():
-                inv_lst = [inv for inv in self.inventory_lookup[grp]
-                          if inv.back_stock > 0]
+                inv_lst = [inv for inv in self.inventory_lookup[grp] if inv.get_back() > 0]
                 quantity = min(prod.get_max_shelf() - curr_shelf,
                             curr_back)
                 if quantity > 0:
@@ -267,9 +274,17 @@ class InventoryManager:
         lookup = {}
         for grp_id in self.inventory_lookup:
             inv_lst = [inv for inv in self.inventory_lookup[grp_id]
-                      if inv.is_expired(today)]
+                      if inv.is_expired(today) and inv.is_deleted() is False]
+            if len(inv_lst) > 0:
+                print(f"Toss list - GRP {grp_id}, {len(inv_lst)} inventories to toss")
+                for i in range(min(5, len(inv_lst))):
+                    inv_lst[i].print()
+                print("***********************************")
             quantity = sum([inv.get_shelf() + inv.get_back() + inv.get_pending() for inv in inv_lst])
+            if len(inv_lst) == 0:
+                assert(quantity == 0), "get_toss_list(): ERROR in quantity for list of 0 inventory"
             if quantity != 0:
+                print("toss q:", quantity)
                 lookup[grp_id] = {"quantity": quantity, "inventory": inv_lst}
         return lookup
 
@@ -277,13 +292,19 @@ class InventoryManager:
         task_lookup = None
         task = None
         if t_step < Constants.STORE_OPEN:
+            # t = Constants.log()
             task_lookup = self.get_unload_list(today)
+            # Constants.delta("get_unload_list()", t)
             task = Constants.TASK_UNLOAD
         elif t_step < Constants.STORE_CLOSE:
+            # t = Constants.log()
             task_lookup = self.get_restock_list()
+            # Constants.delta("get_restock_list()", t)
             task = Constants.TASK_RESTOCK
         else:
+            # t = Constants.log()
             task_lookup = self.get_toss_list(today)
+            # Constants.delta("get_toss_list()", t)
             task = Constants.TASK_TOSS
         return task, task_lookup
 
@@ -343,6 +364,11 @@ def quantity_reduce(x, y):
     print(f"x: {x}, {type(x)} | y: {y}, {type(y)}")
     return (x.get_shelf() + x.get_back() + x.get_pending()
             + y.get_shelf() + y.get_back() + y.get_pending())
+
+
+
+# 
+
 
 
 # >>>>> NEXT:

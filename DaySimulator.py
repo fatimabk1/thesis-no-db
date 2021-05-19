@@ -17,78 +17,57 @@ class DaySimulator:
         self.clock  = datetime(today.year, today.month, today.day, hour=8, minute=0)
 
     def simulate_day(self, today):
+        print(f"{len(self.shoppers)} shoppers at day start")
         self.__reset_time(today)
 
         runtime = Constants.log()
-        task, task_lookup = self.inventory_manager.refresh_tasks(0, today)
         for t_step in range(Constants.DAY_END):
             # print("-------------------- TIME STEP ", t_step)
             # t_step - specific updates
             if  t_step == Constants.StoreStatus.OPEN:
-                # Constants.print_stock(5, self.product_stats, "OPN")
-                t = Constants.log()
                 self.lane_manager.open_starter_lanes()
-                Constants.delta("open_starter_lanes()", t)
             elif Constants.store_open(t_step) and t_step % 60 == 0:
-                t = Constants.log()
                 new_shoppers = [Shopper(t_step) for i in range(300)]
                 self.shoppers = self.shoppers + new_shoppers
-                Constants.delta("add shoppers", t)
             elif t_step == Constants.StoreStatus.CLOSED:
-                # Constants.print_stock(5, self.product_stats, "CLS")
-                t = Constants.log()
                 self.shoppers = [s for s in self.shoppers if s.get_status() != Status.INERT]
-                Constants.delta("filter out inert shopper after store close", t)
             if t_step == Constants.shift_change:
-                t = Constants.log()
                 self.lane_manager.shift_change()
-                Constants.delta("lane_manager.shift_change()", t)
 
-            if t_step % 30 == 0 and t_step != 0:
-                t = Constants.log()
-                task, task_lookup = self.inventory_manager.refresh_tasks(t_step, today)
-                Constants.delta("refresh tasks", t)
-                # print(f"> refreshing tasks: {task}")
-            t = Constants.log()
-            self.employee_manager.advance_employees(t_step, today, task, task_lookup)
-            Constants.delta("advance_employees()", t)
-           
+            self.employee_manager.advance_employees(t_step, today, len(self.shoppers))
+
             if t_step > Constants.StoreStatus.OPEN:
                 # advance shoppers
-                t = Constants.log()
                 shopper_count = len(self.shoppers)
                 index = 0
                 while index < shopper_count:
                     sh = self.shoppers.pop(index)
-                    self.handler.handle(sh, t_step, today)
+                    inv = self.handler.handle(sh, t_step, today)
+                    if inv and inv.is_deleted():
+                        self.inventory_manager.inventory_lookup[inv.grp_id].remove(inv)
                     if sh.get_status() != Status.DONE:
                         self.shoppers.insert(0, sh)
                         index += 1
                     else:
                         shopper_count -= 1
-                Constants.delta("advance shoppers", t)
-
+                if shopper_count > 0:
+                    self.shoppers = [sh for sh in self.shoppers if sh.is_deleted() is False]
                 # advance lanes
-                t = Constants.log()
                 self.lane_manager.manage()
-                Constants.delta("manage lanes()", t)
-                t = Constants.log()
                 self.lane_manager.advance_lanes()
-                Constants.delta("advance lanes()", t)
 
             self.clock += timedelta(minutes=1)
+            # exit()
 
         # clean up and reset for the next day
-        t = Constants.log()
         self.lane_manager.close_all_lanes()
         for emp in self.employee_manager.employees:
             if emp.is_cashier():
                 emp.remove_cashier()
         self.shoppers = []
-        Constants.delta("cleanup and reset for the next day", t)
 
-        # print("\n\n A SUCCESSFUL DAY~")
         Constants.delta("A Day", runtime)
+        # exit()
 
 
 def print_active_shoppers(shoppers):
@@ -107,3 +86,52 @@ def print_active_shoppers(shoppers):
             done += 1
     print("shopper status: inert={}, shopping={}, queueing={}, checkout={}, done={}"
             .format(inert, shopping, queueing, checkout, done))
+
+
+            # refresh tasks every 30 mins and at changes in task type
+            # unload: daystart - store open
+            # restock: store open-close
+            # toss: store close - day end
+
+
+            # TODO: 
+            # 1. UNLOAD & RESTOCK EVERY MORNING - split employees in two groups and do both?
+            # 2. REFRESH DAYTIME RESTOCK EVERY 30 MINS
+            # 3 BEGIN TOSS AFTER STORE CLOSE & ALL SHOPPERS GONE - when len(self.shoppers) == 0
+            # 4. IF ANY TIME LEFT, RESTOCK --> 3 & 4: split employees in two groups and do both
+
+            # RESTRUCTURING:
+            # 1. Pull multiple task lists as needed.
+            # 2. Divide emps into multiple groups
+            # 3. Call dispatch with one task group & emp group.
+            # 4. Move all the task/task_lookup stuff
+
+            # refresh task list
+            # if t_step == Constants.DAY_START:
+            #     # do unload and restock
+            #     task, task_lookup = self.inventory_manager.get_unload_list()
+            #     task, task_lookup = self.inventory_manager.get_restock_list()
+            #     group_1 = 
+            # elif t_step == Constants.STORE_OPEN:
+            #     pass
+            # elif t_step == Constants.STORE_CLOSE and len(self.shoppers) == 0:
+            #     task, task_lookup = None, None
+
+
+            # if t_step % 30 == 0 or t_step == Constants.DAY_START or t_step == Constants.STORE_OPEN or t_step == Constants.STORE_CLOSE:
+
+            #     task, task_lookup = self.inventory_manager.refresh_tasks(t_step, today)
+
+            #     # if nothing to unload, restock in the morning
+            #     if task == Constants.TASK_UNLOAD and bool(task_lookup) is False:
+            #         task = Constants.TASK_RESTOCK
+            #         task_lookup = self.inventory_manager.get_restock_list()
+                
+                # start tossing products if store closed & 
+
+            # update inventory lookup and task_lookup to remove inventories marked as 'deleted
+            # for grp in task_lookup:
+            #     task_lookup[grp]["inventory"] = [inv for inv in task_lookup[grp]["inventory"] if inv.is_deleted() is False]
+            # for grp in self.inventory_manager.inventory_lookup:
+            #     self.inventory_manager.inventory_lookup[grp] = [inv for inv in self.inventory_manager.inventory_lookup[grp]
+            #                                                     if inv.is_deleted() is False]

@@ -98,6 +98,7 @@ class Store:
         # self.inventory_manager.print_stock_status()
 
     def simulate_year(self):
+        runtime = Constants.log()
         month = self.clock.month
         for i in range(365):
             if self.clock.month != month:
@@ -139,6 +140,8 @@ class Store:
                 # self.cost.append(c)
             # update clock
             self.clock += timedelta(days=1)
+        Constants.delta("A Year", runtime)
+
 
     def update_daily_statistics(self):
         q_sold = 0

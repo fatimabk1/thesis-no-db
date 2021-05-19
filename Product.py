@@ -97,10 +97,11 @@ class Product:
     def set_regular(self):
         self.price_status = Price.REGULAR
 
+    # @profile
     def get_sell_by(self):
-        noise = timedelta(days=int(random.random() * 5) - 2)
-        today = datetime(CLOCK.year, CLOCK.month, CLOCK.day)
-        return today + noise + timedelta(days=self.sell_by_days)
+        # noise = timedelta(days=int(random.random() * 5) - 2)
+        # today = datetime(CLOCK.year, CLOCK.month, CLOCK.day)
+        return timedelta(days=(self.sell_by_days + int(random.random() * 5) - 2))
 
     def setup(self):
         # lot_quantity between 400 and 10,000
@@ -127,4 +128,4 @@ class Product:
              + random.choice([0.01, 0.02, 0.03, 0.04, 0.05]))
             * self.lot_quantity, 2)
 
-        self.sell_by_days = round(random.uniform(14, 90))
+        self.sell_by_days = round(random.uniform(21, 90))
