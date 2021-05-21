@@ -88,8 +88,9 @@ class Product:
     
     def get_order_amount(self, curr_back):
         # order avg quantity sold over TRUCK_DAYS days plus a little extra
-        amount = self.order_threshold  + (0.1 * self.order_threshold)
-        return min(amount, self.max_back - curr_back)
+        # amount = self.order_threshold  + (0.1 * self.order_threshold)
+        # return min(amount, self.max_back - curr_back)
+        return self.max_back - curr_back
 
     def set_sale(self):
         self.price_status = Price.SALE
@@ -104,19 +105,17 @@ class Product:
         return timedelta(days=(self.sell_by_days + int(random.random() * 5) - 2))
 
     def setup(self):
-        # lot_quantity between 400 and 10,000
-        self.lot_quantity = (int(random.random() * (100 - 4 + 1)) + 4) * 100
-        if self.lot_quantity > 500:
-            self.sublot_quantity = 100
-        else:
-            self.sublot_quantity = random.choice([10, 20, 50])
+        # self.sublot_quantity = random.choice([10, 20, 50])
+        self.sublot_quantity = 50
+        # lot_quantity between 400 and 10,000 --> 100
+        self.sublots = 10
+        self.lot_quantity = self.sublot_quantity * self.sublots  # 500
+        
 
-        self.sublots = self.lot_quantity / self.sublot_quantity
-
-        self.max_shelf = self.lot_quantity * 2
-        self.max_back = self.max_shelf * 30
+        self.max_shelf = self.lot_quantity * 2  # 1000
+        self.max_back = self.max_shelf * 10  # 10000
         self.order_threshold = round(self.max_back/2)
-        self.restock_threshold = round((self.max_shelf / 3) * 2)
+        self.restock_threshold = round((self.max_shelf / 2))
         self.order_amount = None
 
         self.price_status = Price.REGULAR

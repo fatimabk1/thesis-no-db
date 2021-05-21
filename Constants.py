@@ -4,7 +4,10 @@ import sys
 import os
 
 # --------------------------------------------------------------------- PRINTING STATISTICS 
-def print_stock(grp, prods, ps, expected_toss):
+def print_stock(grp, prods, ps, expected_toss, today):
+    miss = 0
+    if today in ps[grp]:
+        miss = ps[grp][today]
     print(
         f"GRP_{grp}:"\
         f"\tPENDING={ps[grp]['pending']}"\
@@ -12,7 +15,9 @@ def print_stock(grp, prods, ps, expected_toss):
         f"\tSHELF={ps[grp]['shelf']}"\
         f"\tSOLD={ps[grp]['sold'][0]}"\
         f"\tTOSS= {ps[grp]['toss']}/{expected_toss} expected"\
-        f"\tORDER_THRESHOLD={prods[grp].get_order_threshold()}")
+        f"\tMISS = {miss}"\
+        f"\tADDED = {ps[grp]['added']}"\
+        f"\tINV_COUNT = {ps[grp]['inv_count']}")
 
 CLOCK = datetime(2019, 9, 15, 10, 0)  # SUNDAY
 DAY_START = 0  
@@ -26,10 +31,10 @@ err_file = open('issues.txt', 'w')
 # --------------------------------------------------------------------- GENERAL
 TRUCK_DAYS = 2
 EOD_FLAG = False
-PRODUCT_COUNT = 100  # total # of products in db 3k
+PRODUCT_COUNT = 1000  # total # of products in db 3k
 CATEGORY_COUNT = 10  # total # of categories in db 100
 # PRODUCTS_PER_CATEGORY = int(PRODUCT_COUNT / CATEGORY_COUNT) 3000
-PRODUCTS_PER_CATEGORY = 10
+PRODUCTS_PER_CATEGORY = 100
 SHOPPER_ADD = 300
 
 # store time flags
@@ -116,8 +121,8 @@ MAX_LANES = 30				    # max possible lanes
 MIN_LANES = 2					# num of open lanes at start
 
 # initally min=10, max=50
-SHOPPER_MIN = 2                # min number of items a shopper will attempt to purchase
-SHOPPER_MAX = 30                # max number of items a shopper will attempt to purchase
+SHOPPER_MIN = 10                # min number of items a shopper will attempt to purchase
+SHOPPER_MAX = 60                # max number of items a shopper will attempt to purchase
 NUM_EMPLOYEES = 147
 
 WAGE_MIN = 8

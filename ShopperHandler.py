@@ -69,14 +69,12 @@ class ShopperHandler:
 
                 if inv is None:
                     # t = Constants.log()
-                    print("WARNING_ShoppingHandler(): product {} out of stock".format(grp_id))  # , file=Constants.err_file
+                    # print("WARNING_ShoppingHandler(): product {} out of stock".format(grp_id))  # , file=Constants.err_file
                     if today in self.product_stats[grp_id]["oos"]:
                         self.product_stats[grp_id]["oos"][today] += 1
                     else:
                         self.product_stats[grp_id]["oos"][today] = 1
-                    [print("{} out of stock".format(grp))  # , file=Constants.err_file
-                        for grp in self.product_stats
-                        if self.product_stats[grp]["shelf"] == 0]
+                    # [print("{} out of stock".format(grp))  # , file=Constants.err_file
                     # Constants.delta("inv is none", t)
                     return None
                 else:

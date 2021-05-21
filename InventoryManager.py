@@ -63,6 +63,7 @@ class InventoryManager:
             sell = today + product.get_sell_by()
             inv = Inventory(product.grp_id, 0, 0, pending_q, available, sell)
             self.inventory_lookup[inv.grp_id].append(inv)
+            self.product_stats[inv.grp_id]["added"] += 1
 
     def dispatch(self, task, lookup, employees, today):
         speeds = [emp.get_speed(task) for emp in employees]
@@ -70,6 +71,7 @@ class InventoryManager:
         if task == Constants.TASK_UNLOAD:
             # available == today, pending > 0, sort: sell_by ASC, 
             for grp in lookup:
+                print(f"Unloading {grp}")
                 inv_lst = lookup[grp]["inventory"]
                 if len(inv_lst) == 0:
                     continue
@@ -77,22 +79,26 @@ class InventoryManager:
                 # do work while there is work to do and employees to do it
                 prod = self.products[grp]
                 quantity = lookup[grp]["quantity"]
-                print(f"\t> UNLOAD_GRP_{grp}: quantity = {quantity}")
+                # print(f"\t> UNLOAD_GRP_{grp}: quantity = {quantity}")
                 while(quantity > 0 and speeds):
                     emp_q = speeds.pop() * prod.get_lot_quantity()
                     diff = self.__unload(quantity, inv_lst, emp_q)
                     quantity -= diff
+                    before = self.product_stats[grp]["pending"]
+                    print(f"before unload {grp}: {self.product_stats[grp]['pending']}")
                     self.product_stats[grp]["pending"] -= diff
                     self.product_stats[grp]["back"] += diff
-
+                    print(f"\tafter unload {grp}: {self.product_stats[grp]['pending']}")
+                    after = self.product_stats[grp]["pending"]
+                    assert(before != after), "grp not properly unloaded."
                     # update emp_q
                     emp_q -= diff
                 emp_q = emp_q / prod.get_lot_quantity()
                 if emp_q > 0:
                     speeds.insert(0, emp_q)
                 lookup[grp]["quantity"] = quantity
-                print(f"\t\t{quantity} remaining")
-            print(" ============ ============ ============ ============ ============")
+                # print(f"\t\t{quantity} remaining")
+            # print(" ============ ============ ============ ============ ============")
 
         elif task == Constants.TASK_RESTOCK:
             # back_stock > 0, sort: sell_by ASC, shelf DESC
@@ -105,11 +111,13 @@ class InventoryManager:
                 prod = self.products[grp]
                 quantity = lookup[grp]["quantity"]
                 # print(f"\t> RESTOCK_GRP_{grp}: quantity = {quantity}")
+                # print("RESTOCK: starting quantity = ", quantity)
                 while(quantity > 0 and speeds):
                     emp_q = speeds.pop()
                     diff = self.__restock(quantity, inv_lst, emp_q)
                     emp_q -= diff
                     quantity -= diff
+                    # print(f"\trestocked {diff}, updated quantity = {quantity}")
                     self.product_stats[grp]["back"] -= diff
                     self.product_stats[grp]["shelf"] += diff
                     if emp_q > 0:
@@ -128,18 +136,18 @@ class InventoryManager:
 
                 prod = self.products[grp]
                 quantity = lookup[grp]["quantity"]
-                print(f"\t> TOSS_GRP_{grp}: quantity = {quantity}")
+                # print(f"\t> TOSS_GRP_{grp}: quantity = {quantity}")
                 while(quantity > 0 and speeds):
                     emp_q = speeds.pop()
                     diff = self.__toss(quantity, inv_lst, emp_q)
                     emp_q -= diff
                     quantity -= diff
-                    self.product_stats[grp]["toss"] += diff
+                    self.product_stats[grp]["toss"] -= diff
                     if emp_q > 0:
                         speeds.insert(0, emp_q)
                 lookup[grp]["quantity"] = quantity
-                print(f"\t\t{quantity} remaining")
-            print(" ============ ============ ============ ============ ============")
+                # print(f"\t\t{quantity} remaining")
+            # print(" ============ ============ ============ ============ ============")
         
         # remove completed tasks
         for prod in self.products:
@@ -151,6 +159,10 @@ class InventoryManager:
         index = 0
         while(inv_lst[index].get_pending() == 0):
             index += 1
+            if index == len(inv_lst):
+                for inv in inv_lst:
+                    if inv.get_pending() > 0:
+                        inv.print()
             assert(index != len(inv_lst)), "__unload(): all inventory already handled"
 
         unload_count = 0
@@ -173,15 +185,17 @@ class InventoryManager:
         index = 0
         while(inv_lst[index].get_back() == 0):
             index += 1
-            assert(index != len(inv_lst)), f"__unload(): all inventory already handled for grp {inv_lst[0].grp_id}"
+            if index == len(inv_lst):
+                for inv in inv_lst:
+                    if inv.get_back() > 0:
+                        inv.print()
+            assert(index != len(inv_lst)), f"__restock(): all inventory already handled for grp {inv_lst[0].grp_id} but quantity is {quantity}"
 
         restock_count = 0
         # restock remaining inventory within employee capacity
         while(quantity > 0 and restock_count != emp_q):
             inv = inv_lst[index]
-            q = min(emp_q,
-                    inv.get_back(),
-                    quantity)
+            q = min(emp_q, inv.get_back(), quantity)
             inv.increment(StockType.SHELF, q)
             inv.decrement(StockType.BACK, q)
             quantity -= q
@@ -190,12 +204,16 @@ class InventoryManager:
             if index == len(inv_lst):
                 break
         return restock_count
-    
+
     def __toss(self, quantity, inv_lst, emp_q):
         # skip inventory that has already been tossed
         index = 0
         while(inv_lst[index].is_deleted()):
             index += 1
+            if index == len(inv_lst):
+                for inv in inv_lst:
+                    if inv.get_shelf() > 0 or inv.get_back() > 0 or inv.get_pending() > 0:
+                        inv.print()
             assert(index != len(inv_lst)), "__toss(): all inventory already handled"
 
         toss_count = 0
@@ -216,7 +234,7 @@ class InventoryManager:
                 q = min(emp_q, inv.get_back(), quantity)
                 inv.decrement(StockType.BACK, q)
                 quantity -= q
-                self.product_stats[inv.grp_id]["back"] += q
+                self.product_stats[inv.grp_id]["back"] -= q
                 toss_count += q
 
                 # toss expired in pending / on truck
@@ -224,11 +242,13 @@ class InventoryManager:
                     q = min(emp_q, inv.get_pending(), quantity)
                     inv.decrement(StockType.PENDING, q)
                     quantity -= q
-                    self.product_stats[inv.grp_id]["pending"] += q
+                    self.product_stats[inv.grp_id]["pending"] -= q
                     toss_count += q
             
             if inv.is_deleted() is True:
                 removed_inventory.append(inv)
+            else:
+                inv_lst.insert(0,inv)
             
             index += 1
             if index == len(inv_lst):
@@ -258,15 +278,23 @@ class InventoryManager:
 
             if curr_shelf < prod.get_max_shelf():
                 inv_lst = [inv for inv in self.inventory_lookup[grp] if inv.get_back() > 0]
-                quantity = min(prod.get_max_shelf() - curr_shelf,
-                            curr_back)
+                # my_curr_shelf = sum(inv.get_shelf() for inv in inv_lst)
+                # my_curr_back = sum(inv.get_back() for inv in inv_lst)
+                # assert(my_curr_back == curr_back), f"ps[curr_back] = {curr_back}, curr_back = {my_curr_back} | ps[curr_shelf] = {curr_shelf}, curr_shelf = {my_curr_shelf}"
+
+                quantity = min(prod.get_max_shelf() - curr_shelf, curr_back)
                 if quantity > 0:
                     lookup[grp] = {"quantity": quantity, "inventory": inv_lst}
                 else:
                     print("\t\t> RESTOCK_ERROR: grp_{} HAS {} SHELF SPACE, BUT ONLY {} IN BACK_STOCK"
                         .format(grp, prod.get_max_shelf() - curr_shelf, curr_back))
                     print("\t\t\tproduct_stats[{}] -> shelf = {}, back = {}, pending = {}"
-                    .format(grp, curr_shelf, curr_back, self.product_stats[grp]["pending"]))
+                        .format(grp, curr_shelf, curr_back, self.product_stats[grp]["pending"]))
+                    print("\t\tcalculated stats:[{}] -> shelf = {}, back = {}, pending = {}"
+                        .format(grp, sum(inv.get_shelf() for inv in inv_lst),
+                                sum(inv.get_back() for inv in inv_lst),
+                                sum(inv.get_pending() for inv in inv_lst)))
+                    exit()
                     # self.products[grp].print()
         return lookup
 
@@ -274,17 +302,17 @@ class InventoryManager:
         lookup = {}
         for grp_id in self.inventory_lookup:
             inv_lst = [inv for inv in self.inventory_lookup[grp_id]
-                      if inv.is_expired(today) and inv.is_deleted() is False]
+                      if inv.is_expired(today)]
             if len(inv_lst) > 0:
                 print(f"Toss list - GRP {grp_id}, {len(inv_lst)} inventories to toss")
-                for i in range(min(5, len(inv_lst))):
-                    inv_lst[i].print()
-                print("***********************************")
+                # for i in range(min(5, len(inv_lst))):
+                #     inv_lst[i].print()
+                # print("***********************************")
             quantity = sum([inv.get_shelf() + inv.get_back() + inv.get_pending() for inv in inv_lst])
             if len(inv_lst) == 0:
                 assert(quantity == 0), "get_toss_list(): ERROR in quantity for list of 0 inventory"
             if quantity != 0:
-                print("toss q:", quantity)
+                print("\t>toss q:", quantity)
                 lookup[grp_id] = {"quantity": quantity, "inventory": inv_lst}
         return lookup
 
@@ -358,7 +386,7 @@ class InventoryManager:
                 assert(shelf_goal >= 0), f"setup_starter_inventory: invalid shelf_goal {shelf_goal}"
                 if shelf_goal == 0:
                     break
-        
+
 
 def quantity_reduce(x, y):
     print(f"x: {x}, {type(x)} | y: {y}, {type(y)}")
@@ -367,8 +395,106 @@ def quantity_reduce(x, y):
 
 
 
-# 
 
+
+# WHAT WOULD MAKE THINGS EASY FOR ME: INVENTORY MANAGEMENT 
+"""  
+1. Accurate updates to product_stats (aka ps)
+2. Order inventory based on ps[shelf] and ps[back]
+3. Toss inventory & delete from lists its present in
+    - Do this by adding an inventory wrapper: hold an inventory item & the lists it exists in 
+4. Create lists of work to do
+    - Remove inv item from list after handling
+    - Update ps
+    - Delete inv from other lists if empty
+
+
+*** ALTERNATIVE WAYS TO STRUCTURE THIS:
+1. Have each grp maintain a list of inventory for toss, restock, unload, regular --> Task = list of inventory + running quantity/ps, owned by a "smart_product"
+    - List objects:
+        - list
+        - total quantity for that list
+        - do_work(capacity) --> updates inv & list quantity
+        - remove(inv)
+2. Pass the total emp capacity to do_work(capacity), 
+    - loop through grp
+        - do work on one inv_wrapper for each product
+            - state = what work needs to be done
+        - remove inv if handled / move to other
+3. Update lists at the end of day
+4. Special wrapper for inventory items
+    - Contents:
+        - inv
+        - list of list objects for that grp [toss, unload, restock, regular, all] --> initialized at wrapper creation
+                --> toss will be a dictionary of sell_by dates w/list of inventories
+                    > no order
+                --> unload: order by sell_by
+                --> restock: order by sell_by, fewest on shelf
+        - current date
+        - state
+        - get_sell_by()
+        - select()
+            - decrement by 1
+            - move from regular --> restock if not already there
+            - update list_obj.quantity
+        - toss()
+            - remove from toss
+            - remove from all
+            - update list_obj.quantity
+        - restock()
+            - increment shelf / decrement back
+            - update list_obj.quantity
+        - unload()
+            - increment back / decrement shelf
+            - move from unload --> regular
+            - update list_obj.quantity
+        - update_state(today) --> called on all inv_wrappers in regular[]
+            - moves any in all or restock --> toss
+            - moves any / restock as needed
+
+5. List of inventory states: all semantic understandings of an inventory item
+    - pending
+    - partially unloaded (pending + back)
+    - unloaded
+    - partially stocked (back + shelf)
+    - stocked
+    - empty
+
+6. States where there is work to be done:
+    - unload: --> occurs when list / quantity is not empty
+        - partially unloaded
+        - pending
+    - restock: --> occurs when curr_shelf < max_shelf / quantity is not empty
+        - partially stocked
+        - unloaded
+        - if restock encounters a 'miss', add 1 to order_amount for grp
+    - toss:
+        - for every 10 toss, reduce order_amount by 1 for grp
+
+7. How to incorporate emp capacity?
+    - calculate total employee capacity per t_step
+    - make list of smart_products
+    - index = 0
+    - while capacity != 0
+        - prod = smart_products[index]
+            - remaining_work = smart_product.do_work(capcity, task_type)
+                --> do_work() does work for one inventory only
+            - if remaining_work == 0:
+                - smart_products.remove(prod)
+            - else: 
+                - index += 1
+
+    --> essentially: do work in-around while employees have capacity and there is work to do
+    - do_work() 1 - asks the Task to updating the inventory / inventory_wrapper and 2 - moves the inventory between task lists as needed / handles deletions
+    - need to check on how this impacts shoppers selecting(). Might make a list special for this? Idk should just be the first inv listed in SmartProduct.restock[] or SmartProduct.regular[]
+
+"""
+
+
+
+# START HERE >>>
+# 1. Log # of inventories added and deleted
+# 2. Determine if there's a way to reduce the amount of time that the get_restock_list() list comprehension takes
 
 
 # >>>>> NEXT:

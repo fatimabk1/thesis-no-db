@@ -1,4 +1,4 @@
-from Statistics import Visualization
+# from Statistics import Visualization
 from InventoryManager import InventoryManager
 from LaneManager import LaneManager
 from DaySimulator import DaySimulator
@@ -11,7 +11,7 @@ from Cost import Cost
 import Constants
 from Constants import log, delta
 from datetime import date, datetime
-from Statistics import Visualization
+# from Statistics import Visualization
 from datetime import timedelta
 import traceback
 import beepy
@@ -25,7 +25,7 @@ class Store:
         self.employees = []
         self.lanes = []
         self.shoppers = []
-        self.vis = Visualization() 
+        self.vis = None  # Visualization() 
 
         # START HERE >>>
         # 4. TODO: add code to make product selection a distribution  --> AT END OF PROJECT
@@ -81,7 +81,10 @@ class Store:
                 "back": 0,  # total current back stock
                 "pending": 0,  # total current pending stock
                 "sold": [0, 0, 0],  # list of stock sold each day for three days [today, yesterday, two-days-ago]
-                "oos": {}  # dictionary of dates & # of misses
+                "oos": {},  # dictionary of dates & # of misses
+                "toss": 0,
+                "added": 0,
+                "inv_count": 0
                 }
             self.inventory_lookup[grp_id] = []
             self.products.append(p)
@@ -115,15 +118,21 @@ class Store:
                 self.product_stats[grp]["oos"][self.get_today()] = 0
                 self.product_stats[grp]["toss"] = 0
                 self.products[grp].set_order_threshold(sold)
+                self.product_stats[grp]["added"] = 0
+                self.product_stats[grp]["inv_count"] = 0
             self.day_simulator.simulate_day(self.get_today())
-            inv_lst = self.inventory_lookup[0]
-            expected_toss = sum(inv.get_shelf() + inv.get_back() + inv.get_pending()
-                                for inv in inv_lst if inv.is_expired(self.get_today()))
-            Constants.print_stock(0, self.products, self.product_stats, expected_toss)
+            for grp in self.product_stats:
+                self.product_stats[grp]["inv_count"] = len(self.inventory_lookup[grp])
+            for grp in range(5):
+                inv_lst = self.inventory_lookup[grp]
+                expected_toss = sum(inv.get_shelf() + inv.get_back() + inv.get_pending()
+                                    for inv in inv_lst if inv.is_expired(self.get_today()))
+                Constants.print_stock(grp, self.products, self.product_stats, expected_toss, self.get_today())
             # self.update_daily_statistics()
 
             # order inventory
             if i!= 0 and i % (Constants.TRUCK_DAYS + 2) == 0:
+                print(i, Constants.TRUCK_DAYS + 2, i % Constants.TRUCK_DAYS / 2)
                 print("\n\t*** ORDERING INVENTORY")
                 self.inventory_manager.order_inventory(self.get_today())
                 ready = self.get_today() + timedelta(days=Constants.TRUCK_DAYS)
@@ -208,14 +217,16 @@ class Store:
 
 
 if __name__ == '__main__':
+    t = Constants.log()
     try:
-        t = Constants.log()
         store = Store()
         store.simulate_year()
         print("A Successful Year Complete!")
         print("Runtime: ∆ ", datetime.now() - t)
         beepy.beep(sound=5)
     except Exception as e:
+        print("Year simulation failed")
+        print("Runtime: ∆ ", datetime.now() - t)
         beepy.beep(sound=3)
         traceback.print_exc()
         print(e)

@@ -48,6 +48,7 @@ class Inventory:
             return False
 
     def is_expired(self, today):
+        # print(f"today: {today}, sell_by: {self.sell_by}")
         if self.sell_by <= today:
             return True
         else:
