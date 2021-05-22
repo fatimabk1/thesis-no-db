@@ -400,8 +400,8 @@ def quantity_reduce(x, y):
 # WHAT WOULD MAKE THINGS EASY FOR ME: INVENTORY MANAGEMENT 
 """  
 1. Accurate updates to product_stats (aka ps)
-2. Order inventory based on ps[shelf] and ps[back]
-3. Toss inventory & delete from lists its present in
+2. Order inventory based on cached stats, rather than summing inventory list
+3. Toss inventory & delete from any lists it appears in - in one operation
     - Do this by adding an inventory wrapper: hold an inventory item & the lists it exists in 
 4. Create lists of work to do
     - Remove inv item from list after handling
@@ -410,11 +410,11 @@ def quantity_reduce(x, y):
 
 
 *** ALTERNATIVE WAYS TO STRUCTURE THIS:
-1. Have each grp maintain a list of inventory for toss, restock, unload, regular --> Task = list of inventory + running quantity/ps, owned by a "smart_product"
-    - List objects:
-        - list
-        - total quantity for that list
-        - do_work(capacity) --> updates inv & list quantity
+1. Have each grp maintain a list of inventory for toss, restock, unload, regular --> TASK = list of inventory + running quantity/ps, owned by a "smart_product"
+    - TASK:
+        - inv_lst[]
+        - quantity (total work to do)
+        - do_task(q) --> updates inv & list quantity, returns q - work done
         - remove(inv)
 2. Pass the total emp capacity to do_work(capacity), 
     - loop through grp
@@ -471,7 +471,7 @@ def quantity_reduce(x, y):
     - toss:
         - for every 10 toss, reduce order_amount by 1 for grp
 
-7. How to incorporate emp capacity?
+7. How to incorporate emp capacity? --> advance_employees(t_step):
     - calculate total employee capacity per t_step
     - make list of smart_products
     - index = 0
@@ -487,6 +487,26 @@ def quantity_reduce(x, y):
     --> essentially: do work in-around while employees have capacity and there is work to do
     - do_work() 1 - asks the Task to updating the inventory / inventory_wrapper and 2 - moves the inventory between task lists as needed / handles deletions
     - need to check on how this impacts shoppers selecting(). Might make a list special for this? Idk should just be the first inv listed in SmartProduct.restock[] or SmartProduct.regular[]
+
+8. SMART PRODUCT:
+    - contents:
+        - toss_list : task()
+        - unload_list: task()
+        - restock_list: task() --> all inv where select() has been called 
+        - regular_list: task()
+        - all_list: task()
+    - functions:
+        - select() --> update inv, update lists
+        - toss(emp_q) --> update inv, update lists -- returns remaining emp_q
+        - unload(emp_q) --> update inv, update lists -- returns remaining emp_q
+        - restock(emp_q) --> unload(emp_q) --> update inv, update lists -- returns remaining emp_q
+
+9. Overall changes:
+- Replace InventoryManager.py with SmartProducts.py and Task.py
+- Employees.advance_employees(t_step):
+    - calculate employee capacity
+    - loop through
+
 
 """
 

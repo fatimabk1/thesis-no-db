@@ -38,6 +38,9 @@ class Inventory:
     def get_shelf(self):
         return self.shelved_stock
     
+    def get_total(self):
+        return self.shelved_stock + self.back_stock + self.pending_stock
+
     def get_sell_by(self):
         return self.sell_by
 

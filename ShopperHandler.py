@@ -1,12 +1,9 @@
-import datetime
 import Constants
 import random
 from Shopper import Status
-from abc import ABC, abstractmethod
 from Revenue import Revenue
 from Cost import Qtime
 from Inventory import StockType
-from datetime import date
 
 
 class ShopperHandler:
