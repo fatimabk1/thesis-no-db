@@ -1,4 +1,5 @@
 from enum import IntEnum
+import itertools
 # from Constants import delta, log
 
 
@@ -9,9 +10,16 @@ class StockType(IntEnum):
     CART = 3
 
 
+class SequentialId:
+    id_iter = itertools.count()
+    def __init__(self):
+        self.id = next(self.id_iter)
+
+
 class Inventory:
 
     def __init__(self, grp_id, shelf, back, pending, available, sell_by):
+        self.id = SequentialId().id
         self.grp_id = grp_id
         self.shelved_stock = shelf
         self.back_stock = back
@@ -20,9 +28,9 @@ class Inventory:
         self.sell_by = sell_by
         self.deleted = False
 
-    def print(self):
-        print("<inv_{}: grp={}, shelved={}, back={}, pending={}, available={}, sell_by={}, deleted={}>"
-              .format(id(self), self.grp_id,
+    def print(self, i):
+        print("<inv_{} at index {}: grp={}, shelved={}, back={}, pending={}, available={}, sell_by={}, deleted={}>"
+              .format(self.id, i, self.grp_id,
                       self.shelved_stock, self.back_stock, self.pending_stock,
                       self.available, self.sell_by, self.deleted))
 

@@ -3,7 +3,8 @@ from Shopper import Shopper, Status
 from datetime import datetime, timedelta
 
 class DaySimulator:
-    def __init__(self, empm, lanem, handler):
+    def __init__(self, sp, empm, lanem, handler):
+        self.smart_products = sp  # TODO: REMOVE AFTER CHECKING sp.print()
         self.employee_manager = empm
         self.lane_manager = lanem
         self.shoppers = []
@@ -13,27 +14,26 @@ class DaySimulator:
     def __reset_time(self, today):
         self.clock  = datetime(today.year, today.month, today.day, hour=8, minute=0)
 
-    def simulate_day(self, today):
-        print(f"{len(self.shoppers)} shoppers at day start")
+    def simulate_day(self, today, next_truck):
         self.__reset_time(today)
 
         runtime = Constants.log()
         for t_step in range(Constants.DAY_END):
             # print("-------------------- TIME STEP ", t_step)
             # t_step - specific updates
-            if  t_step == Constants.StoreStatus.OPEN:
+            if  t_step == Constants.STORE_OPEN:
                 self.lane_manager.open_starter_lanes()
             elif Constants.store_open(t_step) and t_step % 60 == 0:
                 new_shoppers = [Shopper(t_step) for i in range(300)]
                 self.shoppers = self.shoppers + new_shoppers
-            elif t_step == Constants.StoreStatus.CLOSED:
+            elif t_step == Constants.STORE_CLOSE:
                 self.shoppers = [s for s in self.shoppers if s.get_status() != Status.INERT]
             if t_step == Constants.shift_change:
                 self.lane_manager.shift_change()
 
-            self.employee_manager.advance_employees(t_step, len(self.shoppers))
+            self.employee_manager.advance_employees(t_step, len(self.shoppers), today)
 
-            if t_step >= Constants.StoreStatus.OPEN:
+            if t_step >= Constants.STORE_OPEN:
                 # advance shoppers
                 shopper_count = len(self.shoppers)
                 index = 0
@@ -52,9 +52,10 @@ class DaySimulator:
                 self.lane_manager.advance_lanes()
 
             self.clock += timedelta(minutes=1)
-            # exit()
 
         # clean up and reset for the next day
+        self.smart_products[0].print(t_step, today, next_truck)
+        # self.lane_manager.print_active_lanes()
         self.lane_manager.close_all_lanes()
         for emp in self.employee_manager.employees:
             if emp.is_cashier():
@@ -62,6 +63,7 @@ class DaySimulator:
         self.shoppers = []
 
         Constants.delta("A Day", runtime)
+        return runtime
 
 
 def print_active_shoppers(shoppers):

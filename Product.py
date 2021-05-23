@@ -64,6 +64,9 @@ class Product:
     def get_sublot_quantity(self):
         return self.sublot_quantity
 
+    def get_lot_price(self):
+        return self.lot_price
+
     def get_price(self):
         if self.price_status == Price.REGULAR:
             return self.regular_price
@@ -75,6 +78,12 @@ class Product:
 
     def get_max_shelf(self):
         return self.max_shelf
+
+    def get_order_amount(self):
+        return self.order_amount
+
+    def set_order_amount(self, val):
+        self.order_amount = val
 
     def get_order_threshold(self):
         return self.order_threshold

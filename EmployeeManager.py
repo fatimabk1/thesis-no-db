@@ -54,12 +54,12 @@ class EmployeeManager:
 
     def reset(self, today, next_truck):
         (grp.reset() for grp in self.smart_products)
-        self.toss_work = sum(sp.get_work(Constants.TASK_TOSS, today) for sp in self.smart_products)
+        self.toss_work = sum(sp.get_work(Constants.TASK_TOSS, today, next_truck) for sp in self.smart_products)
         if today == next_truck:
-            self.unload_work = sum(sp.get_work(Constants.TASK_UNLOAD, today) for sp in self.smart_products)
+            self.unload_work = sum(sp.get_work(Constants.TASK_UNLOAD, today, next_truck) for sp in self.smart_products)
         else:
             self.unload_work = 0
-        self.restock_work = sum(sp.get_work(Constants.TASK_RESTOCK, today) for sp in self.smart_products)
+        self.restock_work = sum(sp.get_work(Constants.TASK_RESTOCK, today, next_truck) for sp in self.smart_products)
 
     def get_cashier(self):
         # available = [emp for emp in self.working_employees if emp.is_cashier() is False]
@@ -71,7 +71,7 @@ class EmployeeManager:
         emp.remove_cashier()
         assert(emp.is_cashier() is False), "return_cashier(): update failed"
 
-    def new_advance_employees(self, t_step, shopper_count):
+    def advance_employees(self, t_step, shopper_count, today):
 
         # update working employees 
         if t_step == Constants.StoreStatus.SHIFT_CHANGE:
@@ -91,8 +91,8 @@ class EmployeeManager:
                 for emp in group_1:
                     self.smart_products[start].unload(emp.get_speed(Constants.TASK_UNLOAD))
                     start += 1
-                if start == Constants.PRODUCT_COUNT:
-                    start = 0
+                    if start == Constants.PRODUCT_COUNT:
+                        start = 0
                 self.next_grp_unload = start
                 
                 # restock
@@ -100,8 +100,8 @@ class EmployeeManager:
                 for emp in group_2:
                     self.smart_products[start].restock(emp.get_speed(Constants.TASK_RESTOCK))
                     start += 1
-                if start == Constants.PRODUCT_COUNT:
-                    start = 0
+                    if start == Constants.PRODUCT_COUNT:
+                        start = 0
                 self.next_grp_restock = start
 
             elif self.unload_work > 0:
@@ -109,8 +109,8 @@ class EmployeeManager:
                 for emp in self.employees:
                     self.smart_products[start].unload(emp.get_speed(Constants.TASK_UNLOAD))
                     start += 1
-                if start == Constants.PRODUCT_COUNT:
-                    start = 0
+                    if start == Constants.PRODUCT_COUNT:
+                        start = 0
                 self.next_grp_unload = start
 
             else:
@@ -118,28 +118,28 @@ class EmployeeManager:
                 for emp in self.employees:
                     self.smart_products[start].restock(emp.get_speed(Constants.TASK_RESTOCK))
                     start += 1
-                if start == Constants.PRODUCT_COUNT:
-                    start = 0
+                    if start == Constants.PRODUCT_COUNT:
+                        start = 0
                 self.next_grp_restock = start
           
         # toss while the store is closed and empty
         elif t_step >= Constants.STORE_CLOSE and shopper_count == 0:
             start = self.next_grp_toss
             for emp in self.employees:
-                self.smart_products[start].toss(emp.get_speed(Constants.TASK_TOSS))
+                self.smart_products[start].toss(emp.get_speed(Constants.TASK_TOSS), today)
                 start += 1
-            if start == Constants.PRODUCT_COUNT:
-                start = 0
+                if start == Constants.PRODUCT_COUNT:
+                    start = 0
             self.next_grp_toss = start
 
         # restock while the store is open or customers are in the store
-        elif t_step >= Constants.STORE_OPEN and t_step < Constants.STORE_CLOSE:
+        elif (t_step >= Constants.STORE_OPEN and t_step < Constants.STORE_CLOSE) or shopper_count > 0:
             start = self.next_grp_restock
             for emp in self.employees:
                 self.smart_products[start].restock(emp.get_speed(Constants.TASK_RESTOCK))
                 start += 1
-            if start == Constants.PRODUCT_COUNT:
-                start = 0
+                if start == Constants.PRODUCT_COUNT:
+                    start = 0
             self.next_grp_restock = start
         
         else:

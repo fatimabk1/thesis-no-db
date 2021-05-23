@@ -21,6 +21,7 @@ class Store:
         self.employees = []
         self.lanes = []
         self.shoppers = []
+        self.next_truck = None
 
         # data collection for stats
         self.revenues = []
@@ -39,6 +40,7 @@ class Store:
                                 self.qtimes)
 
         self.day_simulator = DaySimulator(
+                                self.smart_products,
                                 self.employee_manager,
                                 self.lane_manager,
                                 self.shopper_handler)
@@ -68,14 +70,13 @@ class Store:
             ln = Lane()
             self.lanes.append(ln)
         today = datetime(self.clock.year, self.clock.month, self.clock.day)
-        self.inventory_manager.setup_starter_inventory(today)
-        # self.inventory_manager.print_stock_status()
+        for sp in self.smart_products:
+            sp.setup_starter_inventory(today)
 
     def simulate_year(self):
         runtime = Constants.log()
         month = self.clock.month
-
-        self.next_truck = None
+        day_time = []
         for i in range(365):
             if self.clock.month != month:
                 month = self.clock.month
@@ -85,11 +86,9 @@ class Store:
             # setup day
             self.employee_manager.set_day_schedule()
             self.employee_manager.reset(self.get_today(), self.next_truck)
-            self.day_simulator.simulate_day(self.get_today())
-
-            # print day stats
-            for grp in range(5):
-                Constants.print_stock(grp, self.smart_products)
+            t = self.day_simulator.simulate_day(self.get_today(), self.next_truck)
+            day_time.append(t)
+            print("Avg day runtime: ", sum(day_time) / len(day_time))
 
             # order inventory
             if i!= 0 and i % (Constants.TRUCK_DAYS ) == 0:

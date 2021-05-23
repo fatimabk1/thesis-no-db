@@ -4,22 +4,22 @@ import sys
 import os
 
 # --------------------------------------------------------------------- PRINTING STATISTICS 
-def print_stock(grp, smart_products):
-    grp = smart_products[grp]
-    print(
-        f"GRP_{grp}:"\
-        f"\tPENDING={grp.pending['quantity']}"\
-        f"\tBACK={grp.any_back['quantity']}"\
-        f"\tSHELF={grp.any_shelf['quantity']}"\
-        f"\tSOLD={grp.sold['today']}"\
-        f"\tTOSS= {grp.toss_count}"\
-        f"\tMISS = {grp.miss_count}")
+# def print_stock(grp, smart_products):
+#     grp = smart_products[grp]
+#     print(
+#         f"GRP_{grp}:"\
+#         f"\tPENDING={grp.pending['quantity']}"\
+#         f"\tBACK={grp.any_back['quantity']}"\
+#         f"\tSHELF={grp.any_shelf['quantity']}"\
+#         f"\tSOLD={grp.sold['today']}"\
+#         f"\tTOSS= {grp.toss_count}"\
+#         f"\tMISS = {grp.miss_count}")
 
 CLOCK = datetime(2019, 9, 15, 10, 0)  # SUNDAY
 DAY_START = 0  
-STORE_OPEN = 2 * 60  # 2 hrs, 10am public open, morning steps: 0 - 120
-STORE_CLOSE = 12 * 60  # 10 hrs, 8PM public close, day steps: 120 - 720
-DAY_END = 14 * 60  # 2 hrs, 10pm public close, evening steps: 720 - 840
+STORE_OPEN = 2 * 60  # 120 --  2 hrs, 10am public open, morning steps: 0 - 120
+STORE_CLOSE = 12 * 60  # 720 --  10 hrs, 8PM public close, day steps: 120 - 720
+DAY_END = 14 * 60  # 840 --  2 hrs, 10pm public close, evening steps: 720 - 840
 
 
 err_file = open('issues.txt', 'w')
