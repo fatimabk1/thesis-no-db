@@ -1,17 +1,13 @@
-# from Statistics import Visualization
-from InventoryManager import InventoryManager
+from SmartProduct import SmartProduct
 from LaneManager import LaneManager
 from DaySimulator import DaySimulator
-from InventoryManager import InventoryManager
 from ShopperHandler import ShopperHandler
 from EmployeeManager import EmployeeManager
 from Lane import Lane
 from Product import Product
 from Cost import Cost
 import Constants
-from Constants import log, delta
 from datetime import date, datetime
-# from Statistics import Visualization
 from datetime import timedelta
 import traceback
 import beepy
@@ -21,47 +17,32 @@ class Store:
     def __init__(self):
         self.clock = datetime(2019, 9, 15, 10, 0)
         self.products = []
-        self.inventory_lookup = {}
+        self.smart_products = []
         self.employees = []
         self.lanes = []
         self.shoppers = []
-        self.vis = None  # Visualization() 
-
-        # START HERE >>>
-        # 4. TODO: add code to make product selection a distribution  --> AT END OF PROJECT
-        #       --> likelihood of selecting grp x should correlate w/amt stocked.
-        #           If less is stocked, it's less popular --> fewer total purchases
-        #           --> customers are less likely to purchase grp x than grp y
 
         # data collection for stats
-        self.product_stats = {}  # {grp_id: {"shelf": #, "back": #, "pending": #, "sold": [today, today - 1, today - 2] , "oos": #}}
         self.revenues = []
         self.costs = []
         self.qtimes = []
 
         # aggregate objects
-        self.inventory_manager = InventoryManager(self.inventory_lookup,
-                                self.products, self.product_stats, self.costs)
-        self.employee_manager = EmployeeManager(self.employees, self.inventory_manager)
+        self.employee_manager = EmployeeManager(self.employees, self.smart_products)
         self.employee_manager.create_employees(Constants.NUM_EMPLOYEES)
         self.lane_manager = LaneManager(self.employee_manager, self.lanes, self.shoppers)
 
         self.shopper_handler = ShopperHandler(
-                                self.products,
-                                self.inventory_lookup,
-                                self.product_stats,
+                                self.smart_products,
                                 self.lane_manager,
                                 self.revenues,
-                                self.qtimes,
-                                self.clock)
+                                self.qtimes)
 
         self.day_simulator = DaySimulator(
-                                self.inventory_manager,
+                                self.smart_products,
                                 self.employee_manager,
                                 self.lane_manager,
-                                self.shopper_handler,
-                                self.product_stats,
-                                self.vis)
+                                self.shopper_handler)
     
         self.setup()
     
@@ -76,18 +57,9 @@ class Store:
                 category += 1
             p = Product(grp_id, category)
             p.setup()
-            self.product_stats[grp_id] = {
-                "shelf": 0,  # total current shelved stock
-                "back": 0,  # total current back stock
-                "pending": 0,  # total current pending stock
-                "sold": [0, 0, 0],  # list of stock sold each day for three days [today, yesterday, two-days-ago]
-                "oos": {},  # dictionary of dates & # of misses
-                "toss": 0,
-                "added": 0,
-                "inv_count": 0
-                }
-            self.inventory_lookup[grp_id] = []
             self.products.append(p)
+            sp = SmartProduct(p)
+            self.smart_products.append(sp)
         
         # setup employees
         self.employee_manager.create_employees(Constants.NUM_EMPLOYEES)
@@ -103,51 +75,36 @@ class Store:
     def simulate_year(self):
         runtime = Constants.log()
         month = self.clock.month
+
+        self.next_truck = None
         for i in range(365):
             if self.clock.month != month:
                 month = self.clock.month
                 print(f"\n\n\n\t\t\t**** NEW MONTH: {month} ***\n\n\n")
             print(f"-------------------------------------------------------------------------------------------------- DAY {i}: {self.clock.month}/{self.clock.day}/{self.clock.year}")
+            
             # setup day
             self.employee_manager.set_day_schedule()
-            for grp in self.product_stats:
-                sold = self.product_stats[grp]["sold"]
-                if(len(sold) == 3):
-                    sold.pop()
-                sold.insert(0, 0)
-                self.product_stats[grp]["oos"][self.get_today()] = 0
-                self.product_stats[grp]["toss"] = 0
-                self.products[grp].set_order_threshold(sold)
-                self.product_stats[grp]["added"] = 0
-                self.product_stats[grp]["inv_count"] = 0
+            (grp.reset() for grp in self.smart_products)
             self.day_simulator.simulate_day(self.get_today())
-            for grp in self.product_stats:
-                self.product_stats[grp]["inv_count"] = len(self.inventory_lookup[grp])
+
+            # print day stats
             for grp in range(5):
-                inv_lst = self.inventory_lookup[grp]
-                expected_toss = sum(inv.get_shelf() + inv.get_back() + inv.get_pending()
-                                    for inv in inv_lst if inv.is_expired(self.get_today()))
-                Constants.print_stock(grp, self.products, self.product_stats, expected_toss, self.get_today())
-            # self.update_daily_statistics()
+                Constants.print_stock(grp, self.smart_products)
 
             # order inventory
-            if i!= 0 and i % (Constants.TRUCK_DAYS + 2) == 0:
-                print(i, Constants.TRUCK_DAYS + 2, i % Constants.TRUCK_DAYS / 2)
+            if i!= 0 and i % (Constants.TRUCK_DAYS ) == 0:
+                self.next_truck = self.get_today() + timedelta(days=Constants.TRUCK_DAYS)
                 print("\n\t*** ORDERING INVENTORY")
-                self.inventory_manager.order_inventory(self.get_today())
-                ready = self.get_today() + timedelta(days=Constants.TRUCK_DAYS)
-                print(f"\t> order available {ready.month}/{ready.day}/{ready.year}")
+                order_cost = sum([sprod.order_inventory(self.get_today()) for sprod in self.smart_products])
+                self.costs.append((order_cost, self.get_today()))
+                self.next_truck = self.get_today() + timedelta(days=Constants.TRUCK_DAYS)
+                print(f"\t> order available {self.next_truck.month}/{self.next_truck.day}/{self.next_truck.year}")
 
-            # pay employees
-            # TODO: fix so employees paid regularly on day / end of month
             if i!= 0 and i % 7 == 0:
-                # return
-                # emps work 6 days a week, x hrs each shift, at $x an hour
                 labor_payment = sum(emp.get_paycheck() for emp in self.employees)
                 print(f"\n\t\t\t*** LABOR PAYMENT = ${labor_payment} ***")
-                # c = Cost(today, labor_payment, 'labor')
-                # self.cost.append(c)
-            # update clock
+
             self.clock += timedelta(days=1)
         Constants.delta("A Year", runtime)
 

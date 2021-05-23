@@ -7,15 +7,12 @@ from Inventory import StockType
 
 
 class ShopperHandler:
-    def __init__(self, products, inv_lookup, ps, lm, rev, qt, clk):
+    def __init__(self, sp, lm, rev, qt):
         self.next = None
-        self.products = products
-        self.inv_lookup = inv_lookup  # reference to Store's inv_lookup
-        self.product_stats = ps
+        self.smart_products = sp
         self.lane_manager = lm
         self.revenues = rev
         self.qtimes = qt
-        self.clock = clk
 
     def handle(self, shopper, t_step, today):
         ret = None

@@ -81,23 +81,6 @@ class Product:
 
     def get_restock_threshold(self):
         return self.restock_threshold
-    
-    def set_order_threshold(self, sold):
-        if 0 in sold:
-            self.order_threshold = int(self.max_back / 2)
-        else:
-            avg = sum(sold) / len(sold)
-            self.order_threshold = int(avg) * (Constants.TRUCK_DAYS + 1)
-    
-    def get_order_amount(self, curr_back):
-        return min(self.order_amount, self.max_back - curr_back)
-        # order avg quantity sold over TRUCK_DAYS days plus a little extra
-        # amount = self.order_threshold  + (0.1 * self.order_threshold)
-        # return min(amount, self.max_back - curr_back)
-        return self.max_back - curr_back
-    
-    def set_order_amount(self, val):
-        self.order_amount = val
 
     def set_sale(self):
         self.price_status = Price.SALE

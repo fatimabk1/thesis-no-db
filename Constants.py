@@ -4,20 +4,16 @@ import sys
 import os
 
 # --------------------------------------------------------------------- PRINTING STATISTICS 
-def print_stock(grp, prods, ps, expected_toss, today):
-    miss = 0
-    if today in ps[grp]:
-        miss = ps[grp][today]
+def print_stock(grp, smart_products):
+    grp = smart_products[grp]
     print(
         f"GRP_{grp}:"\
-        f"\tPENDING={ps[grp]['pending']}"\
-        f"\tBACK={ps[grp]['back']}"\
-        f"\tSHELF={ps[grp]['shelf']}"\
-        f"\tSOLD={ps[grp]['sold'][0]}"\
-        f"\tTOSS= {ps[grp]['toss']}/{expected_toss} expected"\
-        f"\tMISS = {miss}"\
-        f"\tADDED = {ps[grp]['added']}"\
-        f"\tINV_COUNT = {ps[grp]['inv_count']}")
+        f"\tPENDING={grp.pending['quantity']}"\
+        f"\tBACK={grp.any_back['quantity']}"\
+        f"\tSHELF={grp.any_shelf['quantity']}"\
+        f"\tSOLD={grp.sold['today']}"\
+        f"\tTOSS= {grp.toss_count}"\
+        f"\tMISS = {grp.miss_count}")
 
 CLOCK = datetime(2019, 9, 15, 10, 0)  # SUNDAY
 DAY_START = 0  

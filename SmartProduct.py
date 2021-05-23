@@ -1,7 +1,7 @@
 from Inventory import Inventory, StockType
 from Product import Product
 import Constants
-from math import floor
+from math import floor, av
 
 # A queue-like data structure with accessibility & editability of a list
 # Manages its own inventory, tasks, and ordering
@@ -10,6 +10,9 @@ class SmartProduct:
         self.product = prod
         self.miss_count = 0  # number of attempts to select a product but no stock on shelves
         self.toss_count = 0  # number of products thrown out because they are expired
+        self.sold = {'today': 0, 'one_ago': 0, 'two_ago': 0}
+        self.ideal_daily = self.product.max_shelf()
+        self.cusion = 0.2 * self.ideal_daily
 
         # inventory is listed in order of sell_by + first-in/first_out
         self.inventory_list = []
@@ -20,6 +23,17 @@ class SmartProduct:
         self.any_back = {'start': 0, 'end': 0, 'quantity': 0}
         self.pending = {'start': 0, 'end': 0, 'quantity': 0}
         self.toss_lookup = {}   # {sell_by_date: {'start': x, 'end': x, 'quantity': x}}
+
+    def reset(self):
+        if 0 not in self.sold.items():
+            self.ideal_daily = sum(self.sold['today'], self.sold['one_ago'], self.sold['two_ago']) / 3
+            if self.toss_count > 10:
+                self.cushion -= int(self.toss_count / 2)
+        self.miss_count = 0
+        self.toss_count = 0
+        self.sold['two_ago'] = self.sold['one_ago']
+        self.sold['one_ago'] = self.sold['today']
+        self.sold['today'] = 0
 
     def __pop(self):
         # list still starts at 0, all other indices reduced by 1
@@ -76,6 +90,7 @@ class SmartProduct:
             inv = self.inventory_list[self.any_shelf['start']]
             inv.decrement(StockType.SHELF, 1)
             self.any_shelf['quantity'] -= 1
+            self.sold['today'] += 1
             if inv.is_deleted():
                 self.__pop()
         else:
@@ -237,8 +252,8 @@ class SmartProduct:
         arrival = today + Constants.TRUCK_DAYS
         curr_back = self.any_back['quantity']
         curr_shelf = self.any_shelf['quantity']
-        if curr_back < self.product.get_order_threshold():
-            amount = self.product.get_order_amount(curr_back)
+        if curr_back + curr_shelf < self.ideal_daily * Constants.TRUCK_DAYS + self.cushion:
+            amount = self.ideal_daily * Constants.TRUCK_DAYS + self.cushion
             cost, pending_lst = self.__order(amount, arrival, today)
             if pending_lst:
                 self.add_inventory_list(pending_lst)

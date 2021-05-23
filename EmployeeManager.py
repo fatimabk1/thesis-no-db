@@ -5,10 +5,10 @@ from Constants import Shift
 
 class EmployeeManager:
 
-    def __init__(self, employees, inv_man):
+    def __init__(self, employees, sp):
         self.employees = employees
         self.working_employees = None
-        self.inventory_manager = inv_man
+        self.smart_products = sp
         self.schedule = [Shift.OFF, Shift.MORNING, Shift.MORNING, Shift.MORNING,
                          Shift.EVENING, Shift.EVENING, Shift.EVENING]
         self.task_list = []
@@ -46,12 +46,51 @@ class EmployeeManager:
         emp.remove_cashier()
         assert(emp.is_cashier() is False), "return_cashier(): update failed"
 
+    def new_advance_employees(self, t_step, today, shopper_count, next_truck):
+        # TODO:
+        """
+        1. Split by work to do at time of day
+        2. loop through employees and loop through products
+        """
+
+        # TODO: START HERE >>>> are we still refreshing? 
+        # Add self.unload, self.toss - total for all grp
+        # This way, quickly see if there's work to do,
+        # since these doesn't change throughout the day like restock does
+
+        # update working employees 
+        if t_step == Constants.StoreStatus.SHIFT_CHANGE:
+            self.current_shift = Constants.Shift.EVENING
+            self.working_employees = [emp for emp in self.employees if emp.on_shift(self.current_shift)]
+
+        if t_step == Constants.STORE_OPEN:
+            if today == next_truck:
+
+            # TODO: check if unload and/or restock
+            # If both, split employees and do both, else just do one
+
+            pass
+        
+        # toss while the store is closed and empty
+        elif t_step >= Constants.STORE_CLOSE and shopper_count == 0:
+            # TODO: loop through emps and grp calling grp.toss(emp_q) 
+            pass
+        
+        # restock while the store is open or customers are in the store
+        elif t_step > Constants.STORE_OPEN and t_step < Constants.STORE_CLOSE and t_step % 30 == 0:
+            # TODO: loop through emps and grp calling grp.restock(emp_q)
+            pass
+        
+        else:
+            pass
+
     def advance_employees(self, t_step, today, shopper_count):
         # update working employees 
         if t_step == Constants.StoreStatus.SHIFT_CHANGE:
             self.current_shift = Constants.Shift.EVENING
             self.working_employees = [emp for emp in self.employees if emp.on_shift(self.current_shift)]
 
+        
         # remove inventories marked as 'deleted'
         # for grp in self.inventory_manager.inventory_lookup:
         #     self.inventory_manager.inventory_lookup[grp] = [inv for inv in self.inventory_manager.inventory_lookup[grp]

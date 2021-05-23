@@ -2,20 +2,35 @@
 POA:
     - 05/22
         - SmartProduct.py
+            - set_order_threshold(): if len(dict) == 3 --> set order threshold to avg. Take miss_count into account 
+                - order if (curr_shelf + curr_back) < order_threshold
+                - order_threshold =  ideal_daily * TRUCK_DAYS + cushion:
+                - order_amount = ideal_daily * TRUCK_DAYS
+                - ideal_daily --> based on avg sold in past 3 days
             - Add has_work(TASK) function @done
             - order_inventory() returns cost @done 
             - __order() @done 
             - __create_pending() @done 
         - Delete Task.py @done 
         - Delete SmartInventory.py @done 
-        - Push to GitHub
+        - Push to GitHub @done
     - 05/23
-        - Rewrite ShopperHandler.py for compatibility with SmartProducts
+        - Edit ShopperHandler.py for compatibility with SmartProducts 
+            - Push to GitHub
+        - Edit EmployeeManager.py for compatibility with SmartProducts
+            - Push to GitHub
+        - Edit DaySimulator.py for compatibility with SmartProducts
+            - Add next_truck as parameter
+                - only call unload() only when available
+            - Push to GitHub
         - Rewrite Store.py: 
-            - Replace products, product_stats --> SmartProducts[]
-            - Have store monitor inventory arrival and call unload() only when available
-            - Monitor order cost from indivual product ordering
-            - Edit order_amount --> reduce by 1 for every 5 products tossed. Get total toss_quantity() at EOD and adjust.
+            - Track cost stats
+            - Replace products, product_stats --> SmartProducts[] @done
+            - Update ShopperHandler initialization @done
+            - Have store monitor inventory arrival @done
+            - Monitor order cost from indivual product ordering @done
+            - Edit order_amount --> reduce by 1 for every 5 products tossed. Get total toss_quantity() at EOD and adjust. @done
+            - Push to GitHub
     - 05/24
         - Test day
         - Test week
