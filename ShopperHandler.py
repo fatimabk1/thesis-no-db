@@ -15,33 +15,22 @@ class ShopperHandler:
         self.qtimes = qt
 
     def handle(self, shopper, t_step, today):
-        ret = None
         if shopper.get_status() == Status.INERT:
-            # t = Constants.log()
-            ret = self.__handle_inert(shopper, t_step)
-            # Constants.delta("handle_inert()", t)
+            self.__handle_inert(shopper, t_step)
         elif shopper.get_status() == Status.SHOPPING:
-            # t = Constants.log()
-            ret = self.__handle_shopper(shopper, t_step, today)
-            # Constants.delta("handle_shopper", t)
+            self.__handle_shopper(shopper, t_step, today)
         elif shopper.get_status() == Status.QUEUEING:
-            # t = Constants.log()
-            ret = self.__handle_queueing(shopper)
-            # Constants.delta("handle_queueing", t)
+            self.__handle_queueing(shopper)
         elif shopper.get_status() == Status.DONE:
-            # t = Constants.log()
-            ret = self.__handle_done(shopper, today)
-            # Constants.delta("handle_done()", t)
+            self.__handle_done(shopper, today)
         else:
             status = shopper.get_status()
             assert(status == Status.CHECKOUT or status == Status.QUEUE_READY), f"ShopperHandler Error | unexpected status: {str(status)}"
-        return ret
 
     def __handle_inert(self, shopper, t_step):
         if t_step % 60 == shopper.get_start_min():
             shopper.set_status(Status.SHOPPING)
             shopper.reset_browse(t_step)
-            return None
 
     # @profile
     def __handle_shopper(self, shopper, t_step, today):
@@ -53,53 +42,18 @@ class ShopperHandler:
                 shopper.hurry_up()
 
             if shopper.is_selecting():
-                # t = Constants.log()
                 grp_id = int(random.random() * Constants.PRODUCT_COUNT)
-                # Constants.delta("random grp_id", t)
-                # t = Constants.log()
-                inv = next((inv for inv in self.inv_lookup[grp_id]
-                        if inv.shelved_stock > 0), None)
-                # Constants.delta("next inv - selecting", t)
-
-                if inv is None:
-                    # t = Constants.log()
-                    # print("WARNING_ShoppingHandler(): product {} out of stock".format(grp_id))  # , file=Constants.err_file
-                    if today in self.product_stats[grp_id]["oos"]:
-                        self.product_stats[grp_id]["oos"][today] += 1
-                    else:
-                        self.product_stats[grp_id]["oos"][today] = 1
-                    # [print("{} out of stock".format(grp))  # , file=Constants.err_file
-                    # Constants.delta("inv is none", t)
-                    return None
-                else:
-                    # t = Constants.log()
-                    inv.decrement(StockType.SHELF, 1)
-                    # TODO:
-                    # if inv.is_deleted():
-                    #     print("I'm deleted!")
-                    #     self.inv_lookup[inv.grp_id].remove(inv)
-                    #     assert inv not in self.inv_lookup[inv.grp_id]
-                    price = self.products[grp_id].get_price()
-                    shopper.add_item(grp_id, price, t_step)
-                    self.product_stats[grp_id]["shelf"] -= 1
-                    self.product_stats[grp_id]["sold"][0] += 1
-                    return inv
-                    # Constants.delta("inv updates", t)
+                self.smart_products[grp_id].select()
+                price = self.smart_products[grp_id].product.get_price()
+                shopper.add_item(grp_id, price, t_step)
             else:
                 shopper.decrement_browse_mins()
-                return None
 
     def __handle_queueing(self, shopper):
         shopper.increment_qtime()
-        return None
 
     def __handle_done(self, shopper, today):
-        # shopper.set_deleted()
         rev = Revenue(stamp=today, value=shopper.get_total())
         self.revenues.append(rev)
         qt = Qtime(lane=shopper.lane, stamp=today, time=shopper.get_qtime())
         self.qtimes.append(qt)
-        return None
-        # shopper.print()
-        # print(len(self.shoppers))
-        # exit(1)

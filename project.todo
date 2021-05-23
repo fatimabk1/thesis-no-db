@@ -15,15 +15,14 @@ POA:
         - Delete SmartInventory.py @done 
         - Push to GitHub @done
     - 05/23
-        - Edit ShopperHandler.py for compatibility with SmartProducts 
+        - Edit ShopperHandler.py for compatibility with SmartProducts @done
             - Push to GitHub
-        - Edit EmployeeManager.py for compatibility with SmartProducts
+        - Edit EmployeeManager.py for compatibility with SmartProducts @done
             - Push to GitHub
-        - Edit DaySimulator.py for compatibility with SmartProducts
-            - Add next_truck as parameter
-                - only call unload() only when available
+        - Edit DaySimulator.py for compatibility with SmartProducts @done
+                - only call unload() only when available @done
             - Push to GitHub
-        - Rewrite Store.py: 
+        - Rewrite Store.py: @done
             - Track cost stats
             - Replace products, product_stats --> SmartProducts[] @done
             - Update ShopperHandler initialization @done

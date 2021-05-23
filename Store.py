@@ -10,7 +10,7 @@ import Constants
 from datetime import date, datetime
 from datetime import timedelta
 import traceback
-import beepy
+# import beepy
 
 
 class Store:
@@ -39,7 +39,6 @@ class Store:
                                 self.qtimes)
 
         self.day_simulator = DaySimulator(
-                                self.smart_products,
                                 self.employee_manager,
                                 self.lane_manager,
                                 self.shopper_handler)
@@ -85,7 +84,7 @@ class Store:
             
             # setup day
             self.employee_manager.set_day_schedule()
-            (grp.reset() for grp in self.smart_products)
+            self.employee_manager.reset(self.get_today(), self.next_truck)
             self.day_simulator.simulate_day(self.get_today())
 
             # print day stats
@@ -180,10 +179,10 @@ if __name__ == '__main__':
         store.simulate_year()
         print("A Successful Year Complete!")
         print("Runtime: ∆ ", datetime.now() - t)
-        beepy.beep(sound=5)
+        # beepy.beep(sound=5)
     except Exception as e:
         print("Year simulation failed")
         print("Runtime: ∆ ", datetime.now() - t)
-        beepy.beep(sound=3)
+        # beepy.beep(sound=3)
         traceback.print_exc()
         print(e)

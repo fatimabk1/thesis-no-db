@@ -1,12 +1,13 @@
 from Inventory import Inventory, StockType
 from Product import Product
 import Constants
-from math import floor, av
+from math import floor
 
 # A queue-like data structure with accessibility & editability of a list
 # Manages its own inventory, tasks, and ordering
 class SmartProduct:
     def __init__(self, prod: Product):
+        print(prod)
         self.product = prod
         self.miss_count = 0  # number of attempts to select a product but no stock on shelves
         self.toss_count = 0  # number of products thrown out because they are expired
@@ -97,22 +98,32 @@ class SmartProduct:
             self.miss_count += 1
             self.product.set_order_amount(self.product.get_order_amount() + 1)
 
-    def has_work(self, task, today):
-        if task == Constants.TASK_UNLOAD and self.pending['quantity'] > 0:
-            return True
+    def get_work(self, task, today):
+        if task == Constants.TASK_UNLOAD:
+            return self.pending['quantity']
+        elif task == Constants.TASK_TOSS:
+            return self.toss[today]['quantity']
         elif task == Constants.TASK_RESTOCK:
             max_shelf = self.product.get_max_shelf()
             curr_shelf = self.any_shelf['quantity']
             curr_back = self.any_back['quantity']
             work = min(max_shelf - curr_shelf, curr_back)
-            if work:
+            return work
+        else:
+            print(f"SmartProduct.get_work(): Invalid task {task}")
+            exit(1)
+
+    def has_work(self, task, today):
+        if task == Constants.TASK_UNLOAD and self.pending['quantity'] > 0:
+            return True
+        elif task == Constants.TASK_RESTOCK:
+             if self.get_work(task, today) > 0:
                 return True
         elif (task == Constants.TASK_TOSS
                 and today in self.toss_lookup
                 and self.toss_lookup[today]['quantity'] > 0):
             return True
-        else:
-            return False
+        return False
 
     # toss as many inventories / partial inventories as possible exhausing emp_q
     def toss(self, emp_q, today):

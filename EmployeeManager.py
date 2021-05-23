@@ -1,4 +1,5 @@
 from Employee import Employee
+# import heapq
 import Constants
 from Constants import Shift
 
@@ -12,7 +13,12 @@ class EmployeeManager:
         self.schedule = [Shift.OFF, Shift.MORNING, Shift.MORNING, Shift.MORNING,
                          Shift.EVENING, Shift.EVENING, Shift.EVENING]
         self.task_list = []
-        self.refresh = True
+
+        # tracking the next grp to work on
+        self.next_grp_toss = 0 
+        self.next_grp_restock = 0
+        self.next_grp_unload = 0
+        self.refreshed = True  # True if we switch
 
     def create_employees(self, n):
         assert(n % 7 == 0)
@@ -36,6 +42,25 @@ class EmployeeManager:
         self.current_shift = Constants.Shift.MORNING
         self.refresh = True
 
+    def get_task_start(self, task):
+        if task == Constants.TASK_UNLOAD:
+            return self.last_grp_unload
+        elif task == Constants.TASK_RESTOCK:
+            return self.last_grp_restock
+        elif task == Constants.TASK_TOSS:
+            return self.last_grp_toss
+        else:
+            print(f"get_task_start(): Invalid task {task}")
+
+    def reset(self, today, next_truck):
+        (grp.reset() for grp in self.smart_products)
+        self.toss_work = sum(sp.get_work(Constants.TASK_TOSS, today) for sp in self.smart_products)
+        if today == next_truck:
+            self.unload_work = sum(sp.get_work(Constants.TASK_UNLOAD, today) for sp in self.smart_products)
+        else:
+            self.unload_work = 0
+        self.restock_work = sum(sp.get_work(Constants.TASK_RESTOCK, today) for sp in self.smart_products)
+
     def get_cashier(self):
         # available = [emp for emp in self.working_employees if emp.is_cashier() is False]
         emp = next((emp for emp in self.working_employees if not emp.is_cashier()))
@@ -46,120 +71,80 @@ class EmployeeManager:
         emp.remove_cashier()
         assert(emp.is_cashier() is False), "return_cashier(): update failed"
 
-    def new_advance_employees(self, t_step, today, shopper_count, next_truck):
-        # TODO:
-        """
-        1. Split by work to do at time of day
-        2. loop through employees and loop through products
-        """
-
-        # TODO: START HERE >>>> are we still refreshing? 
-        # Add self.unload, self.toss - total for all grp
-        # This way, quickly see if there's work to do,
-        # since these doesn't change throughout the day like restock does
+    def new_advance_employees(self, t_step, shopper_count):
 
         # update working employees 
         if t_step == Constants.StoreStatus.SHIFT_CHANGE:
             self.current_shift = Constants.Shift.EVENING
             self.working_employees = [emp for emp in self.employees if emp.on_shift(self.current_shift)]
 
-        if t_step == Constants.STORE_OPEN:
-            if today == next_truck:
+        if t_step < Constants.STORE_OPEN:
 
-            # TODO: check if unload and/or restock
-            # If both, split employees and do both, else just do one
-
-            pass
-        
-        # toss while the store is closed and empty
-        elif t_step >= Constants.STORE_CLOSE and shopper_count == 0:
-            # TODO: loop through emps and grp calling grp.toss(emp_q) 
-            pass
-        
-        # restock while the store is open or customers are in the store
-        elif t_step > Constants.STORE_OPEN and t_step < Constants.STORE_CLOSE and t_step % 30 == 0:
-            # TODO: loop through emps and grp calling grp.restock(emp_q)
-            pass
-        
-        else:
-            pass
-
-    def advance_employees(self, t_step, today, shopper_count):
-        # update working employees 
-        if t_step == Constants.StoreStatus.SHIFT_CHANGE:
-            self.current_shift = Constants.Shift.EVENING
-            self.working_employees = [emp for emp in self.employees if emp.on_shift(self.current_shift)]
-
-        
-        # remove inventories marked as 'deleted'
-        # for grp in self.inventory_manager.inventory_lookup:
-        #     self.inventory_manager.inventory_lookup[grp] = [inv for inv in self.inventory_manager.inventory_lookup[grp]
-        #                                                     if inv.is_deleted() is False]
-
-        # ------------------------------------------------------------------------------------------------ refresh & do tasks
-        # unload and/or restock before the store opens
-        if t_step == Constants.STORE_OPEN:
-            task_1, task_lookup_1 = Constants.TASK_UNLOAD, self.inventory_manager.get_unload_list(today)
-            task_2, task_lookup_2 = Constants.TASK_RESTOCK, self.inventory_manager.get_restock_list()
-            count = int(len(self.working_employees) / 2)
-            group_1 = self.working_employees[:count]
-            group_2 = self.working_employees[count:]
-
-            if bool(task_lookup_1) and bool(task_lookup_2):
-                self.inventory_manager.dispatch(task_1, task_lookup_1, group_1, today)
-                self.inventory_manager.dispatch(task_2, task_lookup_2, group_2, today)
-                self.task_list = [task_1, task_lookup_1, task_2, task_lookup_2]
-            elif bool(task_lookup_1):
-                self.inventory_manager.dispatch(task_1, task_lookup_1, self.working_employees, today)
-                self.task_list = [task_1, task_lookup_1]
-            else:
-                self.inventory_manager.dispatch(task_2, task_lookup_2, self.working_employees, today)
-                self.task_list = [task_2, task_lookup_2]
-
-        # toss while the store is closed and empty
-        elif t_step >= Constants.STORE_CLOSE and shopper_count == 0 and self.refresh:
-            task, task_lookup = Constants.TASK_TOSS, self.inventory_manager.get_toss_list(today)
-            if bool(task_lookup):
-                self.inventory_manager.dispatch(task, task_lookup, self.working_employees, today)
-                self.task_list = [task, task_lookup]
-            self.refresh = False
-        
-        # restock while the store is open or customers are in the store
-        elif t_step > Constants.STORE_OPEN and t_step < Constants.STORE_CLOSE and t_step % 30 == 0:
-            task, task_lookup = Constants.TASK_RESTOCK, self.inventory_manager.get_restock_list()
-            if bool(task_lookup):
-                self.inventory_manager.dispatch(task, task_lookup, self.working_employees, today)
-                self.task_list = [task, task_lookup]
-
-        # ------------------------------------------------------------------------------------------------ do tasks in existing list
-        else:
-            if len(self.task_list) == 4:
-                task_1, task_lookup_1 = self.task_list[0], self.task_list[1]
-                task_2, task_lookup_2 = self.task_list[2], self.task_list[3]
+            if self.unload_work > 0 and self.restock_work > 0:
+                # split employees, have half work on unload and half work on restock
                 count = int(len(self.working_employees) / 2)
                 group_1 = self.working_employees[:count]
                 group_2 = self.working_employees[count:]
 
-                if bool(task_lookup_1) and bool(task_lookup_2):
-                    # remove inventories marked as 'deleted'
-                    for grp in task_lookup_1:
-                        task_lookup_1[grp]["inventory"] = [inv for inv in task_lookup_1[grp]["inventory"] if inv.is_deleted() is False]
-                    for grp in task_lookup_2:
-                        task_lookup_2[grp]["inventory"] = [inv for inv in task_lookup_2[grp]["inventory"] if inv.is_deleted() is False]
+                # unload
+                start = self.next_grp_unload
+                for emp in group_1:
+                    self.smart_products[start].unload(emp.get_speed(Constants.TASK_UNLOAD))
+                    start += 1
+                if start == Constants.PRODUCT_COUNT:
+                    start = 0
+                self.next_grp_unload = start
+                
+                # restock
+                start = self.next_grp_restock
+                for emp in group_2:
+                    self.smart_products[start].restock(emp.get_speed(Constants.TASK_RESTOCK))
+                    start += 1
+                if start == Constants.PRODUCT_COUNT:
+                    start = 0
+                self.next_grp_restock = start
 
-                    self.inventory_manager.dispatch(task_1, task_lookup_1, group_1, today)
-                    self.inventory_manager.dispatch(task_2, task_lookup_2, group_2, today)
-                    self.task_list = [task_1, task_lookup_1, task_2, task_lookup_2]
+            elif self.unload_work > 0:
+                start = self.next_grp_unload
+                for emp in self.employees:
+                    self.smart_products[start].unload(emp.get_speed(Constants.TASK_UNLOAD))
+                    start += 1
+                if start == Constants.PRODUCT_COUNT:
+                    start = 0
+                self.next_grp_unload = start
+
             else:
-                assert(len(self.task_list) == 0 or len(self.task_list) == 2), f"advance_employees(): {len(self.task_list)} is an invalid number of tasks"
-                if len(self.task_list) == 0:
-                    return
-                task, task_lookup = self.task_list[0], self.task_list[1]
-                # remove inventories marked as 'deleted'
-                for grp in task_lookup:
-                    task_lookup[grp]["inventory"] = [inv for inv in task_lookup[grp]["inventory"] if inv.is_deleted() is False]
-                if bool(task_lookup):
-                    self.inventory_manager.dispatch(task, task_lookup, self.working_employees, today)
+                start = self.next_grp_restock
+                for emp in self.employees:
+                    self.smart_products[start].restock(emp.get_speed(Constants.TASK_RESTOCK))
+                    start += 1
+                if start == Constants.PRODUCT_COUNT:
+                    start = 0
+                self.next_grp_restock = start
+          
+        # toss while the store is closed and empty
+        elif t_step >= Constants.STORE_CLOSE and shopper_count == 0:
+            start = self.next_grp_toss
+            for emp in self.employees:
+                self.smart_products[start].toss(emp.get_speed(Constants.TASK_TOSS))
+                start += 1
+            if start == Constants.PRODUCT_COUNT:
+                start = 0
+            self.next_grp_toss = start
+
+        # restock while the store is open or customers are in the store
+        elif t_step >= Constants.STORE_OPEN and t_step < Constants.STORE_CLOSE:
+            start = self.next_grp_restock
+            for emp in self.employees:
+                self.smart_products[start].restock(emp.get_speed(Constants.TASK_RESTOCK))
+                start += 1
+            if start == Constants.PRODUCT_COUNT:
+                start = 0
+            self.next_grp_restock = start
+        
+        else:
+            print(f"Unaccounted for t_step {t_step}")
+            exit(1)
 
 
     def print_active_employees(self):

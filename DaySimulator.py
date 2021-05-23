@@ -3,14 +3,11 @@ from Shopper import Shopper, Status
 from datetime import datetime, timedelta
 
 class DaySimulator:
-    def __init__(self, invm, empm, lanem, handler, ps, vis):
-        self.inventory_manager = invm
+    def __init__(self, empm, lanem, handler):
         self.employee_manager = empm
         self.lane_manager = lanem
         self.shoppers = []
         self.handler = handler
-        self.product_stats = ps
-        self.vis = vis
         self.clock = None
 
     def __reset_time(self, today):
@@ -34,17 +31,15 @@ class DaySimulator:
             if t_step == Constants.shift_change:
                 self.lane_manager.shift_change()
 
-            self.employee_manager.advance_employees(t_step, today, len(self.shoppers))
+            self.employee_manager.advance_employees(t_step, len(self.shoppers))
 
-            if t_step > Constants.StoreStatus.OPEN:
+            if t_step >= Constants.StoreStatus.OPEN:
                 # advance shoppers
                 shopper_count = len(self.shoppers)
                 index = 0
                 while index < shopper_count:
                     sh = self.shoppers.pop(index)
-                    inv = self.handler.handle(sh, t_step, today)
-                    if inv and inv.is_deleted():
-                        self.inventory_manager.inventory_lookup[inv.grp_id].remove(inv)
+                    self.handler.handle(sh, t_step, today)
                     if sh.get_status() != Status.DONE:
                         self.shoppers.insert(0, sh)
                         index += 1
@@ -67,7 +62,6 @@ class DaySimulator:
         self.shoppers = []
 
         Constants.delta("A Day", runtime)
-        # exit()
 
 
 def print_active_shoppers(shoppers):
