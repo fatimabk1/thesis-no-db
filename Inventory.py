@@ -44,6 +44,9 @@ class Inventory:
     def get_sell_by(self):
         return self.sell_by
 
+    def get_arrival(self):
+        return self.available
+
     def has_arrived(self, today):
         if self.available <= today:
             return True
@@ -58,6 +61,9 @@ class Inventory:
             return False
 
     def decrement(self, type, n):
+        if n == 0:
+            return
+
         if type == StockType.PENDING:
             self.pending_stock -= n
         elif type == StockType.BACK:

@@ -114,8 +114,8 @@ TASK_CASHIER = 3
 
 STOCK_MIN = 40  # max toss/restock per t_step
 STOCK_MAX = 100
-UNLOAD_MIN = 10  # in terms of lots
-UNLOAD_MAX = 30
+UNLOAD_MIN = 2  # in terms of lots
+UNLOAD_MAX = 5
 
 MAX_LANES = 30				    # max possible lanes
 MIN_LANES = 2					# num of open lanes at start

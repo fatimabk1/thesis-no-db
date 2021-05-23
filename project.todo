@@ -1,3 +1,42 @@
+
+POA:
+    - 05/22
+        - SmartProduct.py
+            - Add has_work(TASK) function @done
+            - order_inventory() returns cost @done 
+            - __order() @done 
+            - __create_pending() @done 
+        - Delete Task.py @done 
+        - Delete SmartInventory.py @done 
+        - Push to GitHub
+    - 05/23
+        - Rewrite ShopperHandler.py for compatibility with SmartProducts
+        - Rewrite Store.py: 
+            - Replace products, product_stats --> SmartProducts[]
+            - Have store monitor inventory arrival and call unload() only when available
+            - Monitor order cost from indivual product ordering
+            - Edit order_amount --> reduce by 1 for every 5 products tossed. Get total toss_quantity() at EOD and adjust.
+    - 05/24
+        - Test day
+        - Test week
+        - Test month
+        - Test year
+    - 05/25
+        - Fix year issues
+        - Setup print report (skip visualization or interesting behavior)
+        - Test and confirm that it consistently works
+    - 05/26
+
+
+- See if SmartProduct needs to inherit Product?
+    - Evaluate how much info in Product is actually needed
+- Test without ManageInventory.py out of the loop
+    - Delete ManageInventory.py if working
+- Run with cProfiler
+
+
+
+
 - TDL:
     - simple statistics.py
         - create plot

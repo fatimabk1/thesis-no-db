@@ -52,6 +52,9 @@ class Product:
                 self.price_status, self.lot_price, self.lot_quantity, self.sublots, self.sublot_quantity, self.order_threshold, self.order_amount, self.sell_by_days))
 
     # -------------------------------------------- getters and setters
+    def get_id(self):
+        return self.grp_id
+    
     def get_lot_quantity(self):
         return self.lot_quantity
 
@@ -87,10 +90,14 @@ class Product:
             self.order_threshold = int(avg) * (Constants.TRUCK_DAYS + 1)
     
     def get_order_amount(self, curr_back):
+        return min(self.order_amount, self.max_back - curr_back)
         # order avg quantity sold over TRUCK_DAYS days plus a little extra
         # amount = self.order_threshold  + (0.1 * self.order_threshold)
         # return min(amount, self.max_back - curr_back)
         return self.max_back - curr_back
+    
+    def set_order_amount(self, val):
+        self.order_amount = val
 
     def set_sale(self):
         self.price_status = Price.SALE
