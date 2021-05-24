@@ -14,6 +14,8 @@ import os
 #         f"\tSOLD={grp.sold['today']}"\
 #         f"\tTOSS= {grp.toss_count}"\
 #         f"\tMISS = {grp.miss_count}")
+CURRENT_DAY = 0
+CURRENT_TSTEP = 0
 
 CLOCK = datetime(2019, 9, 15, 10, 0)  # SUNDAY
 DAY_START = 0  

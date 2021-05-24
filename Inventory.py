@@ -1,5 +1,6 @@
 from enum import IntEnum
 import itertools
+import sys
 # from Constants import delta, log
 
 
@@ -28,11 +29,11 @@ class Inventory:
         self.sell_by = sell_by
         self.deleted = False
 
-    def print(self, i):
+    def print(self, i, file=sys.stdout):
         print("<inv_{} at index {}: grp={}, shelved={}, back={}, pending={}, available={}, sell_by={}, deleted={}>"
               .format(self.id, i, self.grp_id,
                       self.shelved_stock, self.back_stock, self.pending_stock,
-                      self.available, self.sell_by, self.deleted))
+                      self.available, self.sell_by, self.deleted), file=file)
 
     def get_id(self):
         return self.id

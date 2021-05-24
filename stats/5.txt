@@ -1,212 +1,1453 @@
-DoneHandler ∆: 
-max =  0:00:00.000293
-min =  0:00:00.000004
-avg =  0:00:00.000011
-sum =  0:00:00.029961
-count =  2700
-
-
-EmployeeManager.advance_employees() ∆: 
-max =  0:00:00.031081
-min =  0:00:00.000115
-avg =  0:00:00.009339
-sum =  0:00:07.844364
-count =  840
-
-
-InertHandler ∆: 
-max =  0:00:00.000831
-min =  0:00:00.000001
-avg =  0:00:00.000002
-sum =  0:00:00.205592
-count =  91545
-
-
-InertHandler: all ∆: 
-max =  0:00:00.089938
-min =  0:00:00.000004
-avg =  0:00:00.000030
-sum =  0:00:08.051455
-count =  267948
-
-
-ShoppingHandler ∆: 
-max =  0:00:00.089916
-min =  0:00:00.000002
-avg =  0:00:00.000017
-sum =  0:00:02.877476
-count =  168884
-
-
-__create_pending() ∆: 
-max =  0:00:00.011249
-min =  0:00:00.000465
-avg =  0:00:00.003769
-sum =  0:00:00.376911
-count =  100
-
-
-__order_grp() ∆: 
-max =  0:00:00.011318
-min =  0:00:00.000498
-avg =  0:00:00.003821
-sum =  0:00:00.382146
-count =  100
-
-
-__restock() ∆: 
-max =  0:00:00.004439
-min =  0:00:00.000004
-avg =  0:00:00.000009
-sum =  0:00:00.284832
-count =  31461
-
-
-advance_all_shoppers() ∆: 
-max =  0:00:00.133180
-min =  0:00:00.000022
-avg =  0:00:00.022438
-sum =  0:00:16.132914
-count =  719
-
-
-advance_all_shoppers(): filter valid ∆: 
-max =  0:00:00.001542
-min =  0:00:00.000002
-avg =  0:00:00.000390
-sum =  0:00:00.280460
-count =  719
-
-
-advance_employees(): dispatch() ∆: 
-max =  0:00:00.026135
-min =  0:00:00.000182
-avg =  0:00:00.004061
-sum =  0:00:02.180974
-count =  537
-
-
-advance_employees(): filter working_employees ∆: 
-max =  0:00:00.000147
-min =  0:00:00.000147
-avg =  0:00:00.000147
-sum =  0:00:00.000147
-count =  1
-
-
-advance_lanes() ∆: 
-max =  0:00:00.000601
-min =  0:00:00.000018
-avg =  0:00:00.000096
-sum =  0:00:00.138087
-count =  1438
-
-
-collapse() ∆: 
-max =  0:00:00.000037
-min =  0:00:00.000008
-avg =  0:00:00.000013
-sum =  0:00:00.000573
-count =  43
-
-
-dispatch.restock: __restock() ∆: 
-max =  0:00:00.004504
-min =  0:00:00.000013
-avg =  0:00:00.000028
-sum =  0:00:00.896073
-count =  31461
-
-
-dispatch.restock: all_restocks ∆: 
-max =  0:00:00.026014
-min =  0:00:00.000120
-avg =  0:00:00.003966
-sum =  0:00:02.129631
-count =  537
-
-
-dispatch.restock: while_loop ∆: 
-max =  0:00:00.009342
-min =  0:00:00.000022
-avg =  0:00:00.000047
-sum =  0:00:01.486133
-count =  31461
-
-
-expand() ∆: 
-max =  0:00:00.000651
-min =  0:00:00.000088
-avg =  0:00:00.000252
-sum =  0:00:00.004040
-count =  16
-
-
-get_cashier() ∆: 
-max =  0:00:00.000031
-min =  0:00:00.000003
-avg =  0:00:00.000008
-sum =  0:00:00.000855
-count =  104
-
-
-get_restock_list() ∆: 
-max =  0:00:00.015749
-min =  0:00:00.000088
-avg =  0:00:00.004993
-sum =  0:00:02.995510
-count =  600
-
-
-get_toss_list() ∆: 
-max =  0:00:00.010178
-min =  0:00:00.006388
-avg =  0:00:00.007386
-sum =  0:00:00.886275
-count =  120
-
-
-get_unload_list() ∆: 
-max =  0:00:00.030309
-min =  0:00:00.010392
-avg =  0:00:00.014252
-sum =  0:00:01.710193
-count =  120
-
-
-manage_lanes() ∆: 
-max =  0:00:00.010100
-min =  0:00:00.000012
-avg =  0:00:00.000134
-sum =  0:00:00.192616
-count =  1438
-
-
-shopper_handler() ∆: 
-max =  0:00:00.089953
-min =  0:00:00.000013
-avg =  0:00:00.000045
-sum =  0:00:12.186127
-count =  267948
-
-
-shopper_handler(): ShoppingHandler - search ∆: 
-max =  0:00:00.089815
-min =  0:00:00.000002
-avg =  0:00:00.000008
-sum =  0:00:00.415023
-count =  49668
-
-
-simulate_day() ∆: 
-max =  0:00:00.148823
-min =  0:00:00.000385
-avg =  0:00:00.031981
-sum =  0:00:26.863900
-count =  840
-
-
-CHANGES IMPLEMENTED:
-- ShopperHandler class: abstract --> regular
-    # all prev inherited classes became private functions
-    # main handle function calls the appropriate private function
+PUSHING
+<SmartProduct_5:>
+	> inventory_list: 1 inventories
+	> sublot_quantity = 50
+	> any_shelf[start: 0, end: 0, quantity: 0]
+	> any_back[start: 0, end: 0, quantity: 0]
+	> pending[start: 0, end: 1, quantity: 50]
+	> miss_count = 0
+	> toss_count (# inventories) = 0
+	> sold['today': 0, 'one_ago': 0, 'two_ago': 0
+	> toss: 
+	   2019-10-19 00:00:00 --- start: 0, end: 1, quantity: 50
+<inv_200 at index 0: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+PUSHING
+<SmartProduct_5:>
+	> inventory_list: 2 inventories
+	> sublot_quantity = 50
+	> any_shelf[start: 0, end: 0, quantity: 0]
+	> any_back[start: 0, end: 0, quantity: 0]
+	> pending[start: 0, end: 2, quantity: 100]
+	> miss_count = 0
+	> toss_count (# inventories) = 0
+	> sold['today': 0, 'one_ago': 0, 'two_ago': 0
+	> toss: 
+	   2019-10-19 00:00:00 --- start: 0, end: 2, quantity: 100
+<inv_200 at index 0: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_203 at index 1: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+PUSHING
+<SmartProduct_5:>
+	> inventory_list: 3 inventories
+	> sublot_quantity = 50
+	> any_shelf[start: 0, end: 0, quantity: 0]
+	> any_back[start: 0, end: 0, quantity: 0]
+	> pending[start: 0, end: 3, quantity: 150]
+	> miss_count = 0
+	> toss_count (# inventories) = 0
+	> sold['today': 0, 'one_ago': 0, 'two_ago': 0
+	> toss: 
+	   2019-10-19 00:00:00 --- start: 0, end: 3, quantity: 150
+<inv_200 at index 0: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_203 at index 1: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_204 at index 2: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+PUSHING
+<SmartProduct_5:>
+	> inventory_list: 4 inventories
+	> sublot_quantity = 50
+	> any_shelf[start: 0, end: 0, quantity: 0]
+	> any_back[start: 0, end: 0, quantity: 0]
+	> pending[start: 0, end: 4, quantity: 200]
+	> miss_count = 0
+	> toss_count (# inventories) = 0
+	> sold['today': 0, 'one_ago': 0, 'two_ago': 0
+	> toss: 
+	   2019-10-19 00:00:00 --- start: 0, end: 4, quantity: 200
+<inv_200 at index 0: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_203 at index 1: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_204 at index 2: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_207 at index 3: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+PUSHING
+<SmartProduct_5:>
+	> inventory_list: 5 inventories
+	> sublot_quantity = 50
+	> any_shelf[start: 0, end: 0, quantity: 0]
+	> any_back[start: 0, end: 0, quantity: 0]
+	> pending[start: 0, end: 5, quantity: 250]
+	> miss_count = 0
+	> toss_count (# inventories) = 0
+	> sold['today': 0, 'one_ago': 0, 'two_ago': 0
+	> toss: 
+	   2019-10-19 00:00:00 --- start: 0, end: 5, quantity: 250
+<inv_200 at index 0: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_203 at index 1: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_204 at index 2: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_207 at index 3: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_208 at index 4: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+PUSHING
+<SmartProduct_5:>
+	> inventory_list: 6 inventories
+	> sublot_quantity = 50
+	> any_shelf[start: 0, end: 0, quantity: 0]
+	> any_back[start: 0, end: 0, quantity: 0]
+	> pending[start: 0, end: 6, quantity: 300]
+	> miss_count = 0
+	> toss_count (# inventories) = 0
+	> sold['today': 0, 'one_ago': 0, 'two_ago': 0
+	> toss: 
+	   2019-10-19 00:00:00 --- start: 0, end: 6, quantity: 300
+<inv_200 at index 0: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_203 at index 1: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_204 at index 2: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_207 at index 3: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_208 at index 4: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_209 at index 5: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+PUSHING
+<SmartProduct_5:>
+	> inventory_list: 7 inventories
+	> sublot_quantity = 50
+	> any_shelf[start: 0, end: 0, quantity: 0]
+	> any_back[start: 0, end: 0, quantity: 0]
+	> pending[start: 0, end: 7, quantity: 350]
+	> miss_count = 0
+	> toss_count (# inventories) = 0
+	> sold['today': 0, 'one_ago': 0, 'two_ago': 0
+	> toss: 
+	   2019-10-19 00:00:00 --- start: 0, end: 7, quantity: 350
+<inv_200 at index 0: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_203 at index 1: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_204 at index 2: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_207 at index 3: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_208 at index 4: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_209 at index 5: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_210 at index 6: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+PUSHING
+<SmartProduct_5:>
+	> inventory_list: 8 inventories
+	> sublot_quantity = 50
+	> any_shelf[start: 0, end: 0, quantity: 0]
+	> any_back[start: 0, end: 0, quantity: 0]
+	> pending[start: 0, end: 8, quantity: 400]
+	> miss_count = 0
+	> toss_count (# inventories) = 0
+	> sold['today': 0, 'one_ago': 0, 'two_ago': 0
+	> toss: 
+	   2019-10-19 00:00:00 --- start: 0, end: 8, quantity: 400
+<inv_200 at index 0: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_203 at index 1: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_204 at index 2: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_207 at index 3: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_208 at index 4: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_209 at index 5: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_210 at index 6: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_211 at index 7: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+PUSHING
+<SmartProduct_5:>
+	> inventory_list: 9 inventories
+	> sublot_quantity = 50
+	> any_shelf[start: 0, end: 0, quantity: 0]
+	> any_back[start: 0, end: 0, quantity: 0]
+	> pending[start: 0, end: 9, quantity: 450]
+	> miss_count = 0
+	> toss_count (# inventories) = 0
+	> sold['today': 0, 'one_ago': 0, 'two_ago': 0
+	> toss: 
+	   2019-10-19 00:00:00 --- start: 0, end: 9, quantity: 450
+<inv_200 at index 0: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_203 at index 1: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_204 at index 2: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_207 at index 3: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_208 at index 4: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_209 at index 5: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_210 at index 6: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_211 at index 7: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_214 at index 8: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+PUSHING
+<SmartProduct_5:>
+	> inventory_list: 10 inventories
+	> sublot_quantity = 50
+	> any_shelf[start: 0, end: 0, quantity: 0]
+	> any_back[start: 0, end: 0, quantity: 0]
+	> pending[start: 0, end: 10, quantity: 500]
+	> miss_count = 0
+	> toss_count (# inventories) = 0
+	> sold['today': 0, 'one_ago': 0, 'two_ago': 0
+	> toss: 
+	   2019-10-19 00:00:00 --- start: 0, end: 10, quantity: 500
+<inv_200 at index 0: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_203 at index 1: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_204 at index 2: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_207 at index 3: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_208 at index 4: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_209 at index 5: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_210 at index 6: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_211 at index 7: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_214 at index 8: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_218 at index 9: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+PUSHING
+<SmartProduct_5:>
+	> inventory_list: 11 inventories
+	> sublot_quantity = 50
+	> any_shelf[start: 0, end: 0, quantity: 0]
+	> any_back[start: 0, end: 0, quantity: 0]
+	> pending[start: 0, end: 11, quantity: 550]
+	> miss_count = 0
+	> toss_count (# inventories) = 0
+	> sold['today': 0, 'one_ago': 0, 'two_ago': 0
+	> toss: 
+	   2019-10-19 00:00:00 --- start: 0, end: 11, quantity: 550
+<inv_200 at index 0: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_203 at index 1: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_204 at index 2: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_207 at index 3: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_208 at index 4: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_209 at index 5: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_210 at index 6: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_211 at index 7: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_214 at index 8: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_218 at index 9: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_219 at index 10: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+PUSHING
+<SmartProduct_5:>
+	> inventory_list: 12 inventories
+	> sublot_quantity = 50
+	> any_shelf[start: 0, end: 0, quantity: 0]
+	> any_back[start: 0, end: 0, quantity: 0]
+	> pending[start: 0, end: 12, quantity: 600]
+	> miss_count = 0
+	> toss_count (# inventories) = 0
+	> sold['today': 0, 'one_ago': 0, 'two_ago': 0
+	> toss: 
+	   2019-10-19 00:00:00 --- start: 0, end: 12, quantity: 600
+<inv_200 at index 0: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_203 at index 1: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_204 at index 2: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_207 at index 3: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_208 at index 4: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_209 at index 5: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_210 at index 6: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_211 at index 7: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_214 at index 8: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_218 at index 9: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_219 at index 10: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_220 at index 11: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+PUSHING
+<SmartProduct_5:>
+	> inventory_list: 13 inventories
+	> sublot_quantity = 50
+	> any_shelf[start: 0, end: 0, quantity: 0]
+	> any_back[start: 0, end: 0, quantity: 0]
+	> pending[start: 0, end: 13, quantity: 650]
+	> miss_count = 0
+	> toss_count (# inventories) = 0
+	> sold['today': 0, 'one_ago': 0, 'two_ago': 0
+	> toss: 
+	   2019-10-19 00:00:00 --- start: 0, end: 13, quantity: 650
+<inv_200 at index 0: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_203 at index 1: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_204 at index 2: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_207 at index 3: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_208 at index 4: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_209 at index 5: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_210 at index 6: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_211 at index 7: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_214 at index 8: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_218 at index 9: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_219 at index 10: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_220 at index 11: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_223 at index 12: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+PUSHING
+<SmartProduct_5:>
+	> inventory_list: 14 inventories
+	> sublot_quantity = 50
+	> any_shelf[start: 0, end: 0, quantity: 0]
+	> any_back[start: 0, end: 0, quantity: 0]
+	> pending[start: 0, end: 14, quantity: 700]
+	> miss_count = 0
+	> toss_count (# inventories) = 0
+	> sold['today': 0, 'one_ago': 0, 'two_ago': 0
+	> toss: 
+	   2019-10-19 00:00:00 --- start: 0, end: 14, quantity: 700
+<inv_200 at index 0: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_203 at index 1: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_204 at index 2: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_207 at index 3: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_208 at index 4: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_209 at index 5: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_210 at index 6: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_211 at index 7: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_214 at index 8: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_218 at index 9: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_219 at index 10: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_220 at index 11: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_223 at index 12: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_224 at index 13: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+PUSHING
+<SmartProduct_5:>
+	> inventory_list: 15 inventories
+	> sublot_quantity = 50
+	> any_shelf[start: 0, end: 0, quantity: 0]
+	> any_back[start: 0, end: 0, quantity: 0]
+	> pending[start: 0, end: 15, quantity: 750]
+	> miss_count = 0
+	> toss_count (# inventories) = 0
+	> sold['today': 0, 'one_ago': 0, 'two_ago': 0
+	> toss: 
+	   2019-10-19 00:00:00 --- start: 0, end: 15, quantity: 750
+<inv_200 at index 0: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_203 at index 1: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_204 at index 2: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_207 at index 3: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_208 at index 4: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_209 at index 5: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_210 at index 6: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_211 at index 7: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_214 at index 8: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_218 at index 9: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_219 at index 10: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_220 at index 11: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_223 at index 12: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_224 at index 13: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_225 at index 14: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+PUSHING
+<SmartProduct_5:>
+	> inventory_list: 16 inventories
+	> sublot_quantity = 50
+	> any_shelf[start: 0, end: 0, quantity: 0]
+	> any_back[start: 0, end: 0, quantity: 0]
+	> pending[start: 0, end: 16, quantity: 800]
+	> miss_count = 0
+	> toss_count (# inventories) = 0
+	> sold['today': 0, 'one_ago': 0, 'two_ago': 0
+	> toss: 
+	   2019-10-19 00:00:00 --- start: 0, end: 16, quantity: 800
+<inv_200 at index 0: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_203 at index 1: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_204 at index 2: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_207 at index 3: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_208 at index 4: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_209 at index 5: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_210 at index 6: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_211 at index 7: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_214 at index 8: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_218 at index 9: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_219 at index 10: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_220 at index 11: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_223 at index 12: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_224 at index 13: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_225 at index 14: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_228 at index 15: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+PUSHING
+<SmartProduct_5:>
+	> inventory_list: 17 inventories
+	> sublot_quantity = 50
+	> any_shelf[start: 0, end: 0, quantity: 0]
+	> any_back[start: 0, end: 0, quantity: 0]
+	> pending[start: 0, end: 17, quantity: 850]
+	> miss_count = 0
+	> toss_count (# inventories) = 0
+	> sold['today': 0, 'one_ago': 0, 'two_ago': 0
+	> toss: 
+	   2019-10-19 00:00:00 --- start: 0, end: 17, quantity: 850
+<inv_200 at index 0: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_203 at index 1: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_204 at index 2: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_207 at index 3: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_208 at index 4: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_209 at index 5: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_210 at index 6: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_211 at index 7: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_214 at index 8: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_218 at index 9: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_219 at index 10: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_220 at index 11: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_223 at index 12: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_224 at index 13: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_225 at index 14: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_228 at index 15: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_230 at index 16: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+PUSHING
+<SmartProduct_5:>
+	> inventory_list: 18 inventories
+	> sublot_quantity = 50
+	> any_shelf[start: 0, end: 0, quantity: 0]
+	> any_back[start: 0, end: 0, quantity: 0]
+	> pending[start: 0, end: 18, quantity: 900]
+	> miss_count = 0
+	> toss_count (# inventories) = 0
+	> sold['today': 0, 'one_ago': 0, 'two_ago': 0
+	> toss: 
+	   2019-10-19 00:00:00 --- start: 0, end: 18, quantity: 900
+<inv_200 at index 0: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_203 at index 1: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_204 at index 2: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_207 at index 3: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_208 at index 4: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_209 at index 5: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_210 at index 6: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_211 at index 7: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_214 at index 8: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_218 at index 9: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_219 at index 10: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_220 at index 11: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_223 at index 12: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_224 at index 13: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_225 at index 14: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_228 at index 15: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_230 at index 16: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_231 at index 17: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+PUSHING
+<SmartProduct_5:>
+	> inventory_list: 19 inventories
+	> sublot_quantity = 50
+	> any_shelf[start: 0, end: 0, quantity: 0]
+	> any_back[start: 0, end: 0, quantity: 0]
+	> pending[start: 0, end: 19, quantity: 950]
+	> miss_count = 0
+	> toss_count (# inventories) = 0
+	> sold['today': 0, 'one_ago': 0, 'two_ago': 0
+	> toss: 
+	   2019-10-19 00:00:00 --- start: 0, end: 19, quantity: 950
+<inv_200 at index 0: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_203 at index 1: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_204 at index 2: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_207 at index 3: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_208 at index 4: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_209 at index 5: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_210 at index 6: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_211 at index 7: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_214 at index 8: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_218 at index 9: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_219 at index 10: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_220 at index 11: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_223 at index 12: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_224 at index 13: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_225 at index 14: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_228 at index 15: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_230 at index 16: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_231 at index 17: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_233 at index 18: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+PUSHING
+<SmartProduct_5:>
+	> inventory_list: 20 inventories
+	> sublot_quantity = 50
+	> any_shelf[start: 0, end: 0, quantity: 0]
+	> any_back[start: 0, end: 0, quantity: 0]
+	> pending[start: 0, end: 20, quantity: 1000]
+	> miss_count = 0
+	> toss_count (# inventories) = 0
+	> sold['today': 0, 'one_ago': 0, 'two_ago': 0
+	> toss: 
+	   2019-10-19 00:00:00 --- start: 0, end: 20, quantity: 1000
+<inv_200 at index 0: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_203 at index 1: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_204 at index 2: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_207 at index 3: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_208 at index 4: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_209 at index 5: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_210 at index 6: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_211 at index 7: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_214 at index 8: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_218 at index 9: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_219 at index 10: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_220 at index 11: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_223 at index 12: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_224 at index 13: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_225 at index 14: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_228 at index 15: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_230 at index 16: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_231 at index 17: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_233 at index 18: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_237 at index 19: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+PUSHING
+<SmartProduct_5:>
+	> inventory_list: 21 inventories
+	> sublot_quantity = 50
+	> any_shelf[start: 0, end: 0, quantity: 0]
+	> any_back[start: 0, end: 0, quantity: 0]
+	> pending[start: 0, end: 21, quantity: 1050]
+	> miss_count = 0
+	> toss_count (# inventories) = 0
+	> sold['today': 0, 'one_ago': 0, 'two_ago': 0
+	> toss: 
+	   2019-10-19 00:00:00 --- start: 0, end: 20, quantity: 1000
+	   2019-10-20 00:00:00 --- start: 20, end: 21, quantity: 50
+<inv_200 at index 0: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_203 at index 1: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_204 at index 2: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_207 at index 3: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_208 at index 4: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_209 at index 5: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_210 at index 6: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_211 at index 7: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_214 at index 8: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_218 at index 9: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_219 at index 10: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_220 at index 11: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_223 at index 12: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_224 at index 13: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_225 at index 14: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_228 at index 15: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_230 at index 16: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_231 at index 17: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_233 at index 18: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_237 at index 19: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_201 at index 20: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+PUSHING
+<SmartProduct_5:>
+	> inventory_list: 22 inventories
+	> sublot_quantity = 50
+	> any_shelf[start: 0, end: 0, quantity: 0]
+	> any_back[start: 0, end: 0, quantity: 0]
+	> pending[start: 0, end: 22, quantity: 1100]
+	> miss_count = 0
+	> toss_count (# inventories) = 0
+	> sold['today': 0, 'one_ago': 0, 'two_ago': 0
+	> toss: 
+	   2019-10-19 00:00:00 --- start: 0, end: 20, quantity: 1000
+	   2019-10-20 00:00:00 --- start: 20, end: 22, quantity: 100
+<inv_200 at index 0: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_203 at index 1: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_204 at index 2: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_207 at index 3: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_208 at index 4: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_209 at index 5: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_210 at index 6: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_211 at index 7: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_214 at index 8: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_218 at index 9: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_219 at index 10: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_220 at index 11: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_223 at index 12: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_224 at index 13: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_225 at index 14: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_228 at index 15: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_230 at index 16: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_231 at index 17: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_233 at index 18: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_237 at index 19: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_201 at index 20: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_202 at index 21: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+PUSHING
+<SmartProduct_5:>
+	> inventory_list: 23 inventories
+	> sublot_quantity = 50
+	> any_shelf[start: 0, end: 0, quantity: 0]
+	> any_back[start: 0, end: 0, quantity: 0]
+	> pending[start: 0, end: 23, quantity: 1150]
+	> miss_count = 0
+	> toss_count (# inventories) = 0
+	> sold['today': 0, 'one_ago': 0, 'two_ago': 0
+	> toss: 
+	   2019-10-19 00:00:00 --- start: 0, end: 20, quantity: 1000
+	   2019-10-20 00:00:00 --- start: 20, end: 23, quantity: 150
+<inv_200 at index 0: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_203 at index 1: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_204 at index 2: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_207 at index 3: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_208 at index 4: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_209 at index 5: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_210 at index 6: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_211 at index 7: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_214 at index 8: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_218 at index 9: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_219 at index 10: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_220 at index 11: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_223 at index 12: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_224 at index 13: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_225 at index 14: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_228 at index 15: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_230 at index 16: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_231 at index 17: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_233 at index 18: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_237 at index 19: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_201 at index 20: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_202 at index 21: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_205 at index 22: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+PUSHING
+<SmartProduct_5:>
+	> inventory_list: 24 inventories
+	> sublot_quantity = 50
+	> any_shelf[start: 0, end: 0, quantity: 0]
+	> any_back[start: 0, end: 0, quantity: 0]
+	> pending[start: 0, end: 24, quantity: 1200]
+	> miss_count = 0
+	> toss_count (# inventories) = 0
+	> sold['today': 0, 'one_ago': 0, 'two_ago': 0
+	> toss: 
+	   2019-10-19 00:00:00 --- start: 0, end: 20, quantity: 1000
+	   2019-10-20 00:00:00 --- start: 20, end: 24, quantity: 200
+<inv_200 at index 0: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_203 at index 1: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_204 at index 2: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_207 at index 3: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_208 at index 4: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_209 at index 5: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_210 at index 6: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_211 at index 7: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_214 at index 8: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_218 at index 9: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_219 at index 10: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_220 at index 11: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_223 at index 12: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_224 at index 13: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_225 at index 14: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_228 at index 15: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_230 at index 16: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_231 at index 17: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_233 at index 18: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_237 at index 19: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_201 at index 20: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_202 at index 21: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_205 at index 22: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_206 at index 23: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+PUSHING
+<SmartProduct_5:>
+	> inventory_list: 25 inventories
+	> sublot_quantity = 50
+	> any_shelf[start: 0, end: 0, quantity: 0]
+	> any_back[start: 0, end: 0, quantity: 0]
+	> pending[start: 0, end: 25, quantity: 1250]
+	> miss_count = 0
+	> toss_count (# inventories) = 0
+	> sold['today': 0, 'one_ago': 0, 'two_ago': 0
+	> toss: 
+	   2019-10-19 00:00:00 --- start: 0, end: 20, quantity: 1000
+	   2019-10-20 00:00:00 --- start: 20, end: 25, quantity: 250
+<inv_200 at index 0: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_203 at index 1: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_204 at index 2: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_207 at index 3: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_208 at index 4: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_209 at index 5: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_210 at index 6: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_211 at index 7: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_214 at index 8: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_218 at index 9: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_219 at index 10: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_220 at index 11: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_223 at index 12: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_224 at index 13: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_225 at index 14: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_228 at index 15: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_230 at index 16: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_231 at index 17: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_233 at index 18: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_237 at index 19: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_201 at index 20: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_202 at index 21: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_205 at index 22: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_206 at index 23: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_212 at index 24: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+PUSHING
+<SmartProduct_5:>
+	> inventory_list: 26 inventories
+	> sublot_quantity = 50
+	> any_shelf[start: 0, end: 0, quantity: 0]
+	> any_back[start: 0, end: 0, quantity: 0]
+	> pending[start: 0, end: 26, quantity: 1300]
+	> miss_count = 0
+	> toss_count (# inventories) = 0
+	> sold['today': 0, 'one_ago': 0, 'two_ago': 0
+	> toss: 
+	   2019-10-19 00:00:00 --- start: 0, end: 20, quantity: 1000
+	   2019-10-20 00:00:00 --- start: 20, end: 26, quantity: 300
+<inv_200 at index 0: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_203 at index 1: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_204 at index 2: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_207 at index 3: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_208 at index 4: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_209 at index 5: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_210 at index 6: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_211 at index 7: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_214 at index 8: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_218 at index 9: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_219 at index 10: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_220 at index 11: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_223 at index 12: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_224 at index 13: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_225 at index 14: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_228 at index 15: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_230 at index 16: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_231 at index 17: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_233 at index 18: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_237 at index 19: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_201 at index 20: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_202 at index 21: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_205 at index 22: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_206 at index 23: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_212 at index 24: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_213 at index 25: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+PUSHING
+<SmartProduct_5:>
+	> inventory_list: 27 inventories
+	> sublot_quantity = 50
+	> any_shelf[start: 0, end: 0, quantity: 0]
+	> any_back[start: 0, end: 0, quantity: 0]
+	> pending[start: 0, end: 27, quantity: 1350]
+	> miss_count = 0
+	> toss_count (# inventories) = 0
+	> sold['today': 0, 'one_ago': 0, 'two_ago': 0
+	> toss: 
+	   2019-10-19 00:00:00 --- start: 0, end: 20, quantity: 1000
+	   2019-10-20 00:00:00 --- start: 20, end: 27, quantity: 350
+<inv_200 at index 0: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_203 at index 1: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_204 at index 2: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_207 at index 3: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_208 at index 4: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_209 at index 5: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_210 at index 6: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_211 at index 7: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_214 at index 8: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_218 at index 9: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_219 at index 10: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_220 at index 11: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_223 at index 12: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_224 at index 13: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_225 at index 14: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_228 at index 15: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_230 at index 16: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_231 at index 17: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_233 at index 18: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_237 at index 19: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_201 at index 20: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_202 at index 21: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_205 at index 22: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_206 at index 23: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_212 at index 24: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_213 at index 25: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_215 at index 26: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+PUSHING
+<SmartProduct_5:>
+	> inventory_list: 28 inventories
+	> sublot_quantity = 50
+	> any_shelf[start: 0, end: 0, quantity: 0]
+	> any_back[start: 0, end: 0, quantity: 0]
+	> pending[start: 0, end: 28, quantity: 1400]
+	> miss_count = 0
+	> toss_count (# inventories) = 0
+	> sold['today': 0, 'one_ago': 0, 'two_ago': 0
+	> toss: 
+	   2019-10-19 00:00:00 --- start: 0, end: 20, quantity: 1000
+	   2019-10-20 00:00:00 --- start: 20, end: 28, quantity: 400
+<inv_200 at index 0: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_203 at index 1: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_204 at index 2: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_207 at index 3: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_208 at index 4: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_209 at index 5: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_210 at index 6: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_211 at index 7: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_214 at index 8: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_218 at index 9: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_219 at index 10: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_220 at index 11: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_223 at index 12: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_224 at index 13: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_225 at index 14: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_228 at index 15: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_230 at index 16: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_231 at index 17: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_233 at index 18: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_237 at index 19: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_201 at index 20: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_202 at index 21: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_205 at index 22: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_206 at index 23: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_212 at index 24: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_213 at index 25: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_215 at index 26: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_216 at index 27: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+PUSHING
+<SmartProduct_5:>
+	> inventory_list: 29 inventories
+	> sublot_quantity = 50
+	> any_shelf[start: 0, end: 0, quantity: 0]
+	> any_back[start: 0, end: 0, quantity: 0]
+	> pending[start: 0, end: 29, quantity: 1450]
+	> miss_count = 0
+	> toss_count (# inventories) = 0
+	> sold['today': 0, 'one_ago': 0, 'two_ago': 0
+	> toss: 
+	   2019-10-19 00:00:00 --- start: 0, end: 20, quantity: 1000
+	   2019-10-20 00:00:00 --- start: 20, end: 29, quantity: 450
+<inv_200 at index 0: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_203 at index 1: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_204 at index 2: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_207 at index 3: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_208 at index 4: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_209 at index 5: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_210 at index 6: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_211 at index 7: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_214 at index 8: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_218 at index 9: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_219 at index 10: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_220 at index 11: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_223 at index 12: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_224 at index 13: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_225 at index 14: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_228 at index 15: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_230 at index 16: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_231 at index 17: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_233 at index 18: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_237 at index 19: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_201 at index 20: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_202 at index 21: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_205 at index 22: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_206 at index 23: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_212 at index 24: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_213 at index 25: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_215 at index 26: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_216 at index 27: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_217 at index 28: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+PUSHING
+<SmartProduct_5:>
+	> inventory_list: 30 inventories
+	> sublot_quantity = 50
+	> any_shelf[start: 0, end: 0, quantity: 0]
+	> any_back[start: 0, end: 0, quantity: 0]
+	> pending[start: 0, end: 30, quantity: 1500]
+	> miss_count = 0
+	> toss_count (# inventories) = 0
+	> sold['today': 0, 'one_ago': 0, 'two_ago': 0
+	> toss: 
+	   2019-10-19 00:00:00 --- start: 0, end: 20, quantity: 1000
+	   2019-10-20 00:00:00 --- start: 20, end: 30, quantity: 500
+<inv_200 at index 0: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_203 at index 1: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_204 at index 2: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_207 at index 3: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_208 at index 4: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_209 at index 5: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_210 at index 6: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_211 at index 7: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_214 at index 8: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_218 at index 9: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_219 at index 10: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_220 at index 11: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_223 at index 12: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_224 at index 13: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_225 at index 14: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_228 at index 15: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_230 at index 16: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_231 at index 17: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_233 at index 18: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_237 at index 19: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_201 at index 20: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_202 at index 21: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_205 at index 22: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_206 at index 23: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_212 at index 24: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_213 at index 25: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_215 at index 26: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_216 at index 27: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_217 at index 28: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_221 at index 29: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+PUSHING
+<SmartProduct_5:>
+	> inventory_list: 31 inventories
+	> sublot_quantity = 50
+	> any_shelf[start: 0, end: 0, quantity: 0]
+	> any_back[start: 0, end: 0, quantity: 0]
+	> pending[start: 0, end: 31, quantity: 1550]
+	> miss_count = 0
+	> toss_count (# inventories) = 0
+	> sold['today': 0, 'one_ago': 0, 'two_ago': 0
+	> toss: 
+	   2019-10-19 00:00:00 --- start: 0, end: 20, quantity: 1000
+	   2019-10-20 00:00:00 --- start: 20, end: 31, quantity: 550
+<inv_200 at index 0: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_203 at index 1: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_204 at index 2: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_207 at index 3: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_208 at index 4: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_209 at index 5: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_210 at index 6: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_211 at index 7: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_214 at index 8: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_218 at index 9: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_219 at index 10: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_220 at index 11: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_223 at index 12: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_224 at index 13: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_225 at index 14: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_228 at index 15: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_230 at index 16: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_231 at index 17: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_233 at index 18: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_237 at index 19: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_201 at index 20: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_202 at index 21: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_205 at index 22: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_206 at index 23: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_212 at index 24: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_213 at index 25: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_215 at index 26: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_216 at index 27: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_217 at index 28: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_221 at index 29: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_222 at index 30: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+PUSHING
+<SmartProduct_5:>
+	> inventory_list: 32 inventories
+	> sublot_quantity = 50
+	> any_shelf[start: 0, end: 0, quantity: 0]
+	> any_back[start: 0, end: 0, quantity: 0]
+	> pending[start: 0, end: 32, quantity: 1600]
+	> miss_count = 0
+	> toss_count (# inventories) = 0
+	> sold['today': 0, 'one_ago': 0, 'two_ago': 0
+	> toss: 
+	   2019-10-19 00:00:00 --- start: 0, end: 20, quantity: 1000
+	   2019-10-20 00:00:00 --- start: 20, end: 32, quantity: 600
+<inv_200 at index 0: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_203 at index 1: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_204 at index 2: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_207 at index 3: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_208 at index 4: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_209 at index 5: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_210 at index 6: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_211 at index 7: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_214 at index 8: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_218 at index 9: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_219 at index 10: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_220 at index 11: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_223 at index 12: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_224 at index 13: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_225 at index 14: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_228 at index 15: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_230 at index 16: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_231 at index 17: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_233 at index 18: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_237 at index 19: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_201 at index 20: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_202 at index 21: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_205 at index 22: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_206 at index 23: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_212 at index 24: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_213 at index 25: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_215 at index 26: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_216 at index 27: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_217 at index 28: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_221 at index 29: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_222 at index 30: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_226 at index 31: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+PUSHING
+<SmartProduct_5:>
+	> inventory_list: 33 inventories
+	> sublot_quantity = 50
+	> any_shelf[start: 0, end: 0, quantity: 0]
+	> any_back[start: 0, end: 0, quantity: 0]
+	> pending[start: 0, end: 33, quantity: 1650]
+	> miss_count = 0
+	> toss_count (# inventories) = 0
+	> sold['today': 0, 'one_ago': 0, 'two_ago': 0
+	> toss: 
+	   2019-10-19 00:00:00 --- start: 0, end: 20, quantity: 1000
+	   2019-10-20 00:00:00 --- start: 20, end: 33, quantity: 650
+<inv_200 at index 0: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_203 at index 1: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_204 at index 2: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_207 at index 3: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_208 at index 4: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_209 at index 5: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_210 at index 6: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_211 at index 7: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_214 at index 8: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_218 at index 9: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_219 at index 10: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_220 at index 11: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_223 at index 12: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_224 at index 13: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_225 at index 14: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_228 at index 15: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_230 at index 16: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_231 at index 17: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_233 at index 18: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_237 at index 19: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_201 at index 20: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_202 at index 21: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_205 at index 22: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_206 at index 23: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_212 at index 24: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_213 at index 25: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_215 at index 26: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_216 at index 27: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_217 at index 28: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_221 at index 29: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_222 at index 30: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_226 at index 31: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_227 at index 32: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+PUSHING
+<SmartProduct_5:>
+	> inventory_list: 34 inventories
+	> sublot_quantity = 50
+	> any_shelf[start: 0, end: 0, quantity: 0]
+	> any_back[start: 0, end: 0, quantity: 0]
+	> pending[start: 0, end: 34, quantity: 1700]
+	> miss_count = 0
+	> toss_count (# inventories) = 0
+	> sold['today': 0, 'one_ago': 0, 'two_ago': 0
+	> toss: 
+	   2019-10-19 00:00:00 --- start: 0, end: 20, quantity: 1000
+	   2019-10-20 00:00:00 --- start: 20, end: 34, quantity: 700
+<inv_200 at index 0: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_203 at index 1: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_204 at index 2: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_207 at index 3: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_208 at index 4: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_209 at index 5: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_210 at index 6: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_211 at index 7: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_214 at index 8: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_218 at index 9: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_219 at index 10: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_220 at index 11: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_223 at index 12: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_224 at index 13: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_225 at index 14: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_228 at index 15: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_230 at index 16: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_231 at index 17: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_233 at index 18: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_237 at index 19: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_201 at index 20: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_202 at index 21: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_205 at index 22: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_206 at index 23: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_212 at index 24: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_213 at index 25: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_215 at index 26: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_216 at index 27: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_217 at index 28: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_221 at index 29: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_222 at index 30: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_226 at index 31: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_227 at index 32: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_229 at index 33: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+PUSHING
+<SmartProduct_5:>
+	> inventory_list: 35 inventories
+	> sublot_quantity = 50
+	> any_shelf[start: 0, end: 0, quantity: 0]
+	> any_back[start: 0, end: 0, quantity: 0]
+	> pending[start: 0, end: 35, quantity: 1750]
+	> miss_count = 0
+	> toss_count (# inventories) = 0
+	> sold['today': 0, 'one_ago': 0, 'two_ago': 0
+	> toss: 
+	   2019-10-19 00:00:00 --- start: 0, end: 20, quantity: 1000
+	   2019-10-20 00:00:00 --- start: 20, end: 35, quantity: 750
+<inv_200 at index 0: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_203 at index 1: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_204 at index 2: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_207 at index 3: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_208 at index 4: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_209 at index 5: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_210 at index 6: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_211 at index 7: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_214 at index 8: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_218 at index 9: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_219 at index 10: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_220 at index 11: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_223 at index 12: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_224 at index 13: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_225 at index 14: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_228 at index 15: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_230 at index 16: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_231 at index 17: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_233 at index 18: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_237 at index 19: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_201 at index 20: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_202 at index 21: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_205 at index 22: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_206 at index 23: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_212 at index 24: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_213 at index 25: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_215 at index 26: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_216 at index 27: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_217 at index 28: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_221 at index 29: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_222 at index 30: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_226 at index 31: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_227 at index 32: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_229 at index 33: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_232 at index 34: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+PUSHING
+<SmartProduct_5:>
+	> inventory_list: 36 inventories
+	> sublot_quantity = 50
+	> any_shelf[start: 0, end: 0, quantity: 0]
+	> any_back[start: 0, end: 0, quantity: 0]
+	> pending[start: 0, end: 36, quantity: 1800]
+	> miss_count = 0
+	> toss_count (# inventories) = 0
+	> sold['today': 0, 'one_ago': 0, 'two_ago': 0
+	> toss: 
+	   2019-10-19 00:00:00 --- start: 0, end: 20, quantity: 1000
+	   2019-10-20 00:00:00 --- start: 20, end: 36, quantity: 800
+<inv_200 at index 0: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_203 at index 1: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_204 at index 2: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_207 at index 3: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_208 at index 4: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_209 at index 5: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_210 at index 6: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_211 at index 7: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_214 at index 8: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_218 at index 9: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_219 at index 10: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_220 at index 11: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_223 at index 12: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_224 at index 13: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_225 at index 14: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_228 at index 15: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_230 at index 16: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_231 at index 17: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_233 at index 18: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_237 at index 19: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_201 at index 20: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_202 at index 21: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_205 at index 22: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_206 at index 23: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_212 at index 24: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_213 at index 25: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_215 at index 26: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_216 at index 27: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_217 at index 28: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_221 at index 29: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_222 at index 30: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_226 at index 31: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_227 at index 32: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_229 at index 33: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_232 at index 34: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_234 at index 35: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+PUSHING
+<SmartProduct_5:>
+	> inventory_list: 37 inventories
+	> sublot_quantity = 50
+	> any_shelf[start: 0, end: 0, quantity: 0]
+	> any_back[start: 0, end: 0, quantity: 0]
+	> pending[start: 0, end: 37, quantity: 1850]
+	> miss_count = 0
+	> toss_count (# inventories) = 0
+	> sold['today': 0, 'one_ago': 0, 'two_ago': 0
+	> toss: 
+	   2019-10-19 00:00:00 --- start: 0, end: 20, quantity: 1000
+	   2019-10-20 00:00:00 --- start: 20, end: 37, quantity: 850
+<inv_200 at index 0: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_203 at index 1: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_204 at index 2: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_207 at index 3: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_208 at index 4: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_209 at index 5: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_210 at index 6: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_211 at index 7: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_214 at index 8: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_218 at index 9: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_219 at index 10: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_220 at index 11: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_223 at index 12: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_224 at index 13: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_225 at index 14: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_228 at index 15: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_230 at index 16: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_231 at index 17: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_233 at index 18: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_237 at index 19: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_201 at index 20: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_202 at index 21: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_205 at index 22: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_206 at index 23: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_212 at index 24: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_213 at index 25: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_215 at index 26: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_216 at index 27: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_217 at index 28: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_221 at index 29: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_222 at index 30: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_226 at index 31: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_227 at index 32: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_229 at index 33: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_232 at index 34: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_234 at index 35: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_235 at index 36: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+PUSHING
+<SmartProduct_5:>
+	> inventory_list: 38 inventories
+	> sublot_quantity = 50
+	> any_shelf[start: 0, end: 0, quantity: 0]
+	> any_back[start: 0, end: 0, quantity: 0]
+	> pending[start: 0, end: 38, quantity: 1900]
+	> miss_count = 0
+	> toss_count (# inventories) = 0
+	> sold['today': 0, 'one_ago': 0, 'two_ago': 0
+	> toss: 
+	   2019-10-19 00:00:00 --- start: 0, end: 20, quantity: 1000
+	   2019-10-20 00:00:00 --- start: 20, end: 38, quantity: 900
+<inv_200 at index 0: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_203 at index 1: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_204 at index 2: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_207 at index 3: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_208 at index 4: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_209 at index 5: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_210 at index 6: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_211 at index 7: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_214 at index 8: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_218 at index 9: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_219 at index 10: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_220 at index 11: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_223 at index 12: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_224 at index 13: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_225 at index 14: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_228 at index 15: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_230 at index 16: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_231 at index 17: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_233 at index 18: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_237 at index 19: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_201 at index 20: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_202 at index 21: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_205 at index 22: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_206 at index 23: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_212 at index 24: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_213 at index 25: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_215 at index 26: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_216 at index 27: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_217 at index 28: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_221 at index 29: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_222 at index 30: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_226 at index 31: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_227 at index 32: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_229 at index 33: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_232 at index 34: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_234 at index 35: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_235 at index 36: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_236 at index 37: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+PUSHING
+<SmartProduct_5:>
+	> inventory_list: 39 inventories
+	> sublot_quantity = 50
+	> any_shelf[start: 0, end: 0, quantity: 0]
+	> any_back[start: 0, end: 0, quantity: 0]
+	> pending[start: 0, end: 39, quantity: 1950]
+	> miss_count = 0
+	> toss_count (# inventories) = 0
+	> sold['today': 0, 'one_ago': 0, 'two_ago': 0
+	> toss: 
+	   2019-10-19 00:00:00 --- start: 0, end: 20, quantity: 1000
+	   2019-10-20 00:00:00 --- start: 20, end: 39, quantity: 950
+<inv_200 at index 0: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_203 at index 1: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_204 at index 2: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_207 at index 3: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_208 at index 4: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_209 at index 5: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_210 at index 6: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_211 at index 7: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_214 at index 8: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_218 at index 9: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_219 at index 10: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_220 at index 11: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_223 at index 12: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_224 at index 13: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_225 at index 14: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_228 at index 15: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_230 at index 16: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_231 at index 17: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_233 at index 18: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_237 at index 19: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_201 at index 20: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_202 at index 21: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_205 at index 22: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_206 at index 23: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_212 at index 24: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_213 at index 25: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_215 at index 26: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_216 at index 27: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_217 at index 28: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_221 at index 29: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_222 at index 30: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_226 at index 31: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_227 at index 32: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_229 at index 33: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_232 at index 34: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_234 at index 35: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_235 at index 36: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_236 at index 37: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_238 at index 38: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+PUSHING
+<SmartProduct_5:>
+	> inventory_list: 40 inventories
+	> sublot_quantity = 50
+	> any_shelf[start: 0, end: 0, quantity: 0]
+	> any_back[start: 0, end: 0, quantity: 0]
+	> pending[start: 0, end: 40, quantity: 2000]
+	> miss_count = 0
+	> toss_count (# inventories) = 0
+	> sold['today': 0, 'one_ago': 0, 'two_ago': 0
+	> toss: 
+	   2019-10-19 00:00:00 --- start: 0, end: 20, quantity: 1000
+	   2019-10-20 00:00:00 --- start: 20, end: 40, quantity: 1000
+<inv_200 at index 0: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_203 at index 1: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_204 at index 2: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_207 at index 3: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_208 at index 4: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_209 at index 5: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_210 at index 6: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_211 at index 7: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_214 at index 8: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_218 at index 9: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_219 at index 10: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_220 at index 11: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_223 at index 12: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_224 at index 13: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_225 at index 14: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_228 at index 15: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_230 at index 16: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_231 at index 17: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_233 at index 18: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_237 at index 19: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_201 at index 20: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_202 at index 21: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_205 at index 22: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_206 at index 23: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_212 at index 24: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_213 at index 25: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_215 at index 26: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_216 at index 27: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_217 at index 28: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_221 at index 29: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_222 at index 30: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_226 at index 31: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_227 at index 32: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_229 at index 33: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_232 at index 34: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_234 at index 35: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_235 at index 36: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_236 at index 37: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_238 at index 38: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_239 at index 39: grp=5, shelved=0, back=0, pending=50, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+UNLOADING
+<SmartProduct_5:>
+	> inventory_list: 40 inventories
+	> sublot_quantity = 50
+	> any_shelf[start: 0, end: 0, quantity: 0]
+	> any_back[start: 0, end: 40, quantity: 2000]
+	> pending[start: 40, end: 40, quantity: 0]
+	> miss_count = 0
+	> toss_count (# inventories) = 0
+	> sold['today': 0, 'one_ago': 0, 'two_ago': 0
+	> toss: 
+	   2019-10-19 00:00:00 --- start: 0, end: 20, quantity: 1000
+	   2019-10-20 00:00:00 --- start: 20, end: 40, quantity: 1000
+<inv_200 at index 0: grp=5, shelved=0, back=50, pending=0, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_203 at index 1: grp=5, shelved=0, back=50, pending=0, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_204 at index 2: grp=5, shelved=0, back=50, pending=0, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_207 at index 3: grp=5, shelved=0, back=50, pending=0, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_208 at index 4: grp=5, shelved=0, back=50, pending=0, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_209 at index 5: grp=5, shelved=0, back=50, pending=0, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_210 at index 6: grp=5, shelved=0, back=50, pending=0, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_211 at index 7: grp=5, shelved=0, back=50, pending=0, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_214 at index 8: grp=5, shelved=0, back=50, pending=0, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_218 at index 9: grp=5, shelved=0, back=50, pending=0, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_219 at index 10: grp=5, shelved=0, back=50, pending=0, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_220 at index 11: grp=5, shelved=0, back=50, pending=0, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_223 at index 12: grp=5, shelved=0, back=50, pending=0, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_224 at index 13: grp=5, shelved=0, back=50, pending=0, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_225 at index 14: grp=5, shelved=0, back=50, pending=0, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_228 at index 15: grp=5, shelved=0, back=50, pending=0, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_230 at index 16: grp=5, shelved=0, back=50, pending=0, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_231 at index 17: grp=5, shelved=0, back=50, pending=0, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_233 at index 18: grp=5, shelved=0, back=50, pending=0, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_237 at index 19: grp=5, shelved=0, back=50, pending=0, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_201 at index 20: grp=5, shelved=0, back=50, pending=0, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_202 at index 21: grp=5, shelved=0, back=50, pending=0, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_205 at index 22: grp=5, shelved=0, back=50, pending=0, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_206 at index 23: grp=5, shelved=0, back=50, pending=0, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_212 at index 24: grp=5, shelved=0, back=50, pending=0, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_213 at index 25: grp=5, shelved=0, back=50, pending=0, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_215 at index 26: grp=5, shelved=0, back=50, pending=0, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_216 at index 27: grp=5, shelved=0, back=50, pending=0, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_217 at index 28: grp=5, shelved=0, back=50, pending=0, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_221 at index 29: grp=5, shelved=0, back=50, pending=0, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_222 at index 30: grp=5, shelved=0, back=50, pending=0, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_226 at index 31: grp=5, shelved=0, back=50, pending=0, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_227 at index 32: grp=5, shelved=0, back=50, pending=0, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_229 at index 33: grp=5, shelved=0, back=50, pending=0, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_232 at index 34: grp=5, shelved=0, back=50, pending=0, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_234 at index 35: grp=5, shelved=0, back=50, pending=0, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_235 at index 36: grp=5, shelved=0, back=50, pending=0, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_236 at index 37: grp=5, shelved=0, back=50, pending=0, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_238 at index 38: grp=5, shelved=0, back=50, pending=0, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_239 at index 39: grp=5, shelved=0, back=50, pending=0, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+RESTOCKING
+<SmartProduct_5:>
+	> inventory_list: 40 inventories
+	> sublot_quantity = 50
+	> any_shelf[start: 0, end: 20, quantity: 1000]
+	> any_back[start: 20, end: 40, quantity: 1000]
+	> pending[start: 40, end: 40, quantity: 0]
+	> miss_count = 0
+	> toss_count (# inventories) = 0
+	> sold['today': 0, 'one_ago': 0, 'two_ago': 0
+	> toss: 
+	   2019-10-19 00:00:00 --- start: 0, end: 20, quantity: 1000
+	   2019-10-20 00:00:00 --- start: 20, end: 40, quantity: 1000
+<inv_200 at index 0: grp=5, shelved=50, back=0, pending=0, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_203 at index 1: grp=5, shelved=50, back=0, pending=0, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_204 at index 2: grp=5, shelved=50, back=0, pending=0, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_207 at index 3: grp=5, shelved=50, back=0, pending=0, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_208 at index 4: grp=5, shelved=50, back=0, pending=0, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_209 at index 5: grp=5, shelved=50, back=0, pending=0, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_210 at index 6: grp=5, shelved=50, back=0, pending=0, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_211 at index 7: grp=5, shelved=50, back=0, pending=0, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_214 at index 8: grp=5, shelved=50, back=0, pending=0, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_218 at index 9: grp=5, shelved=50, back=0, pending=0, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_219 at index 10: grp=5, shelved=50, back=0, pending=0, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_220 at index 11: grp=5, shelved=50, back=0, pending=0, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_223 at index 12: grp=5, shelved=50, back=0, pending=0, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_224 at index 13: grp=5, shelved=50, back=0, pending=0, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_225 at index 14: grp=5, shelved=50, back=0, pending=0, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_228 at index 15: grp=5, shelved=50, back=0, pending=0, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_230 at index 16: grp=5, shelved=50, back=0, pending=0, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_231 at index 17: grp=5, shelved=50, back=0, pending=0, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_233 at index 18: grp=5, shelved=50, back=0, pending=0, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_237 at index 19: grp=5, shelved=50, back=0, pending=0, available=2019-09-15 00:00:00, sell_by=2019-10-19 00:00:00, deleted=False>
+<inv_201 at index 20: grp=5, shelved=0, back=50, pending=0, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_202 at index 21: grp=5, shelved=0, back=50, pending=0, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_205 at index 22: grp=5, shelved=0, back=50, pending=0, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_206 at index 23: grp=5, shelved=0, back=50, pending=0, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_212 at index 24: grp=5, shelved=0, back=50, pending=0, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_213 at index 25: grp=5, shelved=0, back=50, pending=0, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_215 at index 26: grp=5, shelved=0, back=50, pending=0, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_216 at index 27: grp=5, shelved=0, back=50, pending=0, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_217 at index 28: grp=5, shelved=0, back=50, pending=0, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_221 at index 29: grp=5, shelved=0, back=50, pending=0, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_222 at index 30: grp=5, shelved=0, back=50, pending=0, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_226 at index 31: grp=5, shelved=0, back=50, pending=0, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_227 at index 32: grp=5, shelved=0, back=50, pending=0, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_229 at index 33: grp=5, shelved=0, back=50, pending=0, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_232 at index 34: grp=5, shelved=0, back=50, pending=0, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_234 at index 35: grp=5, shelved=0, back=50, pending=0, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_235 at index 36: grp=5, shelved=0, back=50, pending=0, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_236 at index 37: grp=5, shelved=0, back=50, pending=0, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_238 at index 38: grp=5, shelved=0, back=50, pending=0, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+<inv_239 at index 39: grp=5, shelved=0, back=50, pending=0, available=2019-09-15 00:00:00, sell_by=2019-10-20 00:00:00, deleted=False>
+-------------------------------------------------------------------------------------------------- DAY 0: 9/15/2019
+-------------------- TIME STEP 0
+-------------------- TIME STEP 1
+-------------------- TIME STEP 2
+-------------------- TIME STEP 3
+-------------------- TIME STEP 4
+-------------------- TIME STEP 5
+-------------------- TIME STEP 6
+-------------------- TIME STEP 7
+-------------------- TIME STEP 8
+-------------------- TIME STEP 9
+-------------------- TIME STEP 10
+-------------------- TIME STEP 11
+-------------------- TIME STEP 12
+-------------------- TIME STEP 13
+-------------------- TIME STEP 14
+-------------------- TIME STEP 15
+-------------------- TIME STEP 16
+-------------------- TIME STEP 17
+-------------------- TIME STEP 18
+-------------------- TIME STEP 19
+-------------------- TIME STEP 20
+-------------------- TIME STEP 21
+-------------------- TIME STEP 22
+-------------------- TIME STEP 23
+-------------------- TIME STEP 24
+-------------------- TIME STEP 25

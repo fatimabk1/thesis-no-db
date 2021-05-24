@@ -24,6 +24,9 @@ POA:
             - *** use index to loop though products and employees @done
         - confirm that inventory is doing exactly what is expected
         - make SmartProduct.toss() list # of inventories tossed in a session
+            - make sure __push correctly inputs indices for toss_lookup
+            - print any_shelf, any_back, and pending at end of each time step
+                - tabbed printing of operations when they happen
         - fix SmartProduct.py to make sure sold is properly reset
         - Make stats tracker object, save in Store.py
             - print stats weekly

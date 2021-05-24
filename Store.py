@@ -10,6 +10,8 @@ import Constants
 from datetime import date, datetime
 from datetime import timedelta
 import traceback
+import os
+import pathlib
 # import beepy
 
 
@@ -77,33 +79,45 @@ class Store:
         runtime = Constants.log()
         month = self.clock.month
         day_time = []
-        for i in range(365):
+        t = datetime.now()
+        print_time = f"{t.hour}-{t.minute}-{t.second}"
+        Constants.CURRENT_DAY = 0
+        for day in range(365):
             if self.clock.month != month:
                 month = self.clock.month
-                print(f"\n\n\n\t\t\t**** NEW MONTH: {month} ***\n\n\n")
-            print(f"-------------------------------------------------------------------------------------------------- DAY {i}: {self.clock.month}/{self.clock.day}/{self.clock.year}")
-            
+                for sp in self.smart_products:
+                    sp.special_print(f"\n\n\n\t\t\t**** NEW MONTH: {month} ***\n\n\n")
+            for sp in self.smart_products:
+                sp.special_print(f"-------------------------------------------------------------------------------------------------- DAY {day}: {self.clock.month}/{self.clock.day}/{self.clock.year}")
+            if day == 60:
+                exit()
             # setup day
             self.employee_manager.set_day_schedule()
             self.employee_manager.reset(self.get_today(), self.next_truck)
+
             t = self.day_simulator.simulate_day(self.get_today(), self.next_truck)
             day_time.append(t)
             print("Avg day runtime: ", sum(day_time, timedelta(0)) / len(day_time))
 
             # order inventory
-            if i!= 0 and i % (Constants.TRUCK_DAYS ) == 0:
+            if day!= 0 and day % (Constants.TRUCK_DAYS ) == 0:
                 self.next_truck = self.get_today() + timedelta(days=Constants.TRUCK_DAYS)
-                print("\n\t*** ORDERING INVENTORY")
+                for sp in self.smart_products:
+                    sp.special_print("\n\t*** ORDERING INVENTORY")
                 order_cost = sum([sprod.order_inventory(self.get_today()) for sprod in self.smart_products])
                 self.costs.append((order_cost, self.get_today()))
                 self.next_truck = self.get_today() + timedelta(days=Constants.TRUCK_DAYS)
-                print(f"\t> order available {self.next_truck.month}/{self.next_truck.day}/{self.next_truck.year}")
+                for sp in self.smart_products:
+                    sp.special_print(f"\t> order available {self.next_truck.month}/{self.next_truck.day}/{self.next_truck.year}")
 
-            if i!= 0 and i % 7 == 0:
+            if day != 0 and day % 7 == 0:
                 labor_payment = sum(emp.get_paycheck() for emp in self.employees)
-                print(f"\n\t\t\t*** LABOR PAYMENT = ${labor_payment} ***")
+                for sp in self.smart_products:
+                    sp.special_print(f"\n\t\t\t*** LABOR PAYMENT = ${labor_payment} ***")
 
+            # print_all_stats(self.smart_products, print_time, day)
             self.clock += timedelta(days=1)
+            Constants.CURRENT_DAY += 1
         Constants.delta("A Year", runtime)
 
 
@@ -169,6 +183,14 @@ class Store:
         # self.inventory_manager.print_stock_status()
         print("All Done!")
         print("Runtime: ∆ ", datetime.now() - t)
+
+
+# def print_all_stats(smart_products, print_time, day):
+#     for sp in smart_products:
+#         path = os.path.join('stats', print_time, f'SmartProduct_{sp.product.get_id()}')
+#         pathlib.Path(path).mkdir(parents=True, exist_ok=True)
+#         with open(path + f'/Day_{day}.txt', 'w') as f:
+#             sp.print(sp.product.get_id(), f)
 
 
 if __name__ == '__main__':
