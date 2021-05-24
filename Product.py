@@ -99,9 +99,7 @@ class Product:
 
     # @profile
     def get_sell_by(self):
-        # noise = timedelta(days=int(random.random() * 5) - 2)
-        # today = datetime(CLOCK.year, CLOCK.month, CLOCK.day)
-        return timedelta(days=(self.sell_by_days + int(random.random() * 5) - 2))
+        return self.sell_by_days + random.choice([0, 1])
 
     def setup(self):
         # self.sublot_quantity = random.choice([10, 20, 50])
@@ -109,7 +107,6 @@ class Product:
         # lot_quantity between 400 and 10,000 --> 100
         self.sublots = 10
         self.lot_quantity = self.sublot_quantity * self.sublots  # 500
-        
 
         self.max_shelf = self.lot_quantity * 2  # 1000
         self.max_back = self.max_shelf * 10  # 10000

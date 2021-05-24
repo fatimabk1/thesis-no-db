@@ -15,13 +15,26 @@ POA:
         - Delete SmartInventory.py @done 
         - Push to GitHub @done
     - 05/23
+        - fix advance_employees()
+            - for product in smart_products: @done
+                - if product has work: @done
+                    - do work @done 
+                    - update product @done
+                - else continue @done
+            - *** use index to loop though products and employees @done
+        - confirm that inventory is doing exactly what is expected
+        - make SmartProduct.toss() list # of inventories tossed in a session
+        - fix SmartProduct.py to make sure sold is properly reset
+        - Make stats tracker object, save in Store.py
+            - print stats weekly
+            - print stats monthly
         - Edit ShopperHandler.py for compatibility with SmartProducts @done
-            - Push to GitHub
+            - Push to GitHub @done
         - Edit EmployeeManager.py for compatibility with SmartProducts @done
-            - Push to GitHub
+            - Push to GitHub @done
         - Edit DaySimulator.py for compatibility with SmartProducts @done
                 - only call unload() only when available @done
-            - Push to GitHub
+            - Push to GitHub @done
         - Rewrite Store.py: @done
             - Track cost stats
             - Replace products, product_stats --> SmartProducts[] @done
@@ -29,7 +42,7 @@ POA:
             - Have store monitor inventory arrival @done
             - Monitor order cost from indivual product ordering @done
             - Edit order_amount --> reduce by 1 for every 5 products tossed. Get total toss_quantity() at EOD and adjust. @done
-            - Push to GitHub
+            - Push to GitHub @done
     - 05/24
         - Test day
         - Test week

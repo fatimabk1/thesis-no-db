@@ -16,10 +16,12 @@ class DaySimulator:
 
     def simulate_day(self, today, next_truck):
         self.__reset_time(today)
+        self.smart_products[0].print(0, today, next_truck)
 
         runtime = Constants.log()
         for t_step in range(Constants.DAY_END):
             # print("-------------------- TIME STEP ", t_step)
+            # step_time = Constants.log()
             # t_step - specific updates
             if  t_step == Constants.STORE_OPEN:
                 self.lane_manager.open_starter_lanes()
@@ -31,7 +33,7 @@ class DaySimulator:
             if t_step == Constants.shift_change:
                 self.lane_manager.shift_change()
 
-            self.employee_manager.advance_employees(t_step, len(self.shoppers), today)
+            self.employee_manager.advance_employees(t_step, len(self.shoppers), today, next_truck)
 
             if t_step >= Constants.STORE_OPEN:
                 # advance shoppers
@@ -50,7 +52,7 @@ class DaySimulator:
                 # advance lanes
                 self.lane_manager.manage()
                 self.lane_manager.advance_lanes()
-
+            # Constants.delta("T_STEP", step_time)
             self.clock += timedelta(minutes=1)
 
         # clean up and reset for the next day
@@ -63,7 +65,7 @@ class DaySimulator:
         self.shoppers = []
 
         Constants.delta("A Day", runtime)
-        return runtime
+        return datetime.now() - runtime
 
 
 def print_active_shoppers(shoppers):

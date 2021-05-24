@@ -88,7 +88,7 @@ class Store:
             self.employee_manager.reset(self.get_today(), self.next_truck)
             t = self.day_simulator.simulate_day(self.get_today(), self.next_truck)
             day_time.append(t)
-            print("Avg day runtime: ", sum(day_time) / len(day_time))
+            print("Avg day runtime: ", sum(day_time, timedelta(0)) / len(day_time))
 
             # order inventory
             if i!= 0 and i % (Constants.TRUCK_DAYS ) == 0:

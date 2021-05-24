@@ -12,13 +12,17 @@ class EmployeeManager:
         self.smart_products = sp
         self.schedule = [Shift.OFF, Shift.MORNING, Shift.MORNING, Shift.MORNING,
                          Shift.EVENING, Shift.EVENING, Shift.EVENING]
-        self.task_list = []
 
-        # tracking the next grp to work on
-        self.next_grp_toss = 0 
-        self.next_grp_restock = 0
-        self.next_grp_unload = 0
-        self.refreshed = True  # True if we switch
+        # tracking products to work on, refreshed each t_step
+        self.toss_tasks = []
+        self.unload_tasks = []
+        self.restock_tasks = []
+
+        # index of next task to work on for employees with leftover capacity in the same t_step
+        self.next_toss = 0
+        self.next_unload = 0
+        self.next_restock = 0
+
 
     def create_employees(self, n):
         assert(n % 7 == 0)
@@ -71,7 +75,58 @@ class EmployeeManager:
         emp.remove_cashier()
         assert(emp.is_cashier() is False), "return_cashier(): update failed"
 
-    def advance_employees(self, t_step, shopper_count, today):
+    def refresh_tasks(self, task, today, next_truck):
+        if task == Constants.TASK_TOSS:
+            self.toss_tasks = [sp for sp in self.smart_products if sp.has_work(task, today, next_truck)]
+        elif task == Constants.TASK_RESTOCK:
+            self.restock_tasks = [sp for sp in self.smart_products if sp.has_work(task, today, next_truck)]
+        elif task == Constants.TASK_UNLOAD:
+            if today == next_truck:
+                self.unload_tasks = [sp for sp in self.smart_products if sp.has_work(task, today, next_truck)]
+            else:
+                self.unload_tasks = []
+        else:
+            print(f"EmployeeManager.refresh_task(): FATAL - invalid task {task}")
+            exit(1)
+
+    # wrapped incrementing of indices referring to array
+    def __wrapped_increment(self, index: int, arr: list):
+        if index == len(arr) - 1:
+            return 0
+        else:
+            return index + 1
+
+
+    # TODO: START HERE >>> 
+    # infinite loop on restock, potential others when no work
+    # workshop a starting inventory value
+
+    def advance_employees(self, t_step, shopper_count, today, next_truck):
+
+        # TODO:
+        """
+        Concerns:
+        - there are more products than employees. We want to make sure that all products are handled 
+        - Quick way to determine that there is no work to be done on any products
+        - want to refresh the list of products that need work done each minute
+
+        - refresh sorted list of all products, ordered by work value
+            self.toss_tasks = []
+            self.unload_tasks = []
+            self.restock_tasks = []
+            self.next_toss = 0
+            self.next_unload = 0
+            self.next_restock = 0
+        - while task_list is not None:
+            - while emp_
+            - multiple employees work together on one product
+            - remove product from list when complete
+
+            loop through with grp and emp index
+
+
+        1. At the top of task start, query each SmartProduct for work. If they have work, append to task list
+        """
 
         # update working employees 
         if t_step == Constants.StoreStatus.SHIFT_CHANGE:
@@ -79,69 +134,97 @@ class EmployeeManager:
             self.working_employees = [emp for emp in self.employees if emp.on_shift(self.current_shift)]
 
         if t_step < Constants.STORE_OPEN:
+            self.refresh_tasks(Constants.TASK_UNLOAD, today, next_truck)
+            self.refresh_tasks(Constants.TASK_RESTOCK, today, next_truck)
 
-            if self.unload_work > 0 and self.restock_work > 0:
+            if self.unload_tasks and self.restock_tasks:
+                # print("unloading and restocking")
                 # split employees, have half work on unload and half work on restock
                 count = int(len(self.working_employees) / 2)
                 group_1 = self.working_employees[:count]
                 group_2 = self.working_employees[count:]
 
                 # unload
-                start = self.next_grp_unload
-                for emp in group_1:
-                    self.smart_products[start].unload(emp.get_speed(Constants.TASK_UNLOAD))
-                    start += 1
-                    if start == Constants.PRODUCT_COUNT:
-                        start = 0
-                self.next_grp_unload = start
-                
+                # print("UNLOADING")
+                emp_index = 0
+                while(self.unload_tasks):
+                    emp_q = self.employees[emp_index].get_speed(Constants.TASK_UNLOAD)
+                    emp_q -= self.unload_tasks[0].unload(emp_q)
+                    # if emp has extra capacity, help with next product
+                    if emp_q == 0:
+                        emp_index += 1
+                    # if product work is finished, remove from list
+                    if self.unload_tasks[0].has_work(Constants.TASK_UNLOAD, today, next_truck) is False:
+                        self.unload_tasks.pop(0)
+
                 # restock
-                start = self.next_grp_restock
-                for emp in group_2:
-                    self.smart_products[start].restock(emp.get_speed(Constants.TASK_RESTOCK))
-                    start += 1
-                    if start == Constants.PRODUCT_COUNT:
-                        start = 0
-                self.next_grp_restock = start
+                # print("MORNING RESTOCKING")
+                emp_index = 0
+                while(self.restock_tasks):
+                    emp_q = self.employees[emp_index].get_speed(Constants.TASK_RESTOCK)
+                    emp_q -= self.restock_tasks[0].restock(emp_q)
+                    # if emp has extra capacity, help with next product
+                    if emp_q == 0:
+                        emp_index += 1
+                    # if product work is finished, remove from list
+                    if self.restock_tasks[0].has_work(Constants.TASK_UNLOAD, today, next_truck) is False:
+                        self.restock_tasks.pop(0)
 
-            elif self.unload_work > 0:
-                start = self.next_grp_unload
-                for emp in self.employees:
-                    self.smart_products[start].unload(emp.get_speed(Constants.TASK_UNLOAD))
-                    start += 1
-                    if start == Constants.PRODUCT_COUNT:
-                        start = 0
-                self.next_grp_unload = start
+            elif self.unload_tasks:
+                # print("UNLOADING")
+                emp_index = 0
+                while(self.unload_tasks):
+                    emp_q = self.employees[emp_index].get_speed(Constants.TASK_UNLOAD)
+                    emp_q -= self.unload_tasks[0].unload(emp_q)
+                    # if emp has extra capacity, help with next product
+                    if emp_q == 0:
+                        emp_index += 1
+                    # if product work is finished, remove from list
+                    if self.unload_tasks[0].has_work(Constants.TASK_UNLOAD, today, next_truck) is False:
+                        self.unload_tasks.pop(0)
 
-            else:
-                start = self.next_grp_restock
-                for emp in self.employees:
-                    self.smart_products[start].restock(emp.get_speed(Constants.TASK_RESTOCK))
-                    start += 1
-                    if start == Constants.PRODUCT_COUNT:
-                        start = 0
-                self.next_grp_restock = start
-          
+            elif self.restock_tasks:
+                # print("MORNING RESTOCKING")
+                emp_index = 0
+                while(self.restock_tasks):
+                    emp_q = self.employees[emp_index].get_speed(Constants.TASK_RESTOCK)
+                    emp_q -= self.restock_tasks[0].restock(emp_q)
+                    # if emp has extra capacity, help with next product
+                    if emp_q == 0:
+                        emp_index += 1
+                    # if product work is finished, remove from list
+                    if self.restock_tasks[0].has_work(Constants.TASK_UNLOAD, today, next_truck) is False:
+                        self.restock_tasks.pop(0)
+
         # toss while the store is closed and empty
         elif t_step >= Constants.STORE_CLOSE and shopper_count == 0:
-            start = self.next_grp_toss
-            for emp in self.employees:
-                self.smart_products[start].toss(emp.get_speed(Constants.TASK_TOSS), today)
-                start += 1
-                if start == Constants.PRODUCT_COUNT:
-                    start = 0
-            self.next_grp_toss = start
+            self.refresh_tasks(Constants.TASK_TOSS, today, next_truck)
+            emp_index = 0
+            while(self.toss_tasks):
+                emp_q = self.employees[emp_index].get_speed(Constants.TASK_TOSS)
+                emp_q -= self.toss_tasks[0].toss(emp_q)
+                # if emp has extra capacity, help with next product
+                if emp_q == 0:
+                    emp_index += 1
+                # if product work is finished, remove from list
+                if self.toss_tasks[0].has_work(Constants.TASK_UNLOAD, today, next_truck) is False:
+                    self.toss_tasks.pop(0)
 
         # restock while the store is open or customers are in the store
         elif (t_step >= Constants.STORE_OPEN and t_step < Constants.STORE_CLOSE) or shopper_count > 0:
-            start = self.next_grp_restock
-            for emp in self.employees:
-                self.smart_products[start].restock(emp.get_speed(Constants.TASK_RESTOCK))
-                start += 1
-                if start == Constants.PRODUCT_COUNT:
-                    start = 0
-            self.next_grp_restock = start
-        
+            self.refresh_tasks(Constants.TASK_RESTOCK, today, next_truck)
+            if self.restock_tasks:
+                emp_index = 0
+                while(self.restock_tasks):
+                    emp_q = self.employees[emp_index].get_speed(Constants.TASK_RESTOCK)
+                    emp_q -= self.restock_tasks[0].restock(emp_q)
+                    # if emp has extra capacity, help with next product
+                    if emp_q == 0:
+                        emp_index += 1
+                    # if product work is finished, remove from list
+                    if self.restock_tasks[0].has_work(Constants.TASK_UNLOAD, today, next_truck) is False:
+                        self.restock_tasks.pop(0)
+
         else:
             print(f"Unaccounted for t_step {t_step}")
             exit(1)

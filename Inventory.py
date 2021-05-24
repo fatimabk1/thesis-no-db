@@ -34,6 +34,9 @@ class Inventory:
                       self.shelved_stock, self.back_stock, self.pending_stock,
                       self.available, self.sell_by, self.deleted))
 
+    def get_id(self):
+        return self.id
+
     def is_deleted(self):
         return self.deleted
 
@@ -73,10 +76,13 @@ class Inventory:
             return
 
         if type == StockType.PENDING:
+            assert(self.pending_stock != 0), "FATAL: attempt to decrement empty stock"
             self.pending_stock -= n
         elif type == StockType.BACK:
+            assert(self.back_stock != 0), "FATAL: attempt to decrement empty stock"
             self.back_stock -= n
         elif type == StockType.SHELF:
+            assert(self.shelved_stock != 0), "FATAL: attempt to decrement empty stock"
             self.shelved_stock -= n
         else:
             print("ERROR: invalid stock type: ", type)
