@@ -4,7 +4,7 @@ from datetime import datetime, timedelta
 
 class DaySimulator:
     def __init__(self, sp, empm, lanem, handler):
-        self.smart_products = sp  # TODO: REMOVE AFTER CHECKING sp.special_print()
+        self.smart_products = sp  # TODO: REMOVE AFTER CHECKINGprint()
         self.employee_manager = empm
         self.lane_manager = lanem
         self.shoppers = []
@@ -16,13 +16,11 @@ class DaySimulator:
 
     def simulate_day(self, today, next_truck):
         self.__reset_time(today)
-        self.smart_products[0].__print__()
+        # self.smart_products[0].__print__()
         Constants.CURRENT_TSTEP = 0
 
         runtime = Constants.log()
         for t_step in range(Constants.DAY_END):
-            for sp in self.smart_products:
-                sp.special_print(f"-------------------- TIME STEP {t_step}")
             # print("-------------------- TIME STEP ", t_step)
             # step_time = Constants.log()
             # t_step - specific updates

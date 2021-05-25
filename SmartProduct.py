@@ -415,7 +415,7 @@ class SmartProduct:
             actual_pending = sum(inv.get_pending() for inv in self.inventory_list)
 
 
-            print(f"<SmartProduct_{self.product.get_id()}_{Constants.CURRENT_DAY}_{Constants.CURRENT_DAY}:>"\
+            print(f"<SmartProduct_{self.product.get_id()}_{Constants.CURRENT_DAY}_{Constants.CURRENT_TSTEP}:>"\
                 f"\n\t> inventory_list: {len(self.inventory_list)} inventories"\
                 f"\n\t> sublot_quantity = {self.product.get_sublot_quantity()}"\
                 f"\n\t> any_shelf[start: {self.any_shelf['start']}, end: {self.any_shelf['end']}, quantity: {self.any_shelf['quantity']}]  ---> ACTUAL: {actual_shelf}"\

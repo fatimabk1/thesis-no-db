@@ -89,8 +89,6 @@ class Store:
                     sp.special_print(f"\n\n\n\t\t\t**** NEW MONTH: {month} ***\n\n\n")
             for sp in self.smart_products:
                 sp.special_print(f"-------------------------------------------------------------------------------------------------- DAY {day}: {self.clock.month}/{self.clock.day}/{self.clock.year}")
-            if day == 60:
-                exit()
             # setup day
             self.employee_manager.set_day_schedule()
             self.employee_manager.reset(self.get_today(), self.next_truck)

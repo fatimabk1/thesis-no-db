@@ -218,7 +218,7 @@ class EmployeeManager:
                 emp_index = 0
                 emp_q = self.employees[emp_index].get_speed(Constants.TASK_RESTOCK)
                 while(self.restock_tasks and emp_index != len(available_emps)):
-                    print(f"restocking grp {self.restock_tasks[0].product.get_id()} via emp {emp_index} with {emp_q} capacity  - current work is {self.restock_tasks[0].get_work(Constants.TASK_RESTOCK, today, next_truck)}")
+                    # print(f"restocking grp {self.restock_tasks[0].product.get_id()} via emp {emp_index} with {emp_q} capacity  - current work is {self.restock_tasks[0].get_work(Constants.TASK_RESTOCK, today, next_truck)}")
                     emp_q -= self.restock_tasks[0].restock(emp_q)
                     # if emp has extra capacity, help with next product
                     if emp_q == 0:
