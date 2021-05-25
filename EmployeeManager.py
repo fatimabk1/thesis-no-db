@@ -185,7 +185,7 @@ class EmployeeManager:
             elif self.restock_tasks :
                 emp_index = 0
                 while(self.restock_tasks and emp_index != len(available_emps)):
-                    print(f"len restock = {len(self.restock_tasks)}")
+                    # print(f"len restock = {len(self.restock_tasks)}")
                     emp_q = self.employees[emp_index].get_speed(Constants.TASK_RESTOCK)
                     emp_q -= self.restock_tasks[0].restock(emp_q)
                     # if emp has extra capacity, help with next product
