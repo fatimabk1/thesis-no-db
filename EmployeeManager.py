@@ -46,16 +46,6 @@ class EmployeeManager:
         self.current_shift = Constants.Shift.MORNING
         self.refresh = True
 
-    def get_task_start(self, task):
-        if task == Constants.TASK_UNLOAD:
-            return self.last_grp_unload
-        elif task == Constants.TASK_RESTOCK:
-            return self.last_grp_restock
-        elif task == Constants.TASK_TOSS:
-            return self.last_grp_toss
-        else:
-            print(f"get_task_start(): Invalid task {task}")
-
     def reset(self, today, next_truck):
         (grp.reset() for grp in self.smart_products)
         self.toss_work = sum(sp.get_work(Constants.TASK_TOSS, today, next_truck) for sp in self.smart_products)
@@ -78,11 +68,14 @@ class EmployeeManager:
     def refresh_tasks(self, task, today, next_truck):
         if task == Constants.TASK_TOSS:
             self.toss_tasks = [sp for sp in self.smart_products if sp.has_work(task, today, next_truck)]
+            self.toss_tasks.sort(key=lambda x: x.get_work(task, today, next_truck))
         elif task == Constants.TASK_RESTOCK:
             self.restock_tasks = [sp for sp in self.smart_products if sp.has_work(task, today, next_truck)]
+            self.restock_tasks.sort(key=lambda x: x.get_work(task, today, next_truck))
         elif task == Constants.TASK_UNLOAD:
             if today == next_truck:
                 self.unload_tasks = [sp for sp in self.smart_products if sp.has_work(task, today, next_truck)]
+                self.unload_tasks.sort(key=lambda x: x.get_work(task, today, next_truck))
             else:
                 self.unload_tasks = []
         else:
@@ -155,6 +148,7 @@ class EmployeeManager:
                     # if emp has extra capacity, help with next product
                     if emp_q == 0:
                         emp_index += 1
+                        emp_q = self.employees[emp_index].get_speed(Constants.TASK_UNLOAD)
                     # if product work is finished, remove from list
                     if self.unload_tasks[0].has_work(Constants.TASK_UNLOAD, today, next_truck) is False:
                         self.unload_tasks.pop(0)
@@ -169,6 +163,7 @@ class EmployeeManager:
                     # if emp has extra capacity, help with next product
                     if emp_q == 0:
                         emp_index += 1
+                        emp_q = self.employees[emp_index].get_speed(Constants.TASK_RESTOCK)
                     # if product work is finished, remove from list
                     if self.restock_tasks[0].has_work(Constants.TASK_RESTOCK, today, next_truck) is False:
                         self.restock_tasks.pop(0)
@@ -182,6 +177,7 @@ class EmployeeManager:
                     # if emp has extra capacity, help with next product
                     if emp_q == 0:
                         emp_index += 1
+                        emp_q = self.employees[emp_index].get_speed(Constants.TASK_UNLOAD)
                     # if product work is finished, remove from list
                     if self.unload_tasks[0].has_work(Constants.TASK_UNLOAD, today, next_truck) is False:
                         self.unload_tasks.pop(0)
@@ -195,6 +191,7 @@ class EmployeeManager:
                     # if emp has extra capacity, help with next product
                     if emp_q == 0:
                         emp_index += 1
+                        emp_q = self.employees[emp_index].get_speed(Constants.TASK_RESTOCK)
                     # if product work is finished, remove from list
                     if self.restock_tasks[0].has_work(Constants.TASK_RESTOCK, today, next_truck) is False:
                         self.restock_tasks.pop(0)
@@ -209,6 +206,7 @@ class EmployeeManager:
                 # if emp has extra capacity, help with next product
                 if emp_q == 0:
                     emp_index += 1
+                    emp_q = self.employees[emp_index].get_speed(Constants.TASK_TOSS)
                 # if product work is finished, remove from list
                 if self.toss_tasks[0].has_work(Constants.TASK_TOSS, today, next_truck) is False:
                     self.toss_tasks.pop(0)
@@ -218,12 +216,14 @@ class EmployeeManager:
             self.refresh_tasks(Constants.TASK_RESTOCK, today, next_truck)
             if self.restock_tasks:
                 emp_index = 0
+                emp_q = self.employees[emp_index].get_speed(Constants.TASK_RESTOCK)
                 while(self.restock_tasks and emp_index != len(available_emps)):
-                    emp_q = self.employees[emp_index].get_speed(Constants.TASK_RESTOCK)
+                    print(f"restocking grp {self.restock_tasks[0].product.get_id()} via emp {emp_index} with {emp_q} capacity  - current work is {self.restock_tasks[0].get_work(Constants.TASK_RESTOCK, today, next_truck)}")
                     emp_q -= self.restock_tasks[0].restock(emp_q)
                     # if emp has extra capacity, help with next product
                     if emp_q == 0:
                         emp_index += 1
+                        emp_q = self.employees[emp_index].get_speed(Constants.TASK_RESTOCK)
                     # if product work is finished, remove from list
                     if self.restock_tasks[0].has_work(Constants.TASK_RESTOCK, today, next_truck) is False:
                         self.restock_tasks.pop(0)

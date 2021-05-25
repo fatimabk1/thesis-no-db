@@ -123,4 +123,8 @@ class Product:
              + random.choice([0.01, 0.02, 0.03, 0.04, 0.05]))
             * self.lot_quantity, 2)
 
-        self.sell_by_days = round(random.uniform(21, 90))
+        # TODO: change this back to normal -- hardcoded 21 is only for testing purposes
+        if self.grp_id == 0:
+            self.sell_by_days = 21
+        else:
+            self.sell_by_days = round(random.uniform(25, 90))

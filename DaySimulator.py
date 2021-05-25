@@ -16,7 +16,7 @@ class DaySimulator:
 
     def simulate_day(self, today, next_truck):
         self.__reset_time(today)
-        self.smart_products[0].print()
+        self.smart_products[0].__print__()
         Constants.CURRENT_TSTEP = 0
 
         runtime = Constants.log()
@@ -60,7 +60,7 @@ class DaySimulator:
             Constants.CURRENT_TSTEP += 1
 
         # clean up and reset for the next day
-        self.smart_products[0].print()
+        self.smart_products[0].__print__()
         # self.lane_manager.print_active_lanes()
         self.lane_manager.close_all_lanes()
         for emp in self.employee_manager.employees:
