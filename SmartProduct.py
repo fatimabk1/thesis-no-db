@@ -26,6 +26,12 @@ class SmartProduct:
         self.pending = {'start': 0, 'end': 0, 'quantity': 0}
         self.toss_lookup = {}   # {sell_by_date: {'start': x, 'end': x, 'quantity': x}}
 
+    def get_today_stats(self):
+        return {
+            'sold': self.sold['today'],
+            'toss': self.toss_count,
+            'miss': self.miss_count
+        }
 
     def reset(self):
         if 0 not in self.sold.items():
@@ -42,7 +48,7 @@ class SmartProduct:
 
     def __pop(self):
         # list still starts at 0, all other indices reduced by 1
-        self.special_print("POPPING")
+        # self.special_print("POPPING")
         inv = self.inventory_list[0]
         if inv.get_total() != 0:
             print(f"\nSmartProduct.__pop(): FATAL: attempt to pop a non-empty inventory - contains {inv.get_total()} items")
@@ -68,10 +74,10 @@ class SmartProduct:
             self.toss_lookup.pop(date, None) 
         self.inventory_list.pop(0)
 
-        self.__print__()
+        # self.__print__()
 
     def __push(self, inv):
-        self.special_print("PUSHING")
+        # self.special_print("PUSHING")
         self.inventory_list.append(inv)
         pending_q = inv.get_pending()
         list_len = len(self.inventory_list)
@@ -89,7 +95,7 @@ class SmartProduct:
             self.toss_lookup[sell_by] = {'quantity': pending_q,
                                          'start': len(self.inventory_list) - 1,
                                          'end': len(self.inventory_list)}
-        self.__print__()
+        # self.__print__()
 
     def push_list(self, inv_lst, arrival):
         # sanity check - making sure we don't have pending inventory from different dates
@@ -100,7 +106,7 @@ class SmartProduct:
             (self.__push(inv) for inv in inv_lst)
 
     def select(self):
-        self.special_print("SELECTING!")
+        # self.special_print("SELECTING!")
         if self.any_shelf['quantity'] > 0:
             inv = self.inventory_list[self.any_shelf['start']]
             if inv.get_shelf() == 0:
@@ -119,7 +125,7 @@ class SmartProduct:
             self.sold['today'] += 1
             if inv.is_deleted():
                 self.__pop()
-            self.__print__()
+            # self.__print__()
         else:
             print(f"No stock on shelves for product {self.product.get_id()} - MISS")
             exit(1)
@@ -173,7 +179,7 @@ class SmartProduct:
         return False
 
     def unload(self, unload_speed):
-        self.special_print("UNLOADING")
+        # self.special_print("UNLOADING")
         if self.pending['quantity'] == 0:
             print(f"SmartProduct.unload({self.product.get_id()}): ERROR, attempt to unload nonexistent product")
             exit(1)
@@ -203,7 +209,7 @@ class SmartProduct:
 
             # convert emp_q back to units of lots
             total_unload = int(total_unload / (self.product.get_num_sublots() * self.product.get_sublot_quantity()))
-            self.__print__()
+            # self.__print__()
         return total_unload
 
     def __unload_one(self, inv, emp_q):
@@ -213,7 +219,7 @@ class SmartProduct:
         return q
 
     def restock(self, emp_q):
-        self.special_print("RESTOCKING")
+        # self.special_print("RESTOCKING")
         start = self.any_back['start']
         end = self.any_back['end']
 
@@ -223,7 +229,7 @@ class SmartProduct:
         sublot_q = self.product.get_sublot_quantity()
 
         work = min(max_shelf - curr_shelf, curr_back)
-        self.special_print(f"restock work = min({max_shelf - curr_shelf}, {curr_back})")
+        # self.special_print(f"restock work = min({max_shelf - curr_shelf}, {curr_back})")
         diff = 0
         total_restock = 0
         while(start != end and emp_q > 0 and work > 0):
@@ -231,7 +237,7 @@ class SmartProduct:
             back_prev = inv.get_back()
             diff = self.__restock_one(inv, emp_q, work)
             assert(diff != 0), "\nrestock(): FATAL - employee restocked a value of 0"
-            self.special_print(f"\trestocked {diff}")
+            # self.special_print(f"\trestocked {diff}")
             emp_q -= diff
             work -= diff
             total_restock += diff
@@ -244,14 +250,14 @@ class SmartProduct:
             if inv.get_back() == 0 and diff > 0:
                 self.__index_increment('start', self.any_back, list_len)  # back queue pop
             start += 1
-        self.__print__()
+        # self.__print__()
         return total_restock
 
     def __restock_one(self, inv, emp_q, work):
         q = min(inv.get_back(), emp_q, work)
         inv.increment(StockType.SHELF, q)
         inv.decrement(StockType.BACK, q)
-        self.special_print(f"\t> restocked {q}")
+        # self.special_print(f"\t> restocked {q}")
         return q
 
      # toss as many inventories / partial inventories as possible exhausing emp_q
@@ -260,8 +266,8 @@ class SmartProduct:
         if today not in self.toss_lookup:
             return emp_q
         
-        self.special_print("TOSSING -- situation before start")
-        self.__print__()
+        # self.special_print("TOSSING -- situation before start")
+        # self.__print__()
 
         start = self.toss_lookup[today]['start']
         end = self.toss_lookup[today]['end']
@@ -288,12 +294,12 @@ class SmartProduct:
 
             start += 1
         
-        self.special_print("PRE-POP:")
-        self.__print__()
+        # self.special_print("PRE-POP:")
+        # self.__print__()
         for inv in removed:
             self.__pop()
-        self.special_print("POST-POP (aka final situation after tossing)")
-        self.__print__()
+        # self.special_print("POST-POP (aka final situation after tossing)")
+        # self.__print__()
         return total_toss
 
     # Toss as much as possible of inv, given employee capacity 

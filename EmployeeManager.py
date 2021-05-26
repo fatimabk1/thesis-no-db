@@ -65,6 +65,7 @@ class EmployeeManager:
         emp.remove_cashier()
         assert(emp.is_cashier() is False), "return_cashier(): update failed"
 
+    # @profile
     def refresh_tasks(self, task, today, next_truck):
         if task == Constants.TASK_TOSS:
             self.toss_tasks = [sp for sp in self.smart_products if sp.has_work(task, today, next_truck)]

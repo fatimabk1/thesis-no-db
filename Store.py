@@ -10,8 +10,7 @@ import Constants
 from datetime import date, datetime
 from datetime import timedelta
 import traceback
-import os
-import pathlib
+from Statistics import StatType, Statistics
 # import beepy
 
 
@@ -24,6 +23,7 @@ class Store:
         self.lanes = []
         self.shoppers = []
         self.next_truck = None
+        self.stats = Statistics()
 
         # data collection for stats
         self.revenues = []
@@ -105,6 +105,7 @@ class Store:
                 order_cost = sum([sprod.order_inventory(self.get_today()) for sprod in self.smart_products])
                 self.costs.append((order_cost, self.get_today()))
                 self.next_truck = self.get_today() + timedelta(days=Constants.TRUCK_DAYS)
+                # self.stats.add_stat(StatType.ORDER, )
                 for sp in self.smart_products:
                     sp.special_print(f"\t> order available {self.next_truck.month}/{self.next_truck.day}/{self.next_truck.year}")
 
@@ -113,9 +114,25 @@ class Store:
                 for sp in self.smart_products:
                     sp.special_print(f"\n\t\t\t*** LABOR PAYMENT = ${labor_payment} ***")
 
+            # TODO: add stats
+            for sp in self.smart_products:
+                stats = sp.get_today_stats()
+                self.stats.add_stat(StatType.SOLD, {'grp_id': sp.product.get_id(), 'data': {self.get_today(): stats['sold']}})
+                # self.stats.add_stat(StatType.MISS, {'grp_id': sp.product.get_id(), self.get_today(): stats['miss']})
+                # self.stats.add_stat(StatType.TOSS, {'grp_id': sp.product.get_id(), self.get_today(): stats['toss']})
+                # self.stats.add_stat(StatType.REVENUE, {'grp_id': sp.product.get_id(), self.get_today(): stats['sold'] * sp.product.get_price()})
+
+            # self.stats.add_stat(StatType.TOSS, 9)
+            # self.stats.add_stat(StatType.REVENUE, 9)
+            
             # print_all_stats(self.smart_products, print_time, day)
+
             self.clock += timedelta(days=1)
+            if day == 1:
+                break
             Constants.CURRENT_DAY += 1
+        
+        self.stats.print_all_stats()
         Constants.delta("A Year", runtime)
 
 
