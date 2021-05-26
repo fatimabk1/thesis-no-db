@@ -17,7 +17,7 @@ import os
 CURRENT_DAY = 0
 CURRENT_TSTEP = 0
 
-CLOCK = datetime(2019, 9, 15, 10, 0)  # SUNDAY
+CLOCK = datetime(2019, 1, 1, 10, 0)
 DAY_START = 0  
 STORE_OPEN = 2 * 60  # 120 --  2 hrs, 10am public open, morning steps: 0 - 120
 STORE_CLOSE = 12 * 60  # 720 --  10 hrs, 8PM public close, day steps: 120 - 720

@@ -16,7 +16,7 @@ from Statistics import StatType, Statistics
 
 class Store:
     def __init__(self):
-        self.clock = datetime(2019, 9, 15, 10, 0)
+        self.clock = Constants.CLOCK
         self.products = []
         self.smart_products = []
         self.employees = []
@@ -117,7 +117,7 @@ class Store:
             # TODO: add stats
             for sp in self.smart_products:
                 stats = sp.get_today_stats()
-                self.stats.add_stat(StatType.SOLD, {'grp_id': sp.product.get_id(), 'data': {self.get_today(): stats['sold']}})
+                self.stats.add_stat(StatType.SOLD, [sp.product.get_id(), self.get_today(), stats['sold']])
                 # self.stats.add_stat(StatType.MISS, {'grp_id': sp.product.get_id(), self.get_today(): stats['miss']})
                 # self.stats.add_stat(StatType.TOSS, {'grp_id': sp.product.get_id(), self.get_today(): stats['toss']})
                 # self.stats.add_stat(StatType.REVENUE, {'grp_id': sp.product.get_id(), self.get_today(): stats['sold'] * sp.product.get_price()})
