@@ -12,6 +12,7 @@ class SmartProduct:
         self.product = prod
         self.miss_count = 0  # number of attempts to select a product but no stock on shelves
         self.toss_count = 0  # number of products thrown out because they are expired
+        self.order_cost = 0
         self.sold = {'today': 0, 'one_ago': 0, 'two_ago': 0}
         self.ideal_daily = prod.get_max_shelf()
         self.cushion = 0.2 * self.ideal_daily
@@ -30,7 +31,8 @@ class SmartProduct:
         return {
             'sold': self.sold['today'],
             'toss': self.toss_count,
-            'miss': self.miss_count
+            'miss': self.miss_count,
+            'order_cost': self.order_cost
         }
 
     def reset(self):
@@ -42,6 +44,7 @@ class SmartProduct:
             self.ideal_daily = self.sold['today']
         self.miss_count = 0
         self.toss_count = 0
+        self.order_cost = 0
         self.sold['two_ago'] = self.sold['one_ago']
         self.sold['one_ago'] = self.sold['today']
         self.sold['today'] = 0
@@ -372,6 +375,7 @@ class SmartProduct:
         if curr_back + curr_shelf < self.ideal_daily * Constants.TRUCK_DAYS + self.cushion:
             amount = self.ideal_daily * Constants.TRUCK_DAYS + self.cushion
             cost, pending_lst = self.__order(amount, arrival, today)
+            self.order_cost = cost
             if pending_lst:
                 self.add_inventory_list(pending_lst)
         return cost
@@ -384,7 +388,7 @@ class SmartProduct:
         sublots = int(num_lots * self.product.get_num_sublots())
         inv_lst = self.__create_pending(sublots, arrival, today)
         if self.product.get_id() == 0:
-                    print(f"\t\tORDERED {sublots} inventories of GRP 0")
+            print(f"\t\tORDERED {sublots} inventories of GRP 0")
         cost = self.product.get_lot_price() * num_lots
         return cost, inv_lst
 

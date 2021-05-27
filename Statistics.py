@@ -3,6 +3,7 @@ import csv
 from enum import IntEnum
 import Constants
 from datetime import datetime
+from collections import OrderedDict  # so keys and values are in order of insertion with me needing to sort
 import json
 
 
@@ -12,38 +13,63 @@ class StatType(IntEnum):
     MISS = 2
     REVENUE = 3
     ORDER = 4
+    LABOR = 5
+    PROFIT = 6
 
 
 class Statistics:
     def __init__(self):
-        self.daily_sold = {}  # q sold per product per day --> {grp_id: {date: d, quantity: q}}
-        self.monthly_sold = {}  # q sold per product --> {grp_id: {month: q, month: q}}
+        self.daily_sold = {}  # q sold per product per day --> {grp_id: [(date, quantity), (date, quantity), ...]}
+        self.monthly_sold = {}  # q sold per product --> {grp_id: {month: q, month: q, ...}}
 
-        self.daily_toss_count = {}  # q tossed per product per day
-        self.monthly_toss_count = {} # q tossed per product per month
+        self.daily_toss = {}  # q tossed per product per day --> {grp_id: [(date, quantity), (date, quantity), ...]}
+        self.monthly_toss = {} # q tossed per product per month --> {grp_id: {month: q, month: q, ...}}
 
-        self.daily_revenue = {} # daily income per product or just daily total income
-        self.monthly_revenue = {}  # monthly income per product or just monthly total income
+        self.daily_miss = {}  # q missed per product per day --> {grp_id: [(date, quantity), (date, quantity), ...]}
+        self.monthly_miss = {}  # q missed per product per month --> {grp_id: {month: q, month: q, ...}}
 
-        self.inventory_order = {}  # inventory orders over time by product --> {grp_id: [(cost, quantity), (cost, quantity), ...]}
+        self.daily_revenue = {} # daily income per product or just daily total income --> {grp_id: [(date, rev), (date, rev), ...]}
+        self.monthly_revenue = {}  # monthly income per product or just monthly total income --> {grp_id: {month: rev, month: rev, ...}}
+
+        self.daily_order_cost = {}  # inventory orders by date by product --> {grp_id: [(date, cost), (date, cost), ...]}
+        self.monthly_order_cost = {} # inventory orders by month by product --> {grp_id: {month: cost, month: cost, ...}}
+
+        self.monthly_labor = {}  #  -->  {(year, month): cost, (year, month): cost, ...}
+        self.monthly_profit = {}  # sum of revenue for all grp - labor costs that month - total order costs [by month]
+        # --> {grp_id: {month: profit, month: profit, month: profit, ...}}
+
         self.__setup()
 
     def __setup(self):
         for i in range(Constants.PRODUCT_COUNT):
             self.daily_sold[i] = []
-        # TODO: setup all dictionaries so only appending to lists in add_stat
-        pass
+            self.daily_toss[i] = []
+            self.daily_miss[i] = []
+            self.daily_revenue[i] = []
+            self.daily_order_cost[i] = []
+            self.monthly_sold[i] = {}
+            self.monthly_toss[i] = {}
+            self.monthly_miss[i] = {}
+            self.monthly_revenue[i] = {}
+            self.monthly_order_cost[i] = {}
 
-    def add_stat(self, type, data):
+    def add_stat(self, type: StatType, data: list):
         if type == StatType.SOLD:
             self.daily_sold[data[0]] += [(data[1], data[2])]  # list of (date, quantity) tuples
-            # print(json.dumps(self.daily_sold), indent=4)
         elif type == StatType.TOSS:
-            self.daily_toss_count[data['grp_id']] += [(data[0], data[1])]
+            self.daily_toss[data[0]] += [(data[1], data[2])]  # list of (date, quantity) tuples
+        elif type == StatType.MISS:
+            self.daily_miss[data[0]] += [(data[1], data[2])]  # list of (date, quantity) tuples
         elif type == StatType.REVENUE:
-            self.daily_revenue[data['grp_id']] += [(data[0], data[1])]
+            self.daily_revenue[data[0]] += [(data[1], data[2])] # list of (date, rev) tuples
         elif type == StatType.ORDER:
-            self.inventory_order[data['grp_id']] += [(data[0], data[1], data[2])]
+            self.daily_order_cost[data[0]] += [(data[1], data[2])] # list of (date, cost) tuples
+        elif type == StatType.LABOR:
+            yr_month = (data[0].year, data[0].month)
+            if data[1] in self.monthly_labor:
+                self.monthly_labor[yr_month] += data[1]
+            else:
+                self.monthly_labor[yr_month] = data[1]
         else:
             print(f"Statistics.add_stat(): FATAL - invalid StatType {type}")
             exit(1)
@@ -51,43 +77,114 @@ class Statistics:
     def __calculate_month_stats(self):
         for grp in range(Constants.PRODUCT_COUNT):
             self.monthly_sold[grp] = {} # dictionary of (year, month) tuple --> quantity
-        # processing monthly_sold
-        for grp in self.daily_sold:
-            for entry in self.daily_sold[grp]:
-                yr_month = (entry[0].year, entry[0].month)
-                if yr_month in self.monthly_sold[grp]:
-                    self.monthly_sold[grp][yr_month] += entry[1]
-                else:
-                    self.monthly_sold[grp][yr_month] = entry[1]
-
-
-    # TEST AND CONFIRM THIS WORKS BEFORE ADDING MORE
+        stat_lst = [(self.daily_sold, self.monthly_sold),
+                    (self.daily_toss, self.monthly_toss),
+                    (self.daily_miss, self.monthly_miss),
+                    (self.daily_revenue, self.monthly_revenue),
+                    (self.daily_order_cost, self.monthly_order_cost)] 
+        for tpl in stat_lst:
+            for grp in tpl[0]:
+                for entry in tpl[0][grp]:
+                    yr_month = (entry[0].year, entry[0].month)
+                    if yr_month in tpl[1][grp]:
+                        tpl[1][grp][yr_month] += entry[1]
+                    else:
+                        tpl[1][grp][yr_month] = entry[1]
+        
+        # calculate monthly_profit
+        dates = self.monthly_revenue[0].keys()
+        for dt in dates:
+            total_monthly_revenue = sum(self.monthly_revenue[grp][dt] for grp in self.monthly_revenue) 
+            total_monthly_order_cost = sum(self.monthly_order_cost[grp][dt] for grp in self.monthly_order_cost) 
+            self.monthly_profit[dt] = total_monthly_revenue - self.monthly_labor[dt] - total_monthly_order_cost
+            print(f"Profit = {self.monthly_profit[dt]}, revenue = {total_monthly_revenue}, order_cost = {total_monthly_order_cost}, labor_cost = {self.monthly_labor[dt]}")
     def print_all_stats(self):
         self.__calculate_month_stats()
-# datetime.datetime.strftime(mydate, '%Y, %m, %d, %H, %M, %S')
-        with open('output/daily_sold.csv', 'w') as f:
-            headers = ['product',]
-            headers += [datetime.strftime(tpl[0], '%Y-%m-%d') for tpl in self.daily_sold[0]]
+
+        # write all daily stats files
+        self.write_daily_stats(StatType.SOLD, 'daily_sold')
+        self.write_daily_stats(StatType.TOSS, 'daily_toss')
+        self.write_daily_stats(StatType.MISS, 'daily_miss')
+        self.write_daily_stats(StatType.REVENUE, 'daily_revenue')
+        self.write_daily_stats(StatType.ORDER, 'daily_order_cost')
+
+        # write all monthly stats files
+        self.write_monthly_stats(StatType.SOLD, 'monthly_sold')
+        self.write_monthly_stats(StatType.TOSS, 'monthly_toss')
+        self.write_monthly_stats(StatType.MISS, 'monthly_miss')
+        self.write_monthly_stats(StatType.REVENUE, 'monthly_revenue')
+        self.write_monthly_stats(StatType.ORDER, 'monthly_order_cost')
+        self.write_monthly_stats(StatType.PROFIT, 'monthly_profit')
+
+    def write_daily_stats(self, typ: StatType, filename: str):
+        if typ == StatType.SOLD:
+            data = self.daily_sold
+            print("sold")
+        elif typ == StatType.TOSS:
+            data = self.daily_toss
+            print("toss")
+        elif typ == StatType.MISS:
+            data = self.daily_miss
+            print("miss")
+        elif typ == StatType.REVENUE:
+            data = self.daily_revenue
+            print("revenue")
+        elif typ == StatType.ORDER:
+            data = self.daily_order_cost
+            print("order_cost")
+        else:
+            print(f"Statistics.write_daily_stats(): FATAL - invalid stat type {type}")
+            exit(1)
+
+        headers = ['product']
+        headers += [datetime.strftime(tpl[0], '%Y-%m-%d') for tpl in self.daily_sold[0]]
+
+        f = open(f'output/{filename}.csv', 'w')
+        writer = csv.writer(f, delimiter=',')
+        writer.writerow(headers)
+        for grp in data:
+            row = [grp] + [entry[1] for entry in data[grp]]
+            print(row)
+            writer.writerow(row)
+        f.close()
+
+    def write_monthly_stats(self, typ: StatType, filename: str):
+        data = None
+        if typ == StatType.SOLD:
+            data = self.monthly_sold
+        elif typ == StatType.TOSS:
+            data = self.monthly_toss
+        elif typ == StatType.MISS:
+            data = self.monthly_miss
+        elif typ == StatType.REVENUE:
+            data = self.monthly_revenue
+        elif typ == StatType.ORDER:
+            data = self.monthly_order_cost
+        elif typ == StatType.PROFIT:
+            data = self.monthly_profit
+        else:
+            print(f"Statistics.write_daily_stats(): FATAL - invalid stat type {typ}")
+            exit(1)
+
+        headers = ['product']
+        months = [f"{tpl[0]}-{tpl[1]}" for tpl in self.monthly_sold[0].keys()]
+        headers += months
+
+        if typ != StatType.PROFIT:
+            f = open(f'output/{filename}.csv', 'w')
             writer = csv.writer(f, delimiter=',')
             writer.writerow(headers)
-            print("\ndaily_sold [prod, date1, date2]")
-            for grp in self.daily_sold:
-                for grp in self.daily_sold:
-                    row = [grp] + [tpl[1] for tpl in self.daily_sold[grp]]
-                    print(row)
-                    writer.writerow(row)
-
-        with open('output/monthly_sold.csv', 'w') as f:
-            headers = ['product',]
-            months = [f"{tpl[0]}-{tpl[1]}" for tpl in self.monthly_sold[0].keys()]
-            headers += months
-            writer = csv.writer(f, delimiter=',')
-            writer.writerow(headers)
-
-            for grp in self.monthly_sold:
+            for grp in data:  # data e.g., self.monthly_sold
                 row = [grp]
-                row += self.monthly_sold[grp].values()
+                row += data[grp].values()
                 writer.writerow(row)
+            f.close()
+        else:
+            headers.pop(0)
+            f = open(f'output/{filename}.csv', 'w')
+            writer = csv.writer(f, delimiter=',')
+            writer.writerow(headers)
+            writer.writerow(data.values())
+            f.close()
 
-        # also print stats for profit over time
-        # labor constant, inv order cost is variable, total revenue is variable
+
