@@ -97,7 +97,7 @@ class Statistics:
             total_monthly_revenue = sum(self.monthly_revenue[grp][dt] for grp in self.monthly_revenue) 
             total_monthly_order_cost = sum(self.monthly_order_cost[grp][dt] for grp in self.monthly_order_cost) 
             self.monthly_profit[dt] = total_monthly_revenue - self.monthly_labor[dt] - total_monthly_order_cost
-            print(f"Profit = {self.monthly_profit[dt]}, revenue = {total_monthly_revenue}, order_cost = {total_monthly_order_cost}, labor_cost = {self.monthly_labor[dt]}")
+
     def print_all_stats(self):
         self.__calculate_month_stats()
 
@@ -119,19 +119,14 @@ class Statistics:
     def write_daily_stats(self, typ: StatType, filename: str):
         if typ == StatType.SOLD:
             data = self.daily_sold
-            print("sold")
         elif typ == StatType.TOSS:
             data = self.daily_toss
-            print("toss")
         elif typ == StatType.MISS:
             data = self.daily_miss
-            print("miss")
         elif typ == StatType.REVENUE:
             data = self.daily_revenue
-            print("revenue")
         elif typ == StatType.ORDER:
             data = self.daily_order_cost
-            print("order_cost")
         else:
             print(f"Statistics.write_daily_stats(): FATAL - invalid stat type {type}")
             exit(1)
@@ -144,12 +139,12 @@ class Statistics:
         writer.writerow(headers)
         for grp in data:
             row = [grp] + [entry[1] for entry in data[grp]]
-            print(row)
             writer.writerow(row)
         f.close()
 
     def write_monthly_stats(self, typ: StatType, filename: str):
         data = None
+        format = None
         if typ == StatType.SOLD:
             data = self.monthly_sold
         elif typ == StatType.TOSS:

@@ -47,7 +47,6 @@ class EmployeeManager:
         self.refresh = True
 
     def reset(self, today, next_truck):
-        (grp.reset() for grp in self.smart_products)
         self.toss_work = sum(sp.get_work(Constants.TASK_TOSS, today, next_truck) for sp in self.smart_products)
         if today == next_truck:
             self.unload_work = sum(sp.get_work(Constants.TASK_UNLOAD, today, next_truck) for sp in self.smart_products)

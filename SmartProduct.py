@@ -37,7 +37,7 @@ class SmartProduct:
 
     def reset(self):
         if 0 not in self.sold.items():
-            self.ideal_daily = sum(self.sold['today'], self.sold['one_ago'], self.sold['two_ago']) / 3
+            self.ideal_daily = sum([self.sold['today'], self.sold['one_ago'], self.sold['two_ago']]) / 3
             if self.toss_count > 10:
                 self.cushion -= int(self.toss_count / 2)
         else: 
@@ -312,12 +312,7 @@ class SmartProduct:
             print("\nSmartProduct.__toss_one(): FATAL: attempt to toss an expired product that has not arrived.")
             exit(1)
 
-        inv.print(self.inventory_list.index(inv))
         assert(inv.get_sell_by() == today), f"\nSmartProduct.__toss_one({self.product.get_id()}): FATAL - attempt to toss unexpired product"
-
-        if self.product.get_id() == 0:
-            print("> pre-toss:")
-            inv.print(self.inventory_list.index(inv))
 
         # toss entire thing at once
         if quantity <= emp_q:
@@ -330,9 +325,6 @@ class SmartProduct:
             self.any_back['quantity'] -= q
             
             self.toss_count += 1
-            if self.product.get_id() == 0:
-                print("> post-toss:")
-                inv.print(self.inventory_list.index(inv))
             return quantity
         # partial toss
         else:
@@ -354,11 +346,8 @@ class SmartProduct:
                 quantity -= q
                 diff += q
                 self.toss_count += 1
-                print(f"Smartproduct.__toss_one({self.product.get_id()}): WARNING throwing out expired product in back")
+                # print(f"Smartproduct.__toss_one({self.product.get_id()}): WARNING throwing out expired product in back")
 
-            if self.product.get_id() == 0:
-                print("> post-toss:")
-                inv.print(self.inventory_list.index(inv))
             return diff
 
     def add_inventory_list(self, inv_lst):
@@ -387,8 +376,8 @@ class SmartProduct:
         assert(num_lots >= 1)
         sublots = int(num_lots * self.product.get_num_sublots())
         inv_lst = self.__create_pending(sublots, arrival, today)
-        if self.product.get_id() == 0:
-            print(f"\t\tORDERED {sublots} inventories of GRP 0")
+        # if self.product.get_id() == 0:
+            # print(f"\t\tORDERED {sublots} inventories of GRP 0", file=day_file)
         cost = self.product.get_lot_price() * num_lots
         return cost, inv_lst
 
@@ -415,35 +404,25 @@ class SmartProduct:
         self.restock(1000000)
         return cost
 
-    def __print__(self):
+    def __print__(self, file):
         # print for smartproduct 0 if nothing is passed
         # and print for the smartproduct if an prod_id is passed
 
         if self.product.get_id() == 0:
-            actual_shelf = sum(inv.get_shelf() for inv in self.inventory_list)
-            actual_back = sum(inv.get_back() for inv in self.inventory_list)
-            actual_pending = sum(inv.get_pending() for inv in self.inventory_list)
-
-
             print(f"<SmartProduct_{self.product.get_id()}_{Constants.CURRENT_DAY}_{Constants.CURRENT_TSTEP}:>"\
                 f"\n\t> inventory_list: {len(self.inventory_list)} inventories"\
                 f"\n\t> sublot_quantity = {self.product.get_sublot_quantity()}"\
-                f"\n\t> any_shelf[start: {self.any_shelf['start']}, end: {self.any_shelf['end']}, quantity: {self.any_shelf['quantity']}]  ---> ACTUAL: {actual_shelf}"\
-                f"\n\t> any_back[start: {self.any_back['start']}, end: {self.any_back['end']}, quantity: {self.any_back['quantity']}]  ---> ACTUAL: {actual_back}"\
-                f"\n\t> pending[start: {self.pending['start']}, end: {self.pending['end']}, quantity: {self.pending['quantity']}]  ---> ACTUAL: {actual_pending}"\
+                f"\n\t> any_shelf[start: {self.any_shelf['start']}, end: {self.any_shelf['end']}, quantity: {self.any_shelf['quantity']}"\
+                f"\n\t> any_back[start: {self.any_back['start']}, end: {self.any_back['end']}, quantity: {self.any_back['quantity']}"\
+                f"\n\t> pending[start: {self.pending['start']}, end: {self.pending['end']}, quantity: {self.pending['quantity']}"\
                 f"\n\t> miss_count = {self.miss_count}"\
-                # f"\n\t> toss_work = {self.get_work(Constants.TASK_TOSS, today, next_truck)}"\
-                # f"\n\t> unload_work = {self.get_work(Constants.TASK_UNLOAD, today, next_truck)}"\
-                # f"\n\t> restock_work = {self.get_work(Constants.TASK_RESTOCK, today, next_truck)}"\
                 f"\n\t> toss_count (# inventories) = {self.toss_count}"\
                 f"\n\t> sold['today': {self.sold['today']}, 'one_ago': {self.sold['one_ago']}, 'two_ago': {self.sold['two_ago']}"\
-                f"\n\t> toss: ")
+                f"\n\t> toss: ", file=file)
             for dt in self.toss_lookup:
-                print(f"\t   {dt} --- start: {self.toss_lookup[dt]['start']}, end: {self.toss_lookup[dt]['end']}, quantity: {self.toss_lookup[dt]['quantity']}")
+                print(f"\t   {dt} --- start: {self.toss_lookup[dt]['start']}, end: {self.toss_lookup[dt]['end']}, quantity: {self.toss_lookup[dt]['quantity']}", file=file)
             for index, inv in enumerate(self.inventory_list):
-                inv.print(index)
-            
-            assert(actual_shelf == self.any_shelf['quantity'] and actual_back == self.any_back['quantity'] and actual_pending == self.pending['quantity'])
+                inv.print(index, file=file)
 
     def special_print(self, msg):
         if self.product.get_id() == 0:

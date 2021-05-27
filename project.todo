@@ -1,195 +1,29 @@
 
 POA:
-- setup printing for day.txt
-- setup printing for year.txt
-- setup printing for csv files
-- push to master
-- branch to shopper_preference
+- setup printing for day.txt @done
+- setup printing for year.txt @done
+- setup printing for csv files @done
+- fix SmartProduct.reset() @done
+- Early Morning:
+    - add formatting for print to csv files
+    - re-run full program
+    - view graphs for profit and daily quantity sold/tossed
+    - push & merge
+- Morning:
+    - branch to shopper_preference
     - numpy weights for products
     - adjust shopper.select() to pull from numpy weights list
-    - print q sold per each product hourly, daily
-- parameterize random seed
-- confirm that random.seed(0) makes consistent output
-
-
-- See if SmartProduct needs to inherit Product?
-    - Evaluate how much info in Product is actually needed
-- Test without ManageInventory.py out of the loop @done
-    - Delete ManageInventory.py if working
-- Run with cProfiler
-
-
-
-
-- TDL:
-    - simple statistics.py
-        - create plot
-        - stream product sold data x minute
-        - create object to monitor average product sold data x 30 mins
-        - push average data each half hour
-        - create each individual function, and average_data object
-        - Go through and replace all data logging w/these functions
-        - create daily plot graphs
-        - write & test push_daily_data()
-        - create average plot graphs
-        - write & test push_monthly data
-- statistics.py
-    - init()
-        - create plot objects
-        - create objects to hold running sums & counts --> used to calculate abjects later
-    - collect daily revenue (sum all checkout postings) --> save_revenue(date, revenue)
-    - collect daily revenue per product --> save_rev_per_prod(date, grp, sold, revenue)
-    - collect daily product sold -->  save_prod_sold(date, grp, sold)
-    - collect daily product loss --> save_prod_loss(date, grp, loss, purchase_cost)
-    - collect daily product misses --> save_prod_miss(date, grp, misses, purchase_cost)
-    - collect order data --> save_order(date, grp, quantity, cost)
-    - collect customer time data --> save_customer_time(date, total customers in-store,entry, exit, qtime, checkout_time)
-    - push_daily_data() --> push to plotly
-    - push_monthly_data() --> push to plotly
-    - push_yearly_data() --> push to plotly
-- plots:
-    - Individual Money: dollars x time
-        - daily revenue
-        - daily revenue per product
-    - Aggregate Money: dollars x time
-        - monthly revenue
-        - monthly revenue per product
-        - monthly profit (rev - capital - labor)
-        - monthly capital cost
-        - monthly labor cost
-        - monthly fixed cost
-        - monthly revenue per labor
-    - Individual Product: time x (product, quantity)
-        - product sold
-        - product loss
-        - product misses
-    - Aggregate Product: time x (product, quantity)
-        - monthly product sold
-        - monthly product loss
-        - monthly product miss
-    - Order Data Individual: (date x (grp x (q, cost))
-        - order data (grp, q = lots * lot_q, cost, date)
-    - Order data (date x cost)
-        - sum order data over time (date, q, cost)
-    - Customer Data: tot cusomers x (avg transaction, avg qtime)
-        - average transaction length (area chart or bar graph, date x transaction sections)
-        - # of customers vs transaction length or vs wait time?
-
-
-
-
-POA:
-- remove all day print statements @done
-- Make a list of all stats to monitor, think about a visualizer @done
-- add numpy distribution sampling for grp selection
-    - generate base weights for 100 grp
-    - for each shopper generate customized weights for grp based on base weights --> save as field
-        - weight for a grp should be similar across shoppers, but w/occasional outliers
-    - use numpy multinomial sampling to select a grp
-- link grp base weight to amount stocked on shelves etc.
-    - run program and count misses. Based on sold + misses in one week for each grp:
-        - reset expected shelf, back, order_threshold, and order_amount
-- increase # of products to 1000, reduce quantity on shelfs to between 2 and 100 --> make this a random distribution, linked to weights
-- add numpy distribution sampling for shopper quota
-- add print statements at end of each day to print total rev
-- add print statements at end of each week to print total rev, total costs
-- add print statements at end of each month for month stats
-- add print statements at end of each year for year stats
-- Test run 1 week
-- Test run of 2 weeks
-- Test run 1 month
-- Test run 5 months
-- Test run 1 year
-
-MAKING INTERESTING BEHVAIOR:
-    - increase # of products to 1000 or user input
-        - change # of employees based on number of products
-    - base weights for grp preference
-        - link: shopper preference
-        - link: stock & product quantities:
-            - max_shelf: (20, 200) --> increments by 10
-                - select value based on weight
-            - link: product quantities --> lot_q, sublot_q
-                - sublot_q is a mutliple of 10
-                - lot_q is a multiple of 10, 3x max_shelf
-            - link: stock values --> on shelf etc.
-            - max_back is a multiple oflot_q, 10x max_shelfa
-    - busyness of store based on day, hour
-        - busyness = weights --> highest weight == # of customers in-store during busyest time
-        - seasonal = increase # of shoppers across the board
-    - make grp preference respond to price changes
-        - On sales:
-            - if high preference and land on item, add 1 to quota
-            - if low preference and land on item, 25% chance buy anyway
-        - On price hike:
-            - increase order cost
-            - if high preference an land on item, purchase
-            - if low preference and land on item, 75% chance skip & quota -=1
-
-
-PARAMETERS:
-- # of products (optional: 1000)
-- simulation time (optional: 3 yrs)
-- base weight distribution (options: mutlinomial, binomial, standard)
-
-
-Milestones:
-    - Improve Runtime @done
-    - Successful week
-    - Make behavior interesting
-    - Successful 2 weeks
-    - Sucessful month
-    - Sucessful 5 months
-    - Sucessful year
-    - Successful 3 years
-    - Setup plots w/ random data
-    - Update plots w/simulated data + overall conclusion
-    - Cleanup project for submission
-
-
-Runtime Improvements:
-- refresh task list every 15 t_steps, else work off of existing one
-
-
-- EmployeeManager.advance_employees(): sort & dispatch ∆ / 40 --> 28.7 --> 7.8
-    - get_restock_list() / 3.1s --> 3.0s --> 3.4s --> 2.9
-    - advance_employees(): dispatch() / 26s --> 2.2 --> 2.9s --> 2.1s
-        -  dispatch.restock: all_restocks / 25.9s --> 2.2 --> 2.8 --> 2.1
-            - dispatch.restock: while_loop / xxs --> 1.5s --> 2.0 --> 1.4
-                - dispatch.restock: __restock() / 1.2s --> 0.9 --> 1.2 --> 0.8
-    - get_toss_list() / 1.0s --> 0.9s --> 1.3s --> 0.8
-    - get_unload_list() / 1.7s--> 1.8 --> 2.1 --> 1.7
-
-- advance_all_shoppers() / 15s
-    - filter valid shoppers / 0.2
-    - Handler / 10.0s
-        - Handle - Shopping / 3.3s
-        - Handle - Inert / 0.19
-        - Handle - Queueing / 0.03
-        - Handle - Done / 0.10s
-        - Handle - Other /0.01
-
-
-
-TOTAL: 17.1s --> 16.7s
-
-Runtime Improvement TDL:
-    - advance_employees() / 7.3s @done
-    - __handle_shopper / 6.3s @done
-        - remove list comprehension for valid shoppers by deleting in __handle_done() @done
-    - randint() / 4s -->  @done
-        - int(random.random() * range_max) @done
-    - setup_starter_inventory / 3.5s @done
-    - remove all log/delta @done
-    - remove all print_stats @done
-    - run w/profiler and sort according to highest cumulative @done
-    - change shopperHandler from bucketChain to other style @done
-        - make handler functions a function in shopper? @done
-    - think about ways to reduce time for sorting lookup (sell_by, shelf) @done
-        - maybe only sort when adding new inventories? @done
-            - 1. ensure that everything is sorted in sell_by, shelf order @done
-            - 2. ensure that shoppers select from first inventory in list --> generator @done 
-            - 3. ensure that get_list() preserves order --> generators preserve order @done
-            - 4. ensure that restock, toss, and unload go in order --> @done
-
+    - run for a couple months and see if everything still works
+        - yes: 
+            - run for a year & view data + graphs
+        - no:
+            - delete branch
+- Afternoon:
+    - Switch Master:
+    - Delete any unecessary comments
+    - Do or Delete any TODOs lying around
+    - Delete ManageInventory.py & other obsolete files
+    - Freeze requirements.txt & make sure it's up to date
+- Remainder:
+    - write thesis paper
 
