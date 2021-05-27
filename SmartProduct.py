@@ -14,7 +14,7 @@ class SmartProduct:
         self.toss_count = 0  # number of products thrown out because they are expired
         self.order_cost = 0
         self.sold = {'today': 0, 'one_ago': 0, 'two_ago': 0}
-        self.ideal_daily = prod.get_max_shelf()
+        self.ideal_daily = 0
         self.cushion = 0.2 * self.ideal_daily
 
         # inventory is listed in order of sell_by + first-in/first_out
@@ -36,18 +36,22 @@ class SmartProduct:
         }
 
     def reset(self):
-        if 0 not in self.sold.items():
-            self.ideal_daily = sum([self.sold['today'], self.sold['one_ago'], self.sold['two_ago']]) / 3
-            if self.toss_count > 10:
-                self.cushion -= int(self.toss_count / 2)
-        else: 
-            self.ideal_daily = self.sold['today']
+        sold_values = [value for value in self.sold.values() if value != 0]
+        if len(sold_values) > 0:
+            self.ideal_daily = sum(sold_values) / len(sold_values)
+
+        if self.toss_count > 10:
+            self.cushion -= int(self.toss_count / 2)
+
         self.miss_count = 0
         self.toss_count = 0
         self.order_cost = 0
         self.sold['two_ago'] = self.sold['one_ago']
         self.sold['one_ago'] = self.sold['today']
         self.sold['today'] = 0
+    
+    def set_cushion(self):
+        self.cushion = 0.2 * self.ideal_daily
 
     def __pop(self):
         # list still starts at 0, all other indices reduced by 1
@@ -324,7 +328,7 @@ class SmartProduct:
             inv.decrement(StockType.BACK, q)
             self.any_back['quantity'] -= q
             
-            self.toss_count += 1
+            self.toss_count += q
             return quantity
         # partial toss
         else:
@@ -333,6 +337,7 @@ class SmartProduct:
             q = min(emp_q, inv.get_shelf())
             inv.decrement(StockType.SHELF, q)
             self.any_shelf['quantity'] -= q
+            self.toss_count += q
             emp_q -= q
             quantity -= q
             diff += q
@@ -345,7 +350,7 @@ class SmartProduct:
                 emp_q -= q
                 quantity -= q
                 diff += q
-                self.toss_count += 1
+                self.toss_count += q
                 # print(f"Smartproduct.__toss_one({self.product.get_id()}): WARNING throwing out expired product in back")
 
             return diff

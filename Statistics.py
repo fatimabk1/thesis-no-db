@@ -117,16 +117,25 @@ class Statistics:
         self.write_monthly_stats(StatType.PROFIT, 'monthly_profit')
 
     def write_daily_stats(self, typ: StatType, filename: str):
+        value_format = None
+        quantity_format = "{:.0f}"
+        money_format = "{:.2f}"
+
         if typ == StatType.SOLD:
             data = self.daily_sold
+            value_format = quantity_format
         elif typ == StatType.TOSS:
             data = self.daily_toss
+            value_format = quantity_format
         elif typ == StatType.MISS:
             data = self.daily_miss
+            value_format = quantity_format
         elif typ == StatType.REVENUE:
             data = self.daily_revenue
+            value_format = money_format
         elif typ == StatType.ORDER:
             data = self.daily_order_cost
+            value_format = money_format
         else:
             print(f"Statistics.write_daily_stats(): FATAL - invalid stat type {type}")
             exit(1)
@@ -138,25 +147,34 @@ class Statistics:
         writer = csv.writer(f, delimiter=',')
         writer.writerow(headers)
         for grp in data:
-            row = [grp] + [entry[1] for entry in data[grp]]
+            row = [grp] + [value_format.format(entry[1]) for entry in data[grp]]
             writer.writerow(row)
         f.close()
 
     def write_monthly_stats(self, typ: StatType, filename: str):
         data = None
-        format = None
+        value_format = None
+        quantity_format = "{:.0f}"
+        money_format = "{:.2f}"
+
         if typ == StatType.SOLD:
             data = self.monthly_sold
+            value_format = quantity_format
         elif typ == StatType.TOSS:
             data = self.monthly_toss
+            value_format = quantity_format
         elif typ == StatType.MISS:
             data = self.monthly_miss
+            value_format = quantity_format
         elif typ == StatType.REVENUE:
             data = self.monthly_revenue
+            value_format = money_format
         elif typ == StatType.ORDER:
             data = self.monthly_order_cost
+            value_format = money_format
         elif typ == StatType.PROFIT:
             data = self.monthly_profit
+            value_format = money_format
         else:
             print(f"Statistics.write_daily_stats(): FATAL - invalid stat type {typ}")
             exit(1)
@@ -171,7 +189,7 @@ class Statistics:
             writer.writerow(headers)
             for grp in data:  # data e.g., self.monthly_sold
                 row = [grp]
-                row += data[grp].values()
+                row += [value_format.format(value) for value in data[grp].values()]
                 writer.writerow(row)
             f.close()
         else:
@@ -179,7 +197,7 @@ class Statistics:
             f = open(f'output/{filename}.csv', 'w')
             writer = csv.writer(f, delimiter=',')
             writer.writerow(headers)
-            writer.writerow(data.values())
+            writer.writerow([value_format.format(value) for value in data.values()])
             f.close()
 
 

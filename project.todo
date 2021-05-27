@@ -5,7 +5,7 @@ POA:
 - setup printing for csv files @done
 - fix SmartProduct.reset() @done
 - Early Morning:
-    - add formatting for print to csv files
+    - add formatting for print to csv files @done
     - re-run full program
     - view graphs for profit and daily quantity sold/tossed
     - push & merge

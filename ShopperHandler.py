@@ -10,6 +10,7 @@ class ShopperHandler:
     def __init__(self, sp, lm, qt):
         self.next = None
         self.smart_products = sp
+        # self.product_weights = None  
         self.lane_manager = lm
         self.qtimes = qt
 

@@ -80,14 +80,12 @@ class Store:
                 print(f"\n\n\n\t\t\t**** NEW MONTH: {month} ***\n\n\n", file=year_file)
 
             print(f"-------------------------------------------------------------------------------------------------------------------------------------------- DAY {day}: {self.clock.month}/{self.clock.day}/{self.clock.year}", file=year_file)
+            
             # setup day
             for sp in self.smart_products:
-                if sp.product.get_id() == 0:
-                    print("before sold adjustment:", sp.sold)
                 sp.reset()
-                if sp.product.get_id() == 0:
-                    print("after sold adjustment:", sp.sold)
-
+                if day < 3:
+                    sp.set_cushion()  # only set cushion while we are calibrating ideal daily value
             self.employee_manager.set_day_schedule()
             self.employee_manager.reset(self.get_today(), self.next_truck)
 

@@ -25,7 +25,7 @@ class DaySimulator:
             if  t_step == Constants.STORE_OPEN:
                 self.lane_manager.open_starter_lanes()
             elif Constants.store_open(t_step) and t_step % 60 == 0:
-                new_shoppers = [Shopper(t_step) for i in range(300)]
+                new_shoppers = [Shopper(t_step) for i in range(Constants.SHOPPER_ADD)]
                 self.shoppers = self.shoppers + new_shoppers
             elif t_step == Constants.STORE_CLOSE:
                 self.shoppers = [s for s in self.shoppers if s.get_status() != Status.INERT]
@@ -87,5 +87,8 @@ class DaySimulator:
                 checkout += 1
             elif s.get_status() == Status.DONE:
                 done += 1
-        print("shopper status: inert={}, shopping={}, queueing={}, checkout={}, done={}"
-                .format(inert, shopping, queueing, checkout, done), file=file)
+
+        total = Constants.SHOPPER_ADD * (self.clock.hour - Constants.START_CLOCK.hour + 1)
+        deleted = total - inert - shopping - queueing - checkout - done
+        print("shopper status: inert={}, shopping={}, queueing={}, checkout={}, done={}, departed={}"
+                .format(inert, shopping, queueing, checkout, done, deleted), file=file)
