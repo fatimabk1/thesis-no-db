@@ -47,7 +47,6 @@ class EmployeeManager:
         self.refresh = True
 
     def reset(self, today, next_truck):
-        (grp.reset() for grp in self.smart_products)
         self.toss_work = sum(sp.get_work(Constants.TASK_TOSS, today, next_truck) for sp in self.smart_products)
         if today == next_truck:
             self.unload_work = sum(sp.get_work(Constants.TASK_UNLOAD, today, next_truck) for sp in self.smart_products)
@@ -65,6 +64,7 @@ class EmployeeManager:
         emp.remove_cashier()
         assert(emp.is_cashier() is False), "return_cashier(): update failed"
 
+    # @profile
     def refresh_tasks(self, task, today, next_truck):
         if task == Constants.TASK_TOSS:
             self.toss_tasks = [sp for sp in self.smart_products if sp.has_work(task, today, next_truck)]

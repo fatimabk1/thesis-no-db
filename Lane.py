@@ -12,11 +12,11 @@ class Lane:
         self.length = 0
         self.open_status = False
 
-    def print(self, index):
+    def print(self, index, file):
         sid_list = [id(shopper) for shopper in self.queue]
         print("<Lane_{}: eid={}, speed={}, length={},"
               .format(index, id(self.employee), self.items_per_min, self.length),
-              "\tqueue: ", sid_list, ">")
+              "\tqueue: ", sid_list, ">", file=file)
 
     def set_employee(self, emp):
         self.employee = emp

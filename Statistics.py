@@ -1,215 +1,203 @@
+from SmartProduct import SmartProduct
+import csv
+from enum import IntEnum
 import Constants
-import numpy as np
-import matplotlib.pyplot as plt
-import matplotlib.dates as mdates
-import matplotlib.animation as anim
 from datetime import datetime
-import time
-import random
-
-# START HERE >>> Transitioning to Matplotlib
-# 1. Make fake data array for each *axes* I want
-# 2. Add figure, axes + data (x,y,z,categories,...) instantiation to __init__()
-# 3. Create update function for figure according to https://stackoverflow.com/questions/10944621/dynamically-updating-plot-in-matplotlib
-# 4. Test with fake data
-# 5. Repeat for each graph
-# 6. Weave functions throughout rest of the program for real data
+from collections import OrderedDict  # so keys and values are in order of insertion with me needing to sort
+import json
 
 
-class Visualization:
+class StatType(IntEnum):
+    SOLD = 0
+    TOSS = 1
+    MISS = 2
+    REVENUE = 3
+    ORDER = 4
+    LABOR = 5
+    PROFIT = 6
+
+
+class Statistics:
     def __init__(self):
-        self.daily_money = {}
-        self.setup()
-    
-    def setup(self):
-        #Set up plot
-        figure, ax = plt.subplots()
-        lines, = ax.plot([],[], 'o')
-        ax.set_xlabel('Time (Days)')
-        ax.set_ylabel('Products Sold')
-        ax.set_title('Products Sold Over Time')
-        #Autoscale on unknown axis and known lims on the other
-        # ax.set_autoscaley_on(True)
-        ax.set_xlim(0, 7)
-        ax.set_ylim(0, 6000)
-        ax.grid()
-        self.daily_money["figure"] = figure
-        self.daily_money["ax"] = ax
-        self.daily_money["lines"] = lines
-        self.daily_money["data_x"] = []
-        self.daily_money["data_y"] = []
+        self.daily_sold = {}  # q sold per product per day --> {grp_id: [(date, quantity), (date, quantity), ...]}
+        self.monthly_sold = {}  # q sold per product --> {grp_id: {month: q, month: q, ...}}
 
-        # draw and show initial figure
-        self.daily_money["figure"].canvas.draw()
-        plt.show(block=False)  
+        self.daily_toss = {}  # q tossed per product per day --> {grp_id: [(date, quantity), (date, quantity), ...]}
+        self.monthly_toss = {} # q tossed per product per month --> {grp_id: {month: q, month: q, ...}}
 
-    def update(self, x, y):
-        #Update data (with the new _and_ the old points)
-        self.daily_money["data_x"].append(x)
-        self.daily_money["data_y"].append(y)
-        self.daily_money["lines"].set_xdata(self.daily_money["data_x"])
-        self.daily_money["lines"].set_ydata(self.daily_money["data_y"])
-        #Need both of these in order to rescale
-        self.daily_money["ax"].relim()
-        self.daily_money["ax"].autoscale_view()
-        #We need to draw *and* flush
-        self.daily_money["figure"].canvas.draw()
-        self.daily_money["figure"].canvas.flush_events()
-        plt.show(block=False)
-        plt.pause(1) 
-        print("end pause")
-    
-    # def setup(self):
-    #     figure, ax = plt.subplots()
-    #     lines, = ax.plot([],[], 'o')
-    #     ax.set_xlabel('Time (Days)')
-    #     ax.set_ylabel('Products Sold')
-    #     ax.set_title('Products Sold Over Time')
-    #     ax.set_autoscaley_on(True)
-    #     ax.grid()
-    #     ax.set_xlim(0, 8)
-    #     ax.set_ylim(0, 6000)
-    #     ax.format_xdata = mdates.DateFormatter('%d')
-    #     ax.xaxis.set_major_locator(mdates.DayLocator())
-    #     self.daily_money["figure"] = figure
-    #     self.daily_money["ax"] = ax
-    #     self.daily_money["lines"] = lines
-    #     self.daily_money["data_x"] = []
-    #     self.daily_money["data_y"] = []
-    #     plt.show()
-    #     # plt.draw()
+        self.daily_miss = {}  # q missed per product per day --> {grp_id: [(date, quantity), (date, quantity), ...]}
+        self.monthly_miss = {}  # q missed per product per month --> {grp_id: {month: q, month: q, ...}}
 
-    # def update(self, x, y):
-    #     self.daily_money['data_x'].append(x)
-    #     self.daily_money['data_y'].append(y)
-    #     self.daily_money['lines'].set_xdata(self.daily_money['data_x'])
-    #     self.daily_money['lines'].set_ydata(self.daily_money['data_y'])
-    #     # Need both of these in order to rescale
-    #     self.daily_money['ax'].relim()
-    #     self.daily_money['ax'].autoscale_view()
-    #     #We need to draw *and* flush
-    #     self.daily_money['figure'].canvas.draw()
-    #     self.daily_money['figure'].canvas.flush_events()
-    #     plt.draw()
-    #     # plt.show()
-    #     # plt.pause(0.01)
+        self.daily_revenue = {} # daily income per product or just daily total income --> {grp_id: [(date, rev), (date, rev), ...]}
+        self.monthly_revenue = {}  # monthly income per product or just monthly total income --> {grp_id: {month: rev, month: rev, ...}}
 
-if __name__ == "__main__":
-    vis = Visualization()
-    time.sleep(0.5)
-    for i in range(7):
-        vis.update(i + 1, random.randint(0, 6000))
-        time.sleep(0.5)
-    print("ALL DONE")
+        self.daily_order_cost = {}  # inventory orders by date by product --> {grp_id: [(date, cost), (date, cost), ...]}
+        self.monthly_order_cost = {} # inventory orders by month by product --> {grp_id: {month: cost, month: cost, ...}}
 
-# class Visualization:
-#     def __init__(self):
-#         # all dictionaries in the format: figure, ax, lines, data_x, data_y
-#         self.daily_money = {}
-#         self.aggregate_money = {}
-#         self.daily_product = {}
-#         self.aggregate_product = {}
-#         self.daily_order = {}
-#         self.aggregate_order = {}
-#         self.customer = {}
+        self.monthly_labor = {}  #  -->  {(year, month): cost, (year, month): cost, ...}
+        self.monthly_profit = {}  # sum of revenue for all grp - labor costs that month - total order costs [by month]
+        # --> {grp_id: {month: profit, month: profit, month: profit, ...}}
 
-#         self.min_x = 0
-#         self.max_x = 300
-#         self.figure = None
-#         self.ax = None
-#         self.lines = None
-#         self.data_x = []
-#         self.data_y = []
-#         self.setup_plots()
+        self.__setup()
+
+    def __setup(self):
+        for i in range(Constants.PRODUCT_COUNT):
+            self.daily_sold[i] = []
+            self.daily_toss[i] = []
+            self.daily_miss[i] = []
+            self.daily_revenue[i] = []
+            self.daily_order_cost[i] = []
+            self.monthly_sold[i] = {}
+            self.monthly_toss[i] = {}
+            self.monthly_miss[i] = {}
+            self.monthly_revenue[i] = {}
+            self.monthly_order_cost[i] = {}
+
+    def add_stat(self, type: StatType, data: list):
+        if type == StatType.SOLD:
+            self.daily_sold[data[0]] += [(data[1], data[2])]  # list of (date, quantity) tuples
+        elif type == StatType.TOSS:
+            self.daily_toss[data[0]] += [(data[1], data[2])]  # list of (date, quantity) tuples
+        elif type == StatType.MISS:
+            self.daily_miss[data[0]] += [(data[1], data[2])]  # list of (date, quantity) tuples
+        elif type == StatType.REVENUE:
+            self.daily_revenue[data[0]] += [(data[1], data[2])] # list of (date, rev) tuples
+        elif type == StatType.ORDER:
+            self.daily_order_cost[data[0]] += [(data[1], data[2])] # list of (date, cost) tuples
+        elif type == StatType.LABOR:
+            yr_month = (data[0].year, data[0].month)
+            if data[1] in self.monthly_labor:
+                self.monthly_labor[yr_month] += data[1]
+            else:
+                self.monthly_labor[yr_month] = data[1]
+        else:
+            print(f"Statistics.add_stat(): FATAL - invalid StatType {type}")
+            exit(1)
+
+    def __calculate_month_stats(self):
+        for grp in range(Constants.PRODUCT_COUNT):
+            self.monthly_sold[grp] = {} # dictionary of (year, month) tuple --> quantity
+        stat_lst = [(self.daily_sold, self.monthly_sold),
+                    (self.daily_toss, self.monthly_toss),
+                    (self.daily_miss, self.monthly_miss),
+                    (self.daily_revenue, self.monthly_revenue),
+                    (self.daily_order_cost, self.monthly_order_cost)] 
+        for tpl in stat_lst:
+            for grp in tpl[0]:
+                for entry in tpl[0][grp]:
+                    yr_month = (entry[0].year, entry[0].month)
+                    if yr_month in tpl[1][grp]:
+                        tpl[1][grp][yr_month] += entry[1]
+                    else:
+                        tpl[1][grp][yr_month] = entry[1]
+        
+        # calculate monthly_profit
+        dates = self.monthly_revenue[0].keys()
+        for dt in dates:
+            total_monthly_revenue = sum(self.monthly_revenue[grp][dt] for grp in self.monthly_revenue) 
+            total_monthly_order_cost = sum(self.monthly_order_cost[grp][dt] for grp in self.monthly_order_cost) 
+            self.monthly_profit[dt] = total_monthly_revenue - self.monthly_labor[dt] - total_monthly_order_cost
+
+    def print_all_stats(self):
+        self.__calculate_month_stats()
+
+        # write all daily stats files
+        self.write_daily_stats(StatType.SOLD, 'daily_sold')
+        self.write_daily_stats(StatType.TOSS, 'daily_toss')
+        self.write_daily_stats(StatType.MISS, 'daily_miss')
+        self.write_daily_stats(StatType.REVENUE, 'daily_revenue')
+        self.write_daily_stats(StatType.ORDER, 'daily_order_cost')
+
+        # write all monthly stats files
+        self.write_monthly_stats(StatType.SOLD, 'monthly_sold')
+        self.write_monthly_stats(StatType.TOSS, 'monthly_toss')
+        self.write_monthly_stats(StatType.MISS, 'monthly_miss')
+        self.write_monthly_stats(StatType.REVENUE, 'monthly_revenue')
+        self.write_monthly_stats(StatType.ORDER, 'monthly_order_cost')
+        self.write_monthly_stats(StatType.PROFIT, 'monthly_profit')
+
+    def write_daily_stats(self, typ: StatType, filename: str):
+        value_format = None
+        quantity_format = "{:.0f}"
+        money_format = "{:.2f}"
+
+        if typ == StatType.SOLD:
+            data = self.daily_sold
+            value_format = quantity_format
+        elif typ == StatType.TOSS:
+            data = self.daily_toss
+            value_format = quantity_format
+        elif typ == StatType.MISS:
+            data = self.daily_miss
+            value_format = quantity_format
+        elif typ == StatType.REVENUE:
+            data = self.daily_revenue
+            value_format = money_format
+        elif typ == StatType.ORDER:
+            data = self.daily_order_cost
+            value_format = money_format
+        else:
+            print(f"Statistics.write_daily_stats(): FATAL - invalid stat type {type}")
+            exit(1)
+
+        headers = ['product']
+        headers += [datetime.strftime(tpl[0], '%Y-%m-%d') for tpl in self.daily_sold[0]]
+
+        f = open(f'output/{filename}.csv', 'w')
+        writer = csv.writer(f, delimiter=',')
+        writer.writerow(headers)
+        for grp in data:
+            row = [grp] + [value_format.format(entry[1]) for entry in data[grp]]
+            writer.writerow(row)
+        f.close()
+
+    def write_monthly_stats(self, typ: StatType, filename: str):
+        data = None
+        value_format = None
+        quantity_format = "{:.0f}"
+        money_format = "{:.2f}"
+
+        if typ == StatType.SOLD:
+            data = self.monthly_sold
+            value_format = quantity_format
+        elif typ == StatType.TOSS:
+            data = self.monthly_toss
+            value_format = quantity_format
+        elif typ == StatType.MISS:
+            data = self.monthly_miss
+            value_format = quantity_format
+        elif typ == StatType.REVENUE:
+            data = self.monthly_revenue
+            value_format = money_format
+        elif typ == StatType.ORDER:
+            data = self.monthly_order_cost
+            value_format = money_format
+        elif typ == StatType.PROFIT:
+            data = self.monthly_profit
+            value_format = money_format
+        else:
+            print(f"Statistics.write_daily_stats(): FATAL - invalid stat type {typ}")
+            exit(1)
+
+        headers = ['product']
+        months = [f"{tpl[0]}-{tpl[1]}" for tpl in self.monthly_sold[0].keys()]
+        headers += months
+
+        if typ != StatType.PROFIT:
+            f = open(f'output/{filename}.csv', 'w')
+            writer = csv.writer(f, delimiter=',')
+            writer.writerow(headers)
+            for grp in data:  # data e.g., self.monthly_sold
+                row = [grp]
+                row += [value_format.format(value) for value in data[grp].values()]
+                writer.writerow(row)
+            f.close()
+        else:
+            headers.pop(0)
+            f = open(f'output/{filename}.csv', 'w')
+            writer = csv.writer(f, delimiter=',')
+            writer.writerow(headers)
+            writer.writerow([value_format.format(value) for value in data.values()])
+            f.close()
 
 
-#     def setup_plots(self):
-#         # FIGURE 1 - DAILY REVENUE: DOLLARS X TIME / SCATTERPLOT
-#         # TODO: axis labels, grid lines every month
-#         figure, ax = plt.subplots()
-#         lines, = ax.plot([],[], 'o')
-#         ax.set_xlabel('Time (Days)')
-#         ax.set_ylabel('Products Sold')
-#         ax.set_title('Products Sold Over Time')
-#         ax.set_autoscaley_on(True)
-#         ax.grid()
-#         ax.set_xlim(0, 8)
-#         ax.format_xdata = mdates.DateFormatter('%d')
-#         ax.xaxis.set_major_locator(mdates.DayLocator())
-#         # plt.show()
-#         # ax.xaxis.set_major_locator(mdates.)
-#         # ax.format_ydata = lambda x: f'${x:.2f}'
-#         # ax.xaxis.set_major_locator(mdates.MonthLocator(interval=3))  # major tick every 3 months
-#         # ax.xaxis.set_minor_locator(mdates.MonthLocator())  # minor tick every month
-#         # datemin = datetime(2019, 9, 15)
-#         # datemax = datetime(2019, 9, 30)
-#         # ax.set_xlim(datemin, datemax)
-#         # ax.set_ylim(0, 100000)
-#         # figure.autofmt_xdate()
-    
-#         self.daily_money["figure"] = figure
-#         self.daily_money["ax"] = ax
-#         self.daily_money["lines"] = lines
-#         self.daily_money["data_x"] = []
-#         self.daily_money["data_y"] = []
-
-#     def update_money(self, x, y):
-#         print(f"logging ({x}, {y})")
-#         # x = x - Constatnts.
-#         # x = mdates.date2num(x)
-#         # print(f"date: {x}")
-#         self.daily_money['data_x'].append(x)
-#         self.daily_money['data_y'].append(y)
-#         self.daily_money['lines'].set_xdata(self.daily_money['data_x'])
-#         self.daily_money['lines'].set_ydata(self.daily_money['data_y'])
-#         # Need both of these in order to rescale
-#         self.daily_money['ax'].relim()
-#         self.daily_money['ax'].autoscale_view()
-#         #We need to draw *and* flush
-#         self.daily_money['figure'].canvas.draw()
-#         self.daily_money['figure'].canvas.flush_events()
-#         plt.show()
-
-#     def update(self, x, y):
-#         pass
-
-
-# class AnimatedPlot(self, x, y):
-    
-
-# if __name__ == '__main__':
-#     data_x = np.arange(1,300)
-#     data_y = np.arange(50, 1000, 3)
-
-#     vis = Visualization()
-#     ani = animation.FuncAnimation(fig, animate, fargs=(xs, ys), interval=1000)
-#     plt.show()
-
-#     points = len(data_y)
-#     for i in range(points):
-#         animate()
-    
-
-
-
-        # FIGURE 2 - AGGREGATE MONEY: Dollars x Time, Area Graph
-            # PLOT 1 - MONTHLY REVENUE
-            # PLOT 2 - MONTHLY PROFIT (REVENUE - CAPITAL - LABOR - FIXED)
-            # PLOT 3 - MONTHLY CAPITAL
-            # PLOT 4 - MONTHLY REVENUE / LABOR 
-
-        # FIGURE 3 - INDIVIDUAL PRODUCT DATA: TIME VS (GRP, QUANTITY)
-            # PLOT 1 - PRODUCT SOLD
-            # PLOT 2 - PRODUCT MISSED
-            # PLOT 3 - PRODUCT LOSS
-
-        # FIGURE 4 - AGGREGATE PRODUCT DATA: TIME VS (GRP, QUANTITY)
-            # PLOT 1 - MONTHLY PRODUCT SOLD
-            # PLOT 2 - MONTHLY PRODUCT MISSED
-            # PLOT 3 - MONTHLY PRODUCT LOSS
-
-        # FIGURE 5 - ORDER DATA: TIME X (GRP, QUANTITY)
-
-        # FIGURE 6 - MONTHLY ORDER DATA: TIME X (GRP, QUANTITY)
-
-        # FIGURE 7 - CUSTOMER DATA: IN-STORE VS (QUEUE TIME, CHECKOUT, OVERALL)

@@ -187,6 +187,7 @@ class LaneManager:
                 self.__close(ln)
                 self.num_open -= 1
 
-    def print_active_lanes(self):
-        print("\n\n--- ACTIVE LANES ---")
-        [ln.print(index) for index, ln in enumerate(self.lanes) if ln.is_open()]
+    def print_active_lanes(self, file):
+        print("\n\n--- ACTIVE LANES ---", file=file)
+        [ln.print(index, file) for index, ln in enumerate(self.lanes) if ln.is_open()]
+        print("\n\n", file=file)

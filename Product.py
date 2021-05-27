@@ -1,9 +1,6 @@
 import random
-from datetime import datetime, timedelta, date
 from enum import IntEnum
 import random
-import Constants
-from Constants import CLOCK, TRUCK_DAYS
 
 
 def make_sell_by():
@@ -24,10 +21,9 @@ class Price(IntEnum):
 
 
 class Product:
-    def __init__(self, grp, cat):
+    def __init__(self, grp):
         # basic info
         self.grp_id = grp
-        self.category = cat
         self.max_shelf = None
         self.max_back = None
         self.restock_threshold = None
@@ -47,8 +43,8 @@ class Product:
         self.order_amount = None
 
     def print(self):
-        print("<grp_{}: cat={}, max_shelf={}, max_back={}, restock_t={}, price={}, sale={}, p_stat={}, lot_p={}, lot_q={}, sublots={}, sublot_q={}, order_t={}, order_q={}, sell={}"
-        .format(self.grp_id, self.category, self.max_shelf, self.max_back, self.restock_threshold, self.regular_price, self.sale_price,
+        print("<grp_{}: max_shelf={}, max_back={}, restock_t={}, price={}, sale={}, p_stat={}, lot_p={}, lot_q={}, sublots={}, sublot_q={}, order_t={}, order_q={}, sell={}"
+        .format(self.grp_id, self.max_shelf, self.max_back, self.restock_threshold, self.regular_price, self.sale_price,
                 self.price_status, self.lot_price, self.lot_quantity, self.sublots, self.sublot_quantity, self.order_threshold, self.order_amount, self.sell_by_days))
 
     # -------------------------------------------- getters and setters

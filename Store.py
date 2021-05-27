@@ -10,24 +10,21 @@ import Constants
 from datetime import date, datetime
 from datetime import timedelta
 import traceback
-import os
-import pathlib
+from Statistics import StatType, Statistics
 # import beepy
 
 
 class Store:
     def __init__(self):
-        self.clock = datetime(2019, 9, 15, 10, 0)
-        self.products = []
+        self.clock = Constants.START_CLOCK
         self.smart_products = []
         self.employees = []
         self.lanes = []
         self.shoppers = []
         self.next_truck = None
+        self.stats = Statistics()
 
         # data collection for stats
-        self.revenues = []
-        self.costs = []
         self.qtimes = []
 
         # aggregate objects
@@ -38,7 +35,6 @@ class Store:
         self.shopper_handler = ShopperHandler(
                                 self.smart_products,
                                 self.lane_manager,
-                                self.revenues,
                                 self.qtimes)
 
         self.day_simulator = DaySimulator(
@@ -54,13 +50,9 @@ class Store:
     
     def setup(self):
         # setup products & product_stats
-        category = 0
         for grp_id in range(Constants.PRODUCT_COUNT):
-            if grp_id !=0 and grp_id % Constants.CATEGORY_COUNT == 0:
-                category += 1
-            p = Product(grp_id, category)
+            p = Product(grp_id)
             p.setup()
-            self.products.append(p)
             sp = SmartProduct(p)
             self.smart_products.append(sp)
         
@@ -79,44 +71,69 @@ class Store:
         runtime = Constants.log()
         month = self.clock.month
         day_time = []
-        t = datetime.now()
-        print_time = f"{t.hour}-{t.minute}-{t.second}"
+        day_file, year_file = open('output/day.txt', 'w'), open('output/year.txt', 'w')
+
         Constants.CURRENT_DAY = 0
         for day in range(365):
             if self.clock.month != month:
                 month = self.clock.month
-                for sp in self.smart_products:
-                    sp.special_print(f"\n\n\n\t\t\t**** NEW MONTH: {month} ***\n\n\n")
-            for sp in self.smart_products:
-                sp.special_print(f"-------------------------------------------------------------------------------------------------- DAY {day}: {self.clock.month}/{self.clock.day}/{self.clock.year}")
+                print(f"\n\n\n\t\t\t**** NEW MONTH: {month} ***\n\n\n", file=year_file)
+
+            print(f"-------------------------------------------------------------------------------------------------------------------------------------------- DAY {day}: {self.clock.month}/{self.clock.day}/{self.clock.year}", file=year_file)
+            
             # setup day
+            for sp in self.smart_products:
+                sp.reset()
+                if day < 3:
+                    sp.set_cushion()  # only set cushion while we are calibrating ideal daily value
             self.employee_manager.set_day_schedule()
             self.employee_manager.reset(self.get_today(), self.next_truck)
 
-            t = self.day_simulator.simulate_day(self.get_today(), self.next_truck)
+            t = self.day_simulator.simulate_day(self.get_today(), self.next_truck, day_file)
+            print("Day ∆:", t, file=year_file)
             day_time.append(t)
-            print("Avg day runtime: ", sum(day_time, timedelta(0)) / len(day_time))
+            print("Avg day runtime: ", sum(day_time, timedelta(0)) / len(day_time), file=year_file)
 
             # order inventory
             if day!= 0 and day % (Constants.TRUCK_DAYS ) == 0:
                 self.next_truck = self.get_today() + timedelta(days=Constants.TRUCK_DAYS)
-                for sp in self.smart_products:
-                    sp.special_print("\n\t*** ORDERING INVENTORY")
+                print("\n\t*** ORDERING INVENTORY", file=year_file)
                 order_cost = sum([sprod.order_inventory(self.get_today()) for sprod in self.smart_products])
-                self.costs.append((order_cost, self.get_today()))
+                if self.smart_products[0].pending['quantity'] > 0:
+                    sublots = self.smart_products[0].pending['quantity'] / self.smart_products[0].product.get_sublot_quantity()
+                    print(f"\t\tORDERED {sublots} inventories of GRP 0", file=year_file)
                 self.next_truck = self.get_today() + timedelta(days=Constants.TRUCK_DAYS)
-                for sp in self.smart_products:
-                    sp.special_print(f"\t> order available {self.next_truck.month}/{self.next_truck.day}/{self.next_truck.year}")
+                print(f"\t> order available {self.next_truck.month}/{self.next_truck.day}/{self.next_truck.year}", file=year_file)
 
+            # pay labor
             if day != 0 and day % 7 == 0:
                 labor_payment = sum(emp.get_paycheck() for emp in self.employees)
-                for sp in self.smart_products:
-                    sp.special_print(f"\n\t\t\t*** LABOR PAYMENT = ${labor_payment} ***")
+                self.stats.add_stat(StatType.LABOR, [self.get_today(), labor_payment])
+                print(f"\n\t\t\t*** LABOR PAYMENT = ${labor_payment} ***", file=year_file)
+            else:
+                self.stats.add_stat(StatType.LABOR, [self.get_today(), 0])
 
-            # print_all_stats(self.smart_products, print_time, day)
+            # update stats object
+            for sp in self.smart_products:
+                stats = sp.get_today_stats()
+                self.stats.add_stat(StatType.SOLD, [sp.product.get_id(), self.get_today(), stats['sold']])
+                self.stats.add_stat(StatType.TOSS, [sp.product.get_id(), self.get_today(), stats['toss']])
+                self.stats.add_stat(StatType.MISS, [sp.product.get_id(), self.get_today(), stats['miss']])
+                self.stats.add_stat(StatType.REVENUE, [sp.product.get_id(), self.get_today(), stats['sold'] * sp.product.get_price()])
+                self.stats.add_stat(StatType.ORDER, [sp.product.get_id(), self.get_today(), stats['order_cost']])
+
+            self.smart_products[0].__print__(file=year_file)
             self.clock += timedelta(days=1)
             Constants.CURRENT_DAY += 1
-        Constants.delta("A Year", runtime)
+            if day == 1:
+                day_file.close()
+            
+            if day == 4:
+                break
+        
+        self.stats.print_all_stats()
+        print("One Year ∆:", datetime.now() - runtime, file=year_file)
+        year_file.close()
 
 
     def update_daily_statistics(self):

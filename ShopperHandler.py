@@ -7,11 +7,11 @@ from Inventory import StockType
 
 
 class ShopperHandler:
-    def __init__(self, sp, lm, rev, qt):
+    def __init__(self, sp, lm, qt):
         self.next = None
         self.smart_products = sp
+        # self.product_weights = None  
         self.lane_manager = lm
-        self.revenues = rev
         self.qtimes = qt
 
     def handle(self, shopper, t_step, today):
@@ -53,7 +53,5 @@ class ShopperHandler:
         shopper.increment_qtime()
 
     def __handle_done(self, shopper, today):
-        rev = Revenue(stamp=today, value=shopper.get_total())
-        self.revenues.append(rev)
         qt = Qtime(lane=shopper.lane, stamp=today, time=shopper.get_qtime())
         self.qtimes.append(qt)
