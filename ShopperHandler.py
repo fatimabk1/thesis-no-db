@@ -1,28 +1,23 @@
 import Constants
 import random
 from Shopper import Status
-from Revenue import Revenue
-from Cost import Qtime
-from Inventory import StockType
 
 
 class ShopperHandler:
-    def __init__(self, sp, lm, qt):
+    def __init__(self, sp, lm):
         self.next = None
         self.smart_products = sp
-        # self.product_weights = None  
         self.lane_manager = lm
-        self.qtimes = qt
 
-    def handle(self, shopper, t_step, today):
+    def handle(self, shopper, t_step):
         if shopper.get_status() == Status.INERT:
             self.__handle_inert(shopper, t_step)
         elif shopper.get_status() == Status.SHOPPING:
-            self.__handle_shopper(shopper, t_step, today)
+            self.__handle_shopper(shopper, t_step)
         elif shopper.get_status() == Status.QUEUEING:
             self.__handle_queueing(shopper)
         elif shopper.get_status() == Status.DONE:
-            self.__handle_done(shopper, today)
+            return
         else:
             status = shopper.get_status()
             assert(status == Status.CHECKOUT or status == Status.QUEUE_READY), f"ShopperHandler Error | unexpected status: {str(status)}"
@@ -32,13 +27,12 @@ class ShopperHandler:
             shopper.set_status(Status.SHOPPING)
             shopper.reset_browse(t_step)
 
-    # @profile
-    def __handle_shopper(self, shopper, t_step, today):
+    def __handle_shopper(self, shopper, t_step):
         if shopper.get_quota() == 0:
             self.lane_manager.queue_shopper(shopper)
             shopper.set_status(Status.QUEUEING)
         else:
-            if t_step >= Constants.StoreStatus.CLOSED - 15:
+            if t_step >= Constants.STORE_CLOSE - 15:
                 shopper.hurry_up()
 
             if shopper.is_selecting():
@@ -51,7 +45,3 @@ class ShopperHandler:
 
     def __handle_queueing(self, shopper):
         shopper.increment_qtime()
-
-    def __handle_done(self, shopper, today):
-        qt = Qtime(lane=shopper.lane, stamp=today, time=shopper.get_qtime())
-        self.qtimes.append(qt)

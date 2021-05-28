@@ -1,7 +1,5 @@
-from Constants import log, delta
 from Shopper import Status
 import Constants
-# import Employee
 
 
 class Lane:
@@ -68,7 +66,6 @@ class Lane:
         emp_q = self.get_speed()
         while self.length > 0 and emp_q > 0:
             sh = self.deq()
-            # print("\t\t\tchecking out shopper {} with {} items".format(id(sh), sh.get_cart_count()))
             sh.set_status(Status.CHECKOUT)
             assert(sh.get_cart_count() != 0)
             scanned = min(sh.get_cart_count(), emp_q)
@@ -77,10 +74,8 @@ class Lane:
 
             if sh.get_cart_count() == 0:
                 sh.set_status(Status.DONE)
-                # print("\t\t\t\t> Shopper done!")
             else:
                 self.insert_left(sh)
-                # print("\t\t\t\t> Shopper with a big cart - carrying over the transaction!")
 
     def is_open(self):
         return self.open_status

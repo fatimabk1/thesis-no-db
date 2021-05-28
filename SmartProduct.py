@@ -1,9 +1,8 @@
 from Inventory import Inventory, StockType
 from Product import Product
 import Constants
-from datetime import datetime, timedelta
-from math import floor
-import sys
+from datetime import timedelta
+from math import ceil
 
 # A queue-like data structure with accessibility & editability of a list
 # Manages its own inventory, tasks, and ordering
@@ -301,12 +300,8 @@ class SmartProduct:
 
             start += 1
         
-        # self.special_print("PRE-POP:")
-        # self.__print__()
         for inv in removed:
             self.__pop()
-        # self.special_print("POST-POP (aka final situation after tossing)")
-        # self.__print__()
         return total_toss
 
     # Toss as much as possible of inv, given employee capacity 
@@ -324,7 +319,7 @@ class SmartProduct:
             inv.decrement(StockType.SHELF, q)
             self.any_shelf['quantity'] -= q
 
-            q = inv.get_shelf()
+            q = inv.get_back()
             inv.decrement(StockType.BACK, q)
             self.any_back['quantity'] -= q
             
@@ -356,6 +351,8 @@ class SmartProduct:
             return diff
 
     def add_inventory_list(self, inv_lst):
+        if not inv_lst:
+            return
         inv_lst.sort(key=lambda x: x.get_sell_by())
         for inv in inv_lst:
             self.__push(inv)
@@ -365,24 +362,25 @@ class SmartProduct:
         cost = 0
         arrival = today + timedelta(days=Constants.TRUCK_DAYS)
         curr_back = self.any_back['quantity']
-        curr_shelf = self.any_shelf['quantity']
-        if curr_back + curr_shelf < self.ideal_daily * Constants.TRUCK_DAYS + self.cushion:
+        if curr_back < self.ideal_daily * Constants.TRUCK_DAYS + self.cushion:
             amount = self.ideal_daily * Constants.TRUCK_DAYS + self.cushion
-            cost, pending_lst = self.__order(amount, arrival, today)
+            cost, pending_lst = self.__order(amount, arrival, today, curr_back)
             self.order_cost = cost
             if pending_lst:
                 self.add_inventory_list(pending_lst)
         return cost
 
-    def __order(self, amount, arrival, today):
+    def __order(self, amount, arrival, today, curr_back):
         # cost, return pending_lst or None
         lot_q = self.product.get_lot_quantity()
-        num_lots = int(floor(amount / lot_q))
+        num_lots = int(ceil(amount / lot_q))
         assert(num_lots >= 1)
+        if num_lots * lot_q > self.product.get_max_back() - curr_back:
+            return 0, []
         sublots = int(num_lots * self.product.get_num_sublots())
         inv_lst = self.__create_pending(sublots, arrival, today)
         # if self.product.get_id() == 0:
-            # print(f"\t\tORDERED {sublots} inventories of GRP 0", file=day_file)
+        #     print(f"\t\tORDERED {sublots} inventories of GRP 0", file=day_file)
         cost = self.product.get_lot_price() * num_lots
         return cost, inv_lst
 
@@ -400,7 +398,8 @@ class SmartProduct:
         # order enough stock to completely fill shelves + 1/2 of back stock
         arrival = today
         amount = self.product.get_max_shelf() * Constants.TRUCK_DAYS
-        cost, pending_lst = self.__order(amount, arrival, today)
+        curr_back = 0
+        cost, pending_lst = self.__order(amount, arrival, today, curr_back)
         if pending_lst:
             self.add_inventory_list(pending_lst)
 

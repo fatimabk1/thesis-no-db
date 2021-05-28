@@ -1,4 +1,3 @@
-import sys
 import Constants
 
 
@@ -11,14 +10,12 @@ class LaneManager:
         self.manage_delay = 0
 
     def __close(self, ln):
-        # print("\t\t\tclosing lane")
         emp = ln.remove_employee()
         self.employee_manager.return_cashier(emp)
         assert(emp.is_cashier() is False), "LaneManager.__close(): return_cashier failed"
         ln.close()
 
     def __open(self, ln):
-        # print("\t\t\topening lane")
         emp = self.employee_manager.get_cashier()
         ln.set_employee(emp)
         ln.open()
@@ -41,7 +38,6 @@ class LaneManager:
     def queue_shopper(self, shopper):
         index = self.__shortest()
         self.lanes[index].enq(shopper)
-        # print("\t\t\tqueueing shopper ", id(shopper), " to lane ", index)
 
     def shift_change(self):
         for ln in self.lanes:
@@ -54,8 +50,6 @@ class LaneManager:
 
     # average time to check out last person in each lane
     def __longest_qtime(self):
-        # if self.num_open == 0:
-        #     return 0
         minutes = 0
         for index, ln in enumerate(self.lanes):
             if index < self.num_open:
@@ -86,7 +80,6 @@ class LaneManager:
         return self.num_open
 
     def __collapse(self, qlen):
-        # print("COLLAPSING LANES")
         assert (self.num_open > Constants.MIN_LANES)
         # calculate number of lanes to remove
         if qlen == 0:   # remove 2/3 of lanes
@@ -107,7 +100,6 @@ class LaneManager:
         return self.num_open
 
     def __expand(self, qlen, qtime):
-        # print("EXPANDING LANES")
         assert (self.num_open != Constants.MAX_LANES)
         ideal_qlen = None
         num_new_lanes = None
@@ -160,11 +152,8 @@ class LaneManager:
 
                 # redistribute remaining customers to all lanes one-by-one
                 while old_lane.length > ideal_qlen:
-                    # print("\t[length={} > {}=ideal_qlen]"
-                        # .format(old_lane.length, ideal_qlen))
                     if i == old_lane_index:
                         old_lane_index += 1
-                        # print("\nold_lane_index = ", old_lane_index)
                         break
                     sid = old_lane.deq_right()
                     new_lane = self.lanes[old_lane_index]
@@ -172,7 +161,7 @@ class LaneManager:
                     new_lane.enq(sid)
                     old_lane_index += 1
             else:
-                sys.exit("FATAL: ideal_qlen is None")
+                exit("FATAL: ideal_qlen is None")
 
         return self.num_open
 

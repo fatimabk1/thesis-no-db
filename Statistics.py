@@ -1,10 +1,7 @@
-from SmartProduct import SmartProduct
 import csv
 from enum import IntEnum
 import Constants
 from datetime import datetime
-from collections import OrderedDict  # so keys and values are in order of insertion with me needing to sort
-import json
 
 
 class StatType(IntEnum):

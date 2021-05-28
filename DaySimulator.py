@@ -1,14 +1,15 @@
 import Constants
 from Shopper import Shopper, Status
 from datetime import datetime, timedelta
+from ShopperHandler import ShopperHandler
 
 class DaySimulator:
-    def __init__(self, sp, empm, lanem, handler):
-        self.smart_products = sp  # TODO: REMOVE AFTER CHECKINGprint()
+    def __init__(self, sp, empm, lanem):
+        self.smart_products = sp 
         self.employee_manager = empm
         self.lane_manager = lanem
         self.shoppers = []
-        self.handler = handler
+        self.handler = ShopperHandler(self.smart_products, self.lane_manager)
         self.clock = None
 
     def __reset_time(self, today):
@@ -40,7 +41,7 @@ class DaySimulator:
                 index = 0
                 while index < shopper_count:
                     sh = self.shoppers.pop(index)
-                    self.handler.handle(sh, t_step, today)
+                    self.handler.handle(sh, t_step)
                     if sh.get_status() != Status.DONE:
                         self.shoppers.insert(0, sh)
                         index += 1

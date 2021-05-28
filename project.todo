@@ -4,26 +4,10 @@ POA:
 - setup printing for year.txt @done
 - setup printing for csv files @done
 - fix SmartProduct.reset() @done
-- Early Morning:
-    - add formatting for print to csv files @done
-    - re-run full program
-    - view graphs for profit and daily quantity sold/tossed
-    - push & merge
-- Morning:
-    - branch to shopper_preference
-    - numpy weights for products
-    - adjust shopper.select() to pull from numpy weights list
-    - run for a couple months and see if everything still works
-        - yes: 
-            - run for a year & view data + graphs
-        - no:
-            - delete branch
-- Afternoon:
-    - Switch Master:
-    - Delete any unecessary comments
-    - Do or Delete any TODOs lying around
-    - Delete ManageInventory.py & other obsolete files
-    - Freeze requirements.txt & make sure it's up to date
-- Remainder:
-    - write thesis paper
+
+- Switch Master: @done
+- Delete any unecessary comments @done
+- Do or Delete any TODOs lying around @done
+- Delete ManageInventory.py & other obsolete files @done
+- Freeze requirements.txt & make sure it's up to date
 

@@ -57,13 +57,6 @@ class Employee:
     
     def is_cashier(self):
         return self.lane
-
-    def calculate_wages(self):
-        hours = self.time_worked / 60
-        minutes = self.time_worked % 60
-        wage = round(self.hourly_wage * hours +
-                     round(self.hourly_wage * (minutes / 60), 2), 2)
-        return wage
     
     def set_shift(self, shift):
         self.shift = shift
@@ -72,6 +65,5 @@ class Employee:
         return self.shift == current_shift
 
     def get_paycheck(self):
-        # employees work 6 shifts a week
-        # each shift is 7 hours
+        # employees work 6 shifts a week, each shift is 7 hours
         return 6 * 7 * self.hourly_wage
