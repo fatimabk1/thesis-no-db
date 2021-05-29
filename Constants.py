@@ -6,8 +6,8 @@ from enum import IntEnum
 CURRENT_DAY = 0
 CURRENT_TSTEP = 0
 
-START_CLOCK = datetime(2011, 12, 30, 10, 0)
-DAY_START = 0  
+START_CLOCK = datetime(2019, 1, 1, 10, 0)
+DAY_START = 0 
 STORE_OPEN = 2 * 60  # 120 -->  2 hrs, 10am public open, morning steps: 0 - 120
 SHIFT_CHANGE = 7 * 60  # 420 -- 7 hrs, 3PM shift change
 CLOSING_SOON = 11 * 60  # 660 --> 11 hr, 7PM closing warning
@@ -15,7 +15,9 @@ STORE_CLOSE = 12 * 60  # 720 -->  10 hrs, 8PM public close, day steps: 120 - 720
 DAY_END = 14 * 60  # 840 -->  14 hrs, 10pm public close, evening steps: 720 - 840
 
 TRUCK_DAYS = 2
+
 PRODUCT_COUNT = 1000  # total # of products in db 3k
+STARTER_INVENTORY_COUNT = 800
 SHOPPER_ADD = 300
 
 # runtime
@@ -68,7 +70,7 @@ SHOPPER_MAX = 60                # max number of items a shopper will attempt to 
 NUM_EMPLOYEES = 147
 
 WAGE_MIN = 8
-WAGE_MAX = 18
+WAGE_MAX = 10
 
 CURRENT_SHIFT = None
 

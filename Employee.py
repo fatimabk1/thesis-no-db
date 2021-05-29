@@ -65,5 +65,8 @@ class Employee:
         return self.shift == current_shift
 
     def get_paycheck(self):
-        # employees work 6 shifts a week, each shift is 7 hours
-        return 6 * 7 * self.hourly_wage
+        # each shift is 7 hours
+        if self.shift != Shift.OFF:
+            return 7 * self.hourly_wage
+        else:
+            return 0

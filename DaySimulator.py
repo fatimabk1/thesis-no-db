@@ -21,6 +21,8 @@ class DaySimulator:
 
         runtime = Constants.log()
         for t_step in range(Constants.DAY_END):
+            # print(f"-------------------------------------------------------------------------------------------------------------------------------------------- TIME STEP {t_step}")
+
     
             # t_step - specific updates
             if  t_step == Constants.STORE_OPEN:

@@ -68,7 +68,7 @@ class Product:
         return self.sell_by_days + random.choice([0, 1])
 
     def setup(self):
-        self.sublot_quantity = 50
+        self.sublot_quantity = 20
         self.sublots = 10
         self.lot_quantity = self.sublot_quantity * self.sublots  # 500
 
@@ -79,9 +79,6 @@ class Product:
         self.order_amount = None
 
         self.regular_price = round(random.uniform(1, 22), 2)
-        self.lot_price = round(
-            (self.regular_price
-             + random.choice([0.01, 0.02, 0.03, 0.04, 0.05]))
-            * self.lot_quantity, 2)
-
-        self.sell_by_days = round(random.uniform(21, 90))
+        margin = round(self.regular_price * (0.05), 2)
+        self.lot_price = (self.regular_price - margin) * self.lot_quantity
+        self.sell_by_days = round(random.uniform(14, 60))

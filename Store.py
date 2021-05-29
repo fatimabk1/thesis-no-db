@@ -66,6 +66,7 @@ class Store:
                 print(f"\n\n\n\t\t\t**** NEW MONTH: {month} ***\n\n\n", file=year_file)
 
             print(f"-------------------------------------------------------------------------------------------------------------------------------------------- DAY {day}: {self.clock.month}/{self.clock.day}/{self.clock.year}", file=year_file)
+            print(f"-------------------------------------------------------------------------------------------------------------------------------------------- DAY {day}: {self.clock.month}/{self.clock.day}/{self.clock.year}")
             
             # setup day
             for sp in self.smart_products:
@@ -90,23 +91,20 @@ class Store:
                     print(f"\t\tORDERED {sublots} inventories of GRP 0", file=year_file)
                 self.next_truck = self.get_today() + timedelta(days=Constants.TRUCK_DAYS)
                 print(f"\t> order available {self.next_truck.month}/{self.next_truck.day}/{self.next_truck.year}", file=year_file)
+                print(f"\t> order available {self.next_truck.month}/{self.next_truck.day}/{self.next_truck.year}")
 
-            # pay labor
-            if day != 0 and day % 7 == 0:
-                labor_payment = sum(emp.get_paycheck() for emp in self.employees)
-                self.stats.add_stat(StatType.LABOR, [self.get_today(), labor_payment])
-                print(f"\n\t\t\t*** LABOR PAYMENT = ${labor_payment} ***", file=year_file)
-            else:
-                self.stats.add_stat(StatType.LABOR, [self.get_today(), 0])
+            # pay labor daily
+            labor_payment = sum(emp.get_paycheck() for emp in self.employees)
+            self.stats.add_stat(StatType.LABOR, [self.get_today(), labor_payment])
+            print(f"\n\t\t\t*** LABOR PAYMENT = ${labor_payment} ***", file=year_file)
 
             # update stats object
             for sp in self.smart_products:
                 stats = sp.get_today_stats()
                 self.stats.add_stat(StatType.SOLD, [sp.product.get_id(), self.get_today(), stats['sold']])
-                self.stats.add_stat(StatType.TOSS, [sp.product.get_id(), self.get_today(), stats['toss']])
-                self.stats.add_stat(StatType.MISS, [sp.product.get_id(), self.get_today(), stats['miss']])
                 self.stats.add_stat(StatType.REVENUE, [sp.product.get_id(), self.get_today(), stats['sold'] * sp.product.get_price()])
-                self.stats.add_stat(StatType.ORDER, [sp.product.get_id(), self.get_today(), stats['order_cost']])
+                self.stats.add_stat(StatType.ORDER_QUANTITY, [sp.product.get_id(), self.get_today(), stats['order_quantity']])
+                self.stats.add_stat(StatType.ORDER_COST, [sp.product.get_id(), self.get_today(), stats['order_cost']])
 
             self.smart_products[0].__print__(file=year_file)
             self.clock += timedelta(days=1)
