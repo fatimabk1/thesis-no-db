@@ -179,5 +179,5 @@ class Statistics:
                 total_monthly_order_cost = sum(self.monthly_order_cost[grp][dt] for grp in self.monthly_order_cost)
                 total_monthly_labor = self.monthly_labor[dt]
                 self.monthly_profit[dt] = total_monthly_revenue - self.monthly_labor[dt] - total_monthly_order_cost
-                writer.writerow([dt, total_monthly_revenue, total_monthly_labor, total_monthly_order_cost, self.monthly_profit[dt]]) 
+                writer.writerow([f"{dt[0]}-{dt[1]}", total_monthly_revenue, total_monthly_labor, total_monthly_order_cost, self.monthly_profit[dt]]) 
             f.close()

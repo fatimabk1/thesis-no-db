@@ -98,7 +98,6 @@ class SmartProduct:
         # update pending 
         self.__index_increment('end', self.pending, list_len)
         self.pending['quantity'] += pending_q
-        # print(f"\tpending = {self.pending['quantity']}")
 
 
         # update toss_lookup
@@ -151,7 +150,6 @@ class SmartProduct:
     def get_work(self, task, today, next_truck):
         if task == Constants.TASK_UNLOAD:
             if next_truck and next_truck == today:
-                # print(f"\tgrp {self.product.get_id()} unload-get_work() = [{self.pending['quantity']}]")
                 return self.pending['quantity']
             else:
                 return 0
@@ -161,11 +159,9 @@ class SmartProduct:
             else:
                 return 0
         elif task == Constants.TASK_RESTOCK:
-            # max_shelf = self.product.get_max_shelf()
             curr_shelf = self.any_shelf['quantity']
             curr_back = self.any_back['quantity']
             work = min(self.max_shelf - curr_shelf, curr_back)
-            # print(f"\tmax_shelf = {self.max_shelf}, curr_shelf = {curr_shelf}, curr_back = {curr_back}, work = min(all) = {work}")
             return work
         else:
             print(f"SmartProduct.get_work(): Invalid task {task}")
@@ -184,8 +180,6 @@ class SmartProduct:
         return False
 
     def unload(self, unload_speed):
-        # print(f"\t--> IN UNLOAD. pending quantity = {self.pending['quantity']}")
-        # self.__print__()
         if self.pending['quantity'] == 0:
             print(f"SmartProduct.unload({self.product.get_id()}): ERROR, attempt to unload nonexistent product")
             exit(1)
@@ -258,6 +252,7 @@ class SmartProduct:
         return q
 
      # toss as many inventories / partial inventories as possible exhausing emp_q
+
     def toss(self, emp_q, today):
         if today not in self.toss_lookup:
             return emp_q
@@ -340,19 +335,15 @@ class SmartProduct:
     def add_inventory_list(self, inv_lst):
         if not inv_lst:
             return
-        # print(f"PUSHING ORDER LIST, prev inv list len = {len(self.inventory_list)}")
         inv_lst.sort(key=lambda x: x.get_sell_by())
         for inv in inv_lst:
             self.__push(inv)
-        # print(f"\tcurr inv list len = {len(self.inventory_list)}")
-        # self.__print__()        
 
     # Collect pending list and pass through add_inventory_list()
     def order_inventory(self, today):
         cost = 0
         arrival = today + timedelta(days=Constants.TRUCK_DAYS)
         curr_back = self.any_back['quantity']
-        # print(f"ORDERING FOR GRP {self.product.get_id()}: curr_back = {curr_back}, ideal_daily = {self.ideal_daily}, threshold/amount = {self.ideal_daily * (Constants.TRUCK_DAYS * 2)+ self.cushion}")
         if curr_back < self.ideal_daily * (Constants.TRUCK_DAYS * 2)+ self.cushion:
             amount = self.ideal_daily * Constants.TRUCK_DAYS + self.cushion
             cost, pending_lst, quantity = self.__order(amount, arrival, today, curr_back)
@@ -367,9 +358,7 @@ class SmartProduct:
         num_lots = int(ceil(amount / lot_q))
         assert(num_lots >= 1)
         if num_lots * lot_q > self.product.get_max_back() - curr_back:
-            # print(f"\tORDERING {self.product.get_id()} --- 0")
             return 0, []
-        # print(f"\tORDERING {self.product.get_id()}  -- {num_lots * lot_q}")
         sublots = int(num_lots * self.product.get_num_sublots())
         inv_lst = self.__create_pending(sublots, arrival, today)
         cost = self.product.get_lot_price() * num_lots
@@ -386,9 +375,7 @@ class SmartProduct:
         return pending_inv
 
     def setup_starter_inventory(self, today):
-        # order enough stock to completely fill shelves + 1/2 of back stock
         arrival = today
-        # amount = self.product.get_max_shelf() * Constants.TRUCK_DAYS
         amount = Constants.STARTER_INVENTORY_COUNT
         curr_back = 0
         cost, pending_lst, quantity = self.__order(amount, arrival, today, curr_back)

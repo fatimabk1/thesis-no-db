@@ -99,7 +99,6 @@ class EmployeeManager:
 
 
     def advance_employees(self, t_step, shopper_count, today, next_truck):
-        # print("> ADVANCING EMPLOYEES")
         # update working employees 
         if t_step == Constants.SHIFT_CHANGE:
             self.current_shift = Constants.Shift.EVENING
@@ -132,7 +131,6 @@ class EmployeeManager:
                         if emp_index == len(group_1):
                             break
                         emp_q = group_1[emp_index].get_speed(Constants.TASK_UNLOAD)
-                        # emp_q = group_1[emp_index].get_speed(Constants.TASK_UNLOAD)
                     # if product work is finished, remove from list
                     if self.unload_tasks[0][1] == 0:
                         self.unload_tasks.pop(0)
@@ -141,12 +139,9 @@ class EmployeeManager:
                 emp_index = 0
                 emp_q = group_2[emp_index].get_speed(Constants.TASK_RESTOCK)
                 while(self.restock_tasks and emp_index != len(group_2)):
-                    print(f"restocking grp {self.restock_tasks[0][0].product.get_id()}: quantity[{self.restock_tasks[0][1]}] via emp {emp_index} with emp_q {emp_q}")
                     work_done = self.restock_tasks[0][0].restock(emp_q)
-                    print(f"\t work done = {work_done}")
                     emp_q -= work_done
                     self.restock_tasks[0][1] -= work_done
-                    print(f"\tupdated quantity = {self.restock_tasks[0][1]}")
                     # if emp has extra capacity, help with next product
                     if emp_q == 0:
                         emp_index += 1
@@ -180,12 +175,9 @@ class EmployeeManager:
                 emp_index = 0
                 emp_q = self.employees[emp_index].get_speed(Constants.TASK_RESTOCK)
                 while(self.restock_tasks and emp_index != len(available_emps)):
-                    print(f"restocking grp {self.restock_tasks[0][0].product.get_id()}: quantity[{self.restock_tasks[0][1]}] via emp {emp_index} with emp_q {emp_q}")
                     work_done = self.restock_tasks[0][0].restock(emp_q)
-                    print(f"\t work done = {work_done}")
                     emp_q -= work_done
                     self.restock_tasks[0][1] -= work_done
-                    print(f"\tupdated quantity = {self.restock_tasks[0][1]}")
                     # if emp has extra capacity, help with next product
                     if emp_q == 0:
                         emp_index += 1
@@ -238,11 +230,3 @@ class EmployeeManager:
         else:
             print(f"Unaccounted for t_step {t_step}")
             exit(1)
-
-
-    def print_active_employees(self):
-        print("\t--- ACTIVE EMPLOYEES --- ")
-        working = [emp for emp in self.employees["unavailable"] if emp.is_cashier()]
-        working.sort(key=lambda x: x.action)
-        [emp.print() for emp in working]
-

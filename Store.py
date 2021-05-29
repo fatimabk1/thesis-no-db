@@ -66,7 +66,6 @@ class Store:
                 print(f"\n\n\n\t\t\t**** NEW MONTH: {month} ***\n\n\n", file=year_file)
 
             print(f"-------------------------------------------------------------------------------------------------------------------------------------------- DAY {day}: {self.clock.month}/{self.clock.day}/{self.clock.year}", file=year_file)
-            print(f"-------------------------------------------------------------------------------------------------------------------------------------------- DAY {day}: {self.clock.month}/{self.clock.day}/{self.clock.year}")
             
             # setup day
             for sp in self.smart_products:
@@ -91,7 +90,6 @@ class Store:
                     print(f"\t\tORDERED {sublots} inventories of GRP 0", file=year_file)
                 self.next_truck = self.get_today() + timedelta(days=Constants.TRUCK_DAYS)
                 print(f"\t> order available {self.next_truck.month}/{self.next_truck.day}/{self.next_truck.year}", file=year_file)
-                print(f"\t> order available {self.next_truck.month}/{self.next_truck.day}/{self.next_truck.year}")
 
             # pay labor daily
             labor_payment = sum(emp.get_paycheck() for emp in self.employees)
