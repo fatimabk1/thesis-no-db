@@ -1,5 +1,5 @@
 # Grocery Store Simulator
-This is my senior thesis project for Yale’s B.S Computer Science, submitted in June of 2021. This project is a command line program that simulates running a grocery store for 365 days. Output includes a statistics file, as well as two additional files. One details the inner processes within a day (day.txt) and the other details processes that occur throughout the year (year.txt).
+This is my senior thesis project for Yale’s B.S Computer Science, submitted in June of 2021. This project is a command line program that simulates running a grocery store for 365 days. Output includes a statistics file, as well as two additional files. One details the inner processes within a day (day.txt) and the other details processes that occur throughout the year (year.txt). Both day.txt and year.txt show runtimes for each day and the overall program.
 
 ## Key areas of learning:
 - **Class design**. This is my first time designing a complicated program.
@@ -10,10 +10,10 @@ This is my senior thesis project for Yale’s B.S Computer Science, submitted in
 My [class design diagram](https://drive.google.com/file/d/1YrIinfIRSj2gMMU-uGhS_9CUcBwa2YwI/view?usp=sharing) is best viewed in draw.io. It's no longer accurate since the database was eliminated and I did some restructuring, but it shows the class design and database integration from the first phase of the project.
 
 ## Run the Grocery Store Simulator
-'''
+```
 git clone https://github.com/fatimabk1/thesis.git
 Python store.py
-'''
+```
 
 ## File Overviews:
 
