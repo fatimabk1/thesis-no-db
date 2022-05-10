@@ -3,7 +3,7 @@ This is my senior thesis project for Yale’s B.S Computer Science, submitted in
 
 ## Key areas of learning:
 - **Class design**. This is my first time designing a complicated program.
-- **Python**. Self-taught for this project!
+- **Python**. Significantly increased python competency, utilizing list comprehension and generators.
 - **SQLAlchemy and Postgres**. Database is not included in final project due to (1) the huge impact on runtime and (2) because it was unecessary. I learned how to implement and use a database, as well as why a database did not make sense for this project. 
 - **Runtime and efficiency**. A huge part of this project was eliminating uneccessary work and redundant work, finding alternatives for time-expensive work, and doing pre-work. Eliminating the database reduced runtime for the simulated year from more than 16 hours to less than 45 minutes in the final version.
 
